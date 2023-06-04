@@ -1,3 +1,11 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    // importとexportの序列を自動整形してくれます。
+    "simple-import-sort/imports": "warn",
+    "simple-import-sort/exports": "error",
+    // 使用していないimportを削除します。
+    "unused-imports/no-unused-imports": "error"
+  },
+  "plugins": ["simple-import-sort", "unused-imports"]
 }
