@@ -1,5 +1,6 @@
 import type { FC, SVGProps } from "react"
 
+// NOTE: https://icones.js.org/collection/all?s=setting を使用
 export const SettingIcon: FC = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
