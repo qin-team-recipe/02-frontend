@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@types/node": "20.2.5",
-    "@types/react": "18.2.8",
+    "@types/react": "^18.2.8",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
     "eslint": "8.42.0",
@@ -38,7 +38,8 @@
     "husky": "^8.0.0",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8",
-    "prettier-plugin-tailwindcss": "^0.3.0"
+    "prettier-plugin-tailwindcss": "^0.3.0",
+    "sass": "^1.62.1"
   },
   "volta": {
     "node": "18.16.0"

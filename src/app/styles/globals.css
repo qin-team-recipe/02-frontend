@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 横スクロールの際のバー非常時。全体で共有できそうなため、global.cssに記載 */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
