@@ -3,7 +3,29 @@
 import Link from "next/link"
 import { ChangeEvent, useState } from "react"
 
+type SelectedNumber = number | null
+
 const Draft = () => {
+  const [selectedNumber, setSelectedNumber] = useState<SelectedNumber>(null)
+  const [modalVisible, setModalVisible] = useState(false)
+
+  const handleIconClick = () => {
+    setModalVisible(true)
+  }
+
+  const handleModalClose = () => {
+    setModalVisible(false)
+  }
+
+  const handleNumberSelect = (number: SelectedNumber) => {
+    setSelectedNumber(number)
+    setModalVisible(false)
+  }
+
+  const formatNumber = (number: number) => {
+    return `${number}人前`
+  }
+
   const [inputValue, setValue] = useState("")
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -117,9 +139,27 @@ const Draft = () => {
         </div>
         <div className="h-[148px] pt-[32px]">
           <div className="h-[19px] px-[16px] flex mb-1">
-            <div className="font-bold text-[16px] mr-[6.67px]">材料/*人前</div>
-            <div className="h-[16px]">icon</div>
+            <div className="font-bold text-[16px] mr-[6.67px]">
+              材料/{selectedNumber ? formatNumber(selectedNumber) : "*"}
+            </div>
+            <div className="h-[16px]" onClick={handleIconClick}>
+              icon
+            </div>
           </div>
+
+          {modalVisible && (
+            <div className="modal">
+              <h2>Select a number</h2>
+              <ul>
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((number) => (
+                  <li key={number} onClick={() => handleNumberSelect(number)}>
+                    {formatNumber(number)}
+                  </li>
+                ))}
+              </ul>
+              <button onClick={handleModalClose}>Close</button>
+            </div>
+          )}
           <div className="h-[49px] border-t-2">
             <div className="py-[8px] px-[16px] border-b-2">
               <div className="h-[17px] mb-[4px] text-[14px]">キャベツ</div>
@@ -145,8 +185,8 @@ const Draft = () => {
               <div className="w-[48px] font-bold text-[16px]">作り方</div>
             </div>
             <div className="h-[271px] flex border-y-2">
-              <div className="ml-[16px] mt-[8px] mb-[96px] mr-[11px] w-[45px] h-[20px] rounded-full bg-red-600 flex items-center justify-center">
-                <span className="text-white text-[12px]">1</span>
+              <div className="ml-[16px] mt-[10px] mb-[96px] mr-[11px] w-[60px] h-[18px] rounded-full bg-red-600 flex items-center justify-center">
+                <span className="text-white">1</span>
               </div>
               <div>
                 <div className="h-[54px] w-[332px] text-[14px] mr-[16px] mt-[8px] mb-[4px]">
@@ -161,8 +201,8 @@ const Draft = () => {
               </div>
             </div>
             <div className="h-[271px] flex border-b-2">
-              <div className="ml-[16px] mt-[8px] mb-[96px] mr-[11px] w-[45px] h-[20px] rounded-full bg-red-600 flex items-center justify-center">
-                <span className="text-white text-[12px]">1</span>
+              <div className="ml-[16px] mt-[10px] mb-[96px] mr-[11px] w-[60px] h-[18px] rounded-full bg-red-600 flex items-center justify-center">
+                <span className="text-white">1</span>
               </div>
               <div>
                 <div className="h-[54px] w-[332px] text-[14px] mr-[16px] mt-[8px] mb-[4px]">
