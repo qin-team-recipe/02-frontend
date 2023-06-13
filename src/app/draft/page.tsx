@@ -6,6 +6,7 @@ import { ChangeEvent, useState } from "react"
 type SelectedNumber = number | null
 
 const Draft = () => {
+  //モーダルを表示し、選択した数字から*人前に代入
   const [selectedNumber, setSelectedNumber] = useState<SelectedNumber>(null)
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -56,6 +57,7 @@ const Draft = () => {
     setShowModal(false) // モーダルを非表示にする
   }
 
+  //画像追加
   const [image, setImage] = useState("")
 
   const handleImageAdd = () => {
@@ -76,7 +78,9 @@ const Draft = () => {
               <button onClick={handleSaveClick} className="mr-2">
                 保存
               </button>
-              <button onClick={handleDeleteConfirmClick}>削除</button>
+              <button onClick={handleDeleteConfirmClick}>
+                <Link href="/">削除</Link>
+              </button>
               <button onClick={handleDeleteCancelClick} className="ml-2">
                 キャンセル
               </button>
@@ -140,7 +144,7 @@ const Draft = () => {
         <div className="h-[148px] pt-[32px]">
           <div className="h-[19px] px-[16px] flex mb-1">
             <div className="font-bold text-[16px] mr-[6.67px]">
-              材料/{selectedNumber ? formatNumber(selectedNumber) : "*"}
+              材料/{selectedNumber ? formatNumber(selectedNumber) : "*人前"}
             </div>
             <div className="h-[16px]" onClick={handleIconClick}>
               icon
@@ -148,8 +152,8 @@ const Draft = () => {
           </div>
 
           {modalVisible && (
-            <div className="modal">
-              <h2>Select a number</h2>
+            <div className="modal border-x-2 border-y-2 bg-gray-200 px-4">
+              <h2>人数を選んでください！</h2>
               <ul>
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((number) => (
                   <li key={number} onClick={() => handleNumberSelect(number)}>
@@ -157,7 +161,9 @@ const Draft = () => {
                   </li>
                 ))}
               </ul>
-              <button onClick={handleModalClose}>Close</button>
+              <button onClick={handleModalClose} className="py-2">
+                Close
+              </button>
             </div>
           )}
           <div className="h-[49px] border-t-2">
