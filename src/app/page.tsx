@@ -1,18 +1,18 @@
 import Container from "./components/container"
 import SearchBar from "./components/searchBar"
 import Sidebar from "./components/sidebar"
-import TopCheifCard from "./components/topCheifCard"
+import TopChefCard from "./components/topChefCard"
 type CardProps = {
   image: string
   title: string
 }
 
 const dummyData: CardProps[] = [
-  { image: "path/to/image1.png", title: "Title 1" },
-  { image: "path/to/image2.png", title: "Title 2" },
-  { image: "path/to/image3.png", title: "Title 3" },
-  { image: "path/to/image4.png", title: "Title 4" },
-  { image: "path/to/image5.png", title: "Title 5" },
+  { image: "/toppage/topchef1.jpg", title: "チーム２シェフ" },
+  { image: "/toppage/topchef1.jpg", title: "チーム２シェフ" },
+  { image: "/toppage/topchef1.jpg", title: "チーム２シェフ" },
+  { image: "/toppage/topchef1.jpg", title: "チーム２シェフ" },
+  { image: "/toppage/topchef1.jpg", title: "チーム２シェフ" },
 ]
 
 export default function Home() {
@@ -25,7 +25,7 @@ export default function Home() {
         <Container>
           <div>これはメインコンテナーです</div>
           <SearchBar />
-          <TopCheifCard data={dummyData} />
+          <TopChefCard data={dummyData} />
           一番下はフッターです
         </Container>
       </div>
