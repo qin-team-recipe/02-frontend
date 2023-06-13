@@ -6,7 +6,9 @@ const addLink = () => {
       <div className="w-[390px]">
         <div className="py-[12px] px-[16px] border-b-2">
           <div className="flex justify-between h-[48px]">
-            <div className="h-[24px] w-[24px]">×</div>
+            <div className="h-[24px] w-[24px]">
+              <Link href="../draft">×</Link>
+            </div>
             <div className="flex justify-end">
               <h1 className="h-[24px] w-[64px] font-bold text-[16px] hover:text-red-500">
                 <Link href="../draft">追加する</Link>
