@@ -16,7 +16,7 @@ type RecipeTabCardProps = {
  * @param props
  * @returns
  */
-export default function RecipeTabCard(props: RecipeTabCardProps) {
+const RecipeTabCard = (props: RecipeTabCardProps) => {
   const { mainMessage, number, rightItem, subMessage } = props
   return (
     <>
@@ -51,3 +51,4 @@ export default function RecipeTabCard(props: RecipeTabCardProps) {
     </>
   )
 }
+export default RecipeTabCard

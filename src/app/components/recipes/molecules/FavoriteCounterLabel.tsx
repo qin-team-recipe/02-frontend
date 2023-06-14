@@ -8,7 +8,7 @@ type FavoriteCounterLabelProps = {
  * @param props
  * @returns
  */
-export default function FavoriteCounterLabel(props: FavoriteCounterLabelProps) {
+const FavoriteCounterLabel = (props: FavoriteCounterLabelProps) => {
   const { className, count } = props
   return (
     <>
@@ -26,3 +26,4 @@ export default function FavoriteCounterLabel(props: FavoriteCounterLabelProps) {
     </>
   )
 }
+export default FavoriteCounterLabel

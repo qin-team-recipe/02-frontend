@@ -7,7 +7,7 @@ type CardSubTextProps = {
  * @param props
  * @returns
  */
-export default function CardSubText(props: CardSubTextProps) {
+const CardSubText = (props: CardSubTextProps) => {
   const { message } = props
   return (
     <>
@@ -17,3 +17,4 @@ export default function CardSubText(props: CardSubTextProps) {
     </>
   )
 }
+export default CardSubText

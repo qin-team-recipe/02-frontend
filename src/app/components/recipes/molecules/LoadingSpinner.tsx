@@ -2,7 +2,7 @@
  * ローディングスピナー
  * @returns
  */
-export default function LoadingSpinner() {
+const LoadingSpinner = () => {
   return (
     <>
       {/* ぐるぐる */}
@@ -13,3 +13,4 @@ export default function LoadingSpinner() {
     </>
   )
 }
+export default LoadingSpinner

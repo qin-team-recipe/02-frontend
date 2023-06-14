@@ -11,7 +11,7 @@ type FavoriteButtonProps = {
  * @param props
  * @returns
  */
-export default function FavoriteButton(props: FavoriteButtonProps) {
+const FavoriteButton = (props: FavoriteButtonProps) => {
   const { className, isActive, onClick } = props
 
   const buttonClass =
@@ -33,3 +33,4 @@ export default function FavoriteButton(props: FavoriteButtonProps) {
     </>
   )
 }
+export default FavoriteButton

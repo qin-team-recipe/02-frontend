@@ -13,7 +13,7 @@ type RecipeTabsProps = {
  * レシピタブ
  * @returns
  */
-export default function RecipeTabs(props: RecipeTabsProps) {
+const RecipeTabs = (props: RecipeTabsProps) => {
   const { id } = props
   const [tabIndex, setTabIndex] = useState(0)
   const tabComponents = [
@@ -59,13 +59,14 @@ export default function RecipeTabs(props: RecipeTabsProps) {
     </>
   )
 }
+export default RecipeTabs
 
 /**
  *
  * @param param0 タブボタン
  * @returns
  */
-export function RecipeTabButton({
+const RecipeTabButton = ({
   title,
   isActive,
   onClick,
@@ -73,7 +74,7 @@ export function RecipeTabButton({
   title: string
   isActive: boolean
   onClick: () => void
-}) {
+}) => {
   const titleClass =
     "w-full inline-block text-black-300 text-base bg-white-500 p-2 border-b-2 hover:text-black-600 "
   const TitleSelectedClass = " font-bold border-gray-600 active"

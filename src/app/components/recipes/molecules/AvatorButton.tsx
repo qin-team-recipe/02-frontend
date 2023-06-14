@@ -12,7 +12,7 @@ type AvatorButtonProps = {
  * @param props
  * @returns
  */
-export default function AvatorButton(props: AvatorButtonProps) {
+const AvatorButton = (props: AvatorButtonProps) => {
   const { name, className, onClick, src } = props
   return (
     <>
@@ -28,3 +28,4 @@ export default function AvatorButton(props: AvatorButtonProps) {
     </>
   )
 }
+export default AvatorButton

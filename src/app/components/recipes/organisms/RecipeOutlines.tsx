@@ -24,7 +24,7 @@ type RecipeOutlineType = {
  * レシピ概要
  * @returns
  */
-export default function RecipeOutlines(props: RecipeOutlinesProps) {
+const RecipeOutlines = (props: RecipeOutlinesProps) => {
   const { id } = props
   const [isFavorite, setIsFavorite] = useState(false)
   const [recipe, setRecipe] = useState<RecipeOutlineType>({
@@ -117,3 +117,4 @@ export default function RecipeOutlines(props: RecipeOutlinesProps) {
     </>
   )
 }
+export default RecipeOutlines

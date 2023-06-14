@@ -8,7 +8,7 @@ type ImageWithBlurProps = {
  * @param props
  * @returns
  */
-export default async function ImageWithBlur(props: ImageWithBlurProps) {
+const ImageWithBlur = (props: ImageWithBlurProps) => {
   const { alt, src } = props
   return (
     <>
@@ -22,3 +22,4 @@ export default async function ImageWithBlur(props: ImageWithBlurProps) {
     </>
   )
 }
+export default ImageWithBlur

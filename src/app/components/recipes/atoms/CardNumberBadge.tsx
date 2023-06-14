@@ -7,7 +7,7 @@ type CardNumberBadgeProps = {
  * @param props
  * @returns
  */
-export default function CardNumberBadge(props: CardNumberBadgeProps) {
+const CardNumberBadge = (props: CardNumberBadgeProps) => {
   const { number } = props
   return (
     <>
@@ -17,3 +17,4 @@ export default function CardNumberBadge(props: CardNumberBadgeProps) {
     </>
   )
 }
+export default CardNumberBadge

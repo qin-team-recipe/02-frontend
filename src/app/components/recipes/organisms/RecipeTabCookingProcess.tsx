@@ -17,9 +17,7 @@ type RecipeCookingProcessType = {
  * @param props
  * @returns
  */
-export default async function RecipeTabCookingProcess(
-  props: RecipeTabProcessProps
-) {
+const RecipeTabCookingProcess = (props: RecipeTabProcessProps) => {
   const { id } = props
   const [process, setProcess] = useState<RecipeCookingProcessType[]>([])
   useEffect(() => {
@@ -99,3 +97,4 @@ export default async function RecipeTabCookingProcess(
     </>
   )
 }
+export default RecipeTabCookingProcess

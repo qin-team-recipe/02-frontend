@@ -18,9 +18,7 @@ type RecipeIngredientType = {
  * @param props
  * @returns
  */
-export default async function RecipeTabIngredients(
-  props: RecipeTabIngredientsProps
-) {
+const RecipeTabIngredients = (props: RecipeTabIngredientsProps) => {
   const { id } = props
   const [ingredient, setIngredient] = useState<RecipeIngredientType>({
     ingredientList: [],
@@ -113,3 +111,4 @@ export default async function RecipeTabIngredients(
     </>
   )
 }
+export default RecipeTabIngredients
