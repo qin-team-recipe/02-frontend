@@ -1,8 +1,8 @@
 import { Suspense } from "react"
 
-import LoadingSpinner from "../../components/recipes/molecules/LoadingSpinner"
-import RecipeOutlines from "../../components/recipes/organisms/RecipeOutlines"
-import RecipeTabs from "../../components/recipes/organisms/RecipeTabs"
+import LoadingSpinner from "../components/molecules/LoadingSpinner"
+import RecipeOutlines from "../components/organisms/RecipeOutlines"
+import RecipeTabs from "../components/organisms/RecipeTabs"
 
 const Recipes = ({ params }: { params: { id: string } }) => {
   return (
