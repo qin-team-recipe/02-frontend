@@ -4,7 +4,7 @@ import LoadingSpinner from "../../components/recipes/molecules/LoadingSpinner"
 import RecipeOutlines from "../../components/recipes/organisms/RecipeOutlines"
 import RecipeTabs from "../../components/recipes/organisms/RecipeTabs"
 
-const Recipes = async ({ params }: { params: { id: string } }) => {
+const Recipes = ({ params }: { params: { id: string } }) => {
   return (
     <>
       <main className="flex-1 overflow-hidden sm:border-x">
