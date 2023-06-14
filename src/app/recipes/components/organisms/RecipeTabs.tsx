@@ -1,12 +1,8 @@
 "use client"
-import React, { Suspense, useState } from "react"
-
-import LoadingSpinner from "../molecules/LoadingSpinner"
-import RecipeTabCookingProcess from "./RecipeTabCookingProcess"
-import RecipeTabIngredients from "./RecipeTabIngredients"
+import React, { ReactElement, useState } from "react"
 
 type RecipeTabsProps = {
-  id: string
+  children: ReactElement[]
 }
 
 /**
@@ -14,24 +10,17 @@ type RecipeTabsProps = {
  * @returns
  */
 const RecipeTabs = (props: RecipeTabsProps) => {
-  const { id } = props
+  const { children } = props
   const [tabIndex, setTabIndex] = useState(0)
+
   const tabComponents = [
     {
       title: "作り方",
-      contents: (
-        <>
-          <RecipeTabCookingProcess id={id} />
-        </>
-      ),
+      contents: <>{children[0]}</>,
     },
     {
       title: "材料",
-      contents: (
-        <>
-          <RecipeTabIngredients id={id} />
-        </>
-      ),
+      contents: <>{children[1]} </>,
     },
   ]
 
@@ -53,9 +42,7 @@ const RecipeTabs = (props: RecipeTabsProps) => {
       </ul>
 
       {/* コンテンツ */}
-      <Suspense fallback={<LoadingSpinner />}>
-        {tabComponents[tabIndex].contents}
-      </Suspense>
+      {tabComponents[tabIndex].contents}
     </>
   )
 }

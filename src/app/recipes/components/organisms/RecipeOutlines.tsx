@@ -1,10 +1,9 @@
-"use client"
-import React, { useCallback, useEffect, useState } from "react"
+import React from "react"
 
-import AvatorButton from "../molecules/AvatorButton"
-import FavoriteButton from "../molecules/FavoriteButton"
 import FavoriteCounterLabel from "../molecules/FavoriteCounterLabel"
 import ImageWithBlurType from "../molecules/ImageWithBlur"
+import RecipeChefAvatorButton from "./RecipeChefAvatorButton"
+import RecipeFavoriteButton from "./RecipeFavoriteButton"
 
 type RecipeOutlinesProps = {
   id: string
@@ -21,78 +20,52 @@ type RecipeOutlineType = {
 }
 
 /**
+ * レシピデータ取得
+ * @param id
+ * @returns
+ */
+const getRecipeOutlineData = async (id: string): Promise<RecipeOutlineType> => {
+  console.log("レシピデータ取得 id=" + id)
+
+  // const response = await fetch(`http://localhost:3000/api/recipes/${id}`, {
+  //   next: { revalidate: 10 },
+  // });
+  // const data = await response.json();
+  // console.log("レシピデータ取得結果 data=" + JSON.stringify(data));
+  // return data;
+
+  // ダミーデータ
+  return {
+    title: "グラタン",
+    chefImageUrl: "https://placehold.jp/50x50.png",
+    chefName: "山田シェフ",
+    description:
+      "はじめてでも失敗なく作れるような、鶏肉や玉ねぎを具とした基本的なマカロニグラタンのレシピです。\n" +
+      "ソースと具材炒めを別器具で行うレシピも多いですが、グラタンの具を炒めたフライパンの中で、そのままホワイトソースを仕上げる手軽な作り方にしています。ぜひお試しください。",
+    favoriteCount: 768,
+    imageUrl: "https://placehold.jp/400x400.png",
+    isMyFavorite: false,
+  }
+}
+
+/**
  * レシピ概要
  * @returns
  */
-const RecipeOutlines = (props: RecipeOutlinesProps) => {
+const RecipeOutlines = async (props: RecipeOutlinesProps) => {
   const { id } = props
-  const [isFavorite, setIsFavorite] = useState(false)
-  const [recipe, setRecipe] = useState<RecipeOutlineType>({
-    title: "",
-    chefImageUrl: undefined,
-    chefName: "",
-    description: "",
-    favoriteCount: 0,
-    imageUrl: undefined,
-    isMyFavorite: false,
-  })
-  useEffect(() => {
-    const getRecipeOutlineData = async () => {
-      console.log("レシピデータ取得 id=" + id)
-      // const response = await fetch(`http://localhost:3000/api/recipes/${id}`, {
-      //   next: { revalidate: 10 },
-      // });
-      // const data = await response.json();
-      // console.log("レシピデータ取得結果 data=" + JSON.stringify(data));
-
-      // ダミーデータ
-      const data = {
-        id: "hogehogehoge",
-        title: "グラタン",
-        chefImageUrl: "https://placehold.jp/50x50.png",
-        chefName: "山田シェフ",
-        description:
-          "はじめてでも失敗なく作れるような、鶏肉や玉ねぎを具とした基本的なマカロニグラタンのレシピです。\n" +
-          "ソースと具材炒めを別器具で行うレシピも多いですが、グラタンの具を炒めたフライパンの中で、そのままホワイトソースを仕上げる手軽な作り方にしています。ぜひお試しください。",
-        favoriteCount: 768,
-        followerCount: 200,
-        imageUrl: "https://placehold.jp/400x400.png",
-        isMyFavorite: false,
-      }
-
-      setRecipe(data)
-      setIsFavorite(data.isMyFavorite)
-    }
-
-    if (id) getRecipeOutlineData()
-  }, [id])
-
-  /**
-   * お気に入りクリック
-   */
-  const handleFavoriteClick = useCallback(() => {
-    setIsFavorite((preIsFavorite) => !preIsFavorite)
-  }, [])
-
-  /**
-   * シェフクリック
-   */
-  const handleChefClick = useCallback(() => {
-    alert("シェフへ移動")
-  }, [])
+  const recipe = await getRecipeOutlineData(id)
 
   return (
     <>
       <div className="w-full relative">
         {/* レシピ画像 */}
-        {/* @ts-expect-error Server Component */}
         <ImageWithBlurType src={recipe.imageUrl} alt={recipe.title} />
 
         {/* お気に入りボタン */}
-        <FavoriteButton
+        <RecipeFavoriteButton
           className="absolute right-0 bottom-1"
-          onClick={handleFavoriteClick}
-          isActive={isFavorite}
+          isMyFavorite={recipe.isMyFavorite}
         />
       </div>
       <div className="p-4">
@@ -104,10 +77,10 @@ const RecipeOutlines = (props: RecipeOutlinesProps) => {
 
         {/* シェフ */}
         <div className="flex flex-row items-center">
-          <AvatorButton
+          {/* アバター */}
+          <RecipeChefAvatorButton
             src={recipe.chefImageUrl}
             name={recipe.chefName}
-            onClick={handleChefClick}
           />
 
           {/* お気に入り件数 */}

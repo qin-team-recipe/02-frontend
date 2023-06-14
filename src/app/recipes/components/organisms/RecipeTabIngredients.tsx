@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from "react"
+import React from "react"
 
+import RecipeAddCartButton from "./RecipeAddCartButton"
 import RecipeTabCard from "./RecipeTabCard"
 
 type RecipeTabIngredientsProps = {
@@ -7,6 +8,7 @@ type RecipeTabIngredientsProps = {
 }
 type RecipeIngredientType = {
   ingredientList: {
+    id: number
     name: string
     description: string
   }[]
@@ -14,70 +16,56 @@ type RecipeIngredientType = {
 }
 
 /**
+ * シピ材料データ取得
+ * @param id
+ * @returns
+ */
+const getRecipeIngredientsData = async (
+  id: string
+): Promise<RecipeIngredientType> => {
+  console.log("レシピ材料データ取得 id=" + id)
+
+  // const response = await fetch(
+  //   `http://localhost:3000/api/recipes/${id}/ingredients`,
+  //   {
+  //     next: { revalidate: 10 },
+  //   }
+  // );
+  // const data = await response.json();
+  // console.log("レシピ材料データ取得結果 data=" + JSON.stringify(data));
+  // return data;
+
+  // ダミーデータ
+  return {
+    ingredientList: [
+      {
+        id: 1,
+        name: "キャベツ",
+        description: "5～6枚",
+      },
+      {
+        id: 2,
+        name: "レタス",
+        description: "5～6枚",
+      },
+      {
+        id: 3,
+        name: "はくさい",
+        description: "5～6枚",
+      },
+    ],
+    serving: "2人前",
+  }
+}
+
+/**
  * レシピタブ材料コンテンツ
  * @param props
  * @returns
  */
-const RecipeTabIngredients = (props: RecipeTabIngredientsProps) => {
+const RecipeTabIngredients = async (props: RecipeTabIngredientsProps) => {
   const { id } = props
-  const [ingredient, setIngredient] = useState<RecipeIngredientType>({
-    ingredientList: [],
-    serving: "",
-  })
-  useEffect(() => {
-    const getRecipeIngredientsData = async () => {
-      console.log("レシピ材料データ取得 id=" + id)
-      // const response = await fetch(
-      //   `http://localhost:3000/api/recipes/${id}/ingredients`,
-      //   {
-      //     next: { revalidate: 10 },
-      //   }
-      // );
-      // const data = await response.json();
-      // console.log("レシピ材料データ取得結果 data=" + JSON.stringify(data));
-
-      // ダミーデータ
-      const data = {
-        ingredientList: [
-          {
-            name: "キャベツ",
-            description: "5～6枚",
-          },
-          {
-            name: "レタス",
-            description: "5～6枚",
-          },
-          {
-            name: "はくさい",
-            description: "5～6枚",
-          },
-        ],
-        serving: "2人前",
-      }
-
-      setIngredient(data)
-    }
-
-    if (id) getRecipeIngredientsData()
-  }, [id])
-
-  /**
-   * 買い物リストに追加クリック
-   */
-  const handleAddToCartClick = useCallback((ingredient: { name: string }) => {
-    alert(`買い物リストに「${ingredient.name}」を追加`)
-  }, [])
-
-  /**
-   * まとめて追加クリック
-   */
-  const handleAddAllToCartClick = useCallback(
-    (ingredientList: { name: string; description: string }[]) => {
-      const ingredientNames = ingredientList.map((item) => item.name).join("\n")
-      alert(`まとめて買い物リストに追加\n` + ingredientNames)
-    },
-    []
-  )
+  const ingredient = await getRecipeIngredientsData(id)
 
   return (
     <>
@@ -88,11 +76,9 @@ const RecipeTabIngredients = (props: RecipeTabIngredientsProps) => {
 
           {/* まとめてお買い物に追加 */}
           <span className="ml-auto mr-4">
-            <button
-              onClick={() => handleAddAllToCartClick(ingredient.ingredientList)}
-            >
+            <RecipeAddCartButton ingredientList={ingredient.ingredientList}>
               <p className="text-md text-gray">まとめてお買い物に追加</p>
-            </button>
+            </RecipeAddCartButton>
           </span>
         </div>
 
@@ -103,7 +89,9 @@ const RecipeTabIngredients = (props: RecipeTabIngredientsProps) => {
             mainMessage={item.name}
             subMessage={item.description}
             rightItem={
-              <button onClick={() => handleAddToCartClick(item)}>🛒</button>
+              <RecipeAddCartButton ingredientList={[item]}>
+                <p>🛒</p>
+              </RecipeAddCartButton>
             }
           />
         ))}

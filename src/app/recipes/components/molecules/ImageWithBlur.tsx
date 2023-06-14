@@ -1,6 +1,6 @@
 type ImageWithBlurProps = {
   alt: string
-  src: string
+  src?: string
 }
 
 /**
