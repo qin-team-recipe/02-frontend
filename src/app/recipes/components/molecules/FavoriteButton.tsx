@@ -1,5 +1,3 @@
-import React from "react"
-
 type FavoriteButtonProps = {
   className?: string
   isActive: boolean

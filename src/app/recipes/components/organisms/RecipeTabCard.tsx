@@ -1,5 +1,3 @@
-import React from "react"
-
 import CardMainText from "../atoms/CardMainText"
 import CardNumberBadge from "../atoms/CardNumberBadge"
 import CardSubText from "../atoms/CardSubText"

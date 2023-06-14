@@ -1,5 +1,3 @@
-import React from "react"
-
 import FavoriteCounterLabel from "../molecules/FavoriteCounterLabel"
 import ImageWithBlurType from "../molecules/ImageWithBlur"
 import RecipeChefAvatorButton from "./RecipeChefAvatorButton"

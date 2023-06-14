@@ -1,5 +1,3 @@
-import React from "react"
-
 import RecipeAddCartButton from "./RecipeAddCartButton"
 import RecipeTabCard from "./RecipeTabCard"
 

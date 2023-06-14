@@ -1,5 +1,3 @@
-import React from "react"
-
 type AvatorButtonProps = {
   name: string
   className?: string

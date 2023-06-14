@@ -1,5 +1,5 @@
 "use client"
-import React, { useCallback } from "react"
+import { useCallback } from "react"
 
 type RecipeAddCartButtonProps = {
   children: React.ReactElement
