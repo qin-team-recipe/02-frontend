@@ -17,6 +17,7 @@ module.exports = {
       },
       minWidth: {
         88: "88px",
+        0: "0px",
       },
       colors: {
         "custom-gray": "#EEEDEF",

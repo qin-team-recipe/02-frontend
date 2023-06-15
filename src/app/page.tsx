@@ -1,5 +1,6 @@
 // 以下の型定義は、同じディれくりトリにあるtypes.tsに移動しましたので、そこからインポートする
 import Container from "./components/container"
+import FooterMenu from "./components/FooterMenu"
 import SearchBar from "./components/searchBar"
 import Sidebar from "./components/sidebar"
 import { SubHeader } from "./components/SubHeader"
@@ -99,13 +100,11 @@ const recipesDummyData: RecipeCardProps[] = [
 const Home = () => {
   return (
     <>
-      <div className="flex items-center justify-center">
-        <Sidebar>
-          <div>これはサイドバーです</div>
-        </Sidebar>
+      <div className="flex justify-center">
+        <Sidebar />
         <Container>
           <SearchBar />
-          <div className="border-b-2 -mx-5"></div>
+          <div className="border-b-2 -mx-[18px]"></div>
           <div className="mt-2.5 mb-2.5">
             <SubHeader title="注目のシェフ" />
           </div>
@@ -124,6 +123,7 @@ const Home = () => {
             />
           </div>
           <TopChefCard data={chefDummyData} />
+          <FooterMenu />
         </Container>
       </div>
     </>
