@@ -3,30 +3,9 @@
 import Link from "next/link"
 import { ChangeEvent, useState } from "react"
 
-type SelectedNumber = number | null
+import { ChooseNumbers } from "./components/chooseNumbers"
 
 const Draft = () => {
-  //モーダルを表示し、選択した数字から*人前に代入
-  const [selectedNumber, setSelectedNumber] = useState<SelectedNumber>(null)
-  const [modalVisible, setModalVisible] = useState(false)
-
-  const handleIconClick = () => {
-    setModalVisible(true)
-  }
-
-  const handleModalClose = () => {
-    setModalVisible(false)
-  }
-
-  const handleNumberSelect = (number: SelectedNumber) => {
-    setSelectedNumber(number)
-    setModalVisible(false)
-  }
-
-  const formatNumber = (number: number) => {
-    return `${number}人前`
-  }
-
   const [inputValue, setValue] = useState("")
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -70,25 +49,25 @@ const Draft = () => {
 
   return (
     <>
-      {showModal && (
-        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-gray-500 bg-opacity-50">
-          <div className="p-4 rounded">
-            <h2>保存または削除しますか？</h2>
-            <div className="flex justify-end mt-4">
-              <button onClick={handleSaveClick} className="mr-2">
-                保存
-              </button>
-              <button onClick={handleDeleteConfirmClick}>
-                <Link href="/">削除</Link>
-              </button>
-              <button onClick={handleDeleteCancelClick} className="ml-2">
-                キャンセル
-              </button>
+      <div className="h-auto w-[390px]">
+        {showModal && (
+          <div className="fixed top-1/2 left-0 w-[390px] h-[150px] flex items-center justify-center bg-gray-500 bg-opacity-50">
+            <div className="p-4 rounded">
+              <h2>保存または削除しますか？</h2>
+              <div className="flex justify-end mt-4">
+                <button onClick={handleSaveClick} className="mr-2">
+                  保存
+                </button>
+                <button onClick={handleDeleteConfirmClick}>
+                  <Link href="/">削除</Link>
+                </button>
+                <button onClick={handleDeleteCancelClick} className="ml-2">
+                  キャンセル
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-      <div className="h-auto w-[390px]">
+        )}
         <div className="py-[12px] px-[16px] border-b-2">
           <div className="flex justify-between h-[48px]">
             {inputValue ? (
@@ -142,30 +121,7 @@ const Draft = () => {
           </div>
         </div>
         <div className="h-[148px] pt-[32px]">
-          <div className="h-[19px] px-[16px] flex mb-1">
-            <div className="font-bold text-[16px] mr-[6.67px]">
-              材料/{selectedNumber ? formatNumber(selectedNumber) : "*人前"}
-            </div>
-            <div className="h-[16px]" onClick={handleIconClick}>
-              icon
-            </div>
-          </div>
-
-          {modalVisible && (
-            <div className="modal border-x-2 border-y-2 bg-gray-200 px-4">
-              <h2>人数を選んでください！</h2>
-              <ul>
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((number) => (
-                  <li key={number} onClick={() => handleNumberSelect(number)}>
-                    {formatNumber(number)}
-                  </li>
-                ))}
-              </ul>
-              <button onClick={handleModalClose} className="py-2">
-                Close
-              </button>
-            </div>
-          )}
+          <ChooseNumbers />
           <div className="h-[49px] border-t-2">
             <div className="py-[8px] px-[16px] border-b-2">
               <div className="h-[17px] mb-[4px] text-[14px]">キャベツ</div>
