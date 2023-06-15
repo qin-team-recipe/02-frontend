@@ -1,12 +1,12 @@
 // 以下の型定義は、同じディれくりトリにあるtypes.tsに移動しましたので、そこからインポートする
-import Container from "./components/container"
+import Container from "./components/Container"
 import FooterMenu from "./components/FooterMenu"
-import SearchBar from "./components/searchBar"
-import Sidebar from "./components/sidebar"
+import SearchBar from "./components/SearchBar"
+import Sidebar from "./components/Sidebar"
 import { SubHeader } from "./components/SubHeader"
-import TopChefCard from "./components/topChefCard"
-import TopChefPicCard from "./components/topChefPicCard"
-import TopRecipeCard from "./components/topRecipeCard"
+import TopChefCard from "./components/TopChefCard"
+import TopChefPicCard from "./components/TopChefPicCard"
+import TopRecipeCard from "./components/TopRecipeCard"
 import { ChefCardProps, RecipeCardProps } from "./types"
 
 // シェフデータ及びレシピデータをフェッチしたものと仮定したダミーデータ

@@ -6,7 +6,7 @@ import { FC } from "react"
 import React from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 
-import { RecipeCardProps } from "./../types"
+import { RecipeCardProps } from "../types"
 
 const Card: FC<RecipeCardProps> = (props) => {
   const { image, title, text, chef, good, comment, createdAt, updatedAt } =

@@ -5,7 +5,7 @@ import Image from "next/image"
 import { FC } from "react"
 import React from "react"
 
-import { ChefCardProps } from "./../types"
+import { ChefCardProps } from "../types"
 
 const Card: FC<ChefCardProps> = (props) => {
   const { image, firstName, lastName, recommend, recipeCount } = props
