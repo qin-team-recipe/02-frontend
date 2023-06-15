@@ -1,6 +1,7 @@
 "use client"
 import "swiper/swiper.min.css"
 
+import { FC } from "react"
 import React from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 
@@ -9,7 +10,7 @@ type CardProps = {
   title: string
 }
 
-const Card: React.FC<CardProps> = ({ image, title }) => (
+const Card: FC<CardProps> = ({ image, title }) => (
   <div className=" relative overflow-hidden">
     <div style={{ paddingTop: "148%" }}></div>
     <img
@@ -27,7 +28,7 @@ type SwiperComponentProps = {
   data: CardProps[]
 }
 
-const TopChefCard: React.FC<SwiperComponentProps> = ({ data }) => {
+const TopChefCard: FC<SwiperComponentProps> = ({ data }) => {
   return (
     <div className="topChefSwiperComponent">
       <Swiper spaceBetween={16} slidesPerView={"auto"} className="px-4 ">

@@ -15,7 +15,7 @@ const dummyData: CardProps[] = [
   { image: "/toppage/topchef1.jpg", title: "チーム２シェフ" },
 ]
 
-export default function Home() {
+const Home = () => {
   return (
     <>
       <div className="flex items-center justify-center">
@@ -32,3 +32,4 @@ export default function Home() {
     </>
   )
 }
+export default Home
