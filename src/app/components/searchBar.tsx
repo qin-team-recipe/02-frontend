@@ -5,17 +5,27 @@ import React, { useEffect, useState } from "react"
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState<string>("")
-  const [data, setData] = useState(["item1", "item2", "item3", "item4"]) // dummy data
-  const [filteredData, setFilteredData] = useState<string[]>([])
+  const [chefData, setChefData] = useState(["item1", "item2", "item3", "item4"]) // 取得したシェフデータのdummy data
+  const [recipesData, setRecipesData] = useState([
+    "item1",
+    "item2",
+    "item3",
+    "item4",
+  ]) // 取得したレシピデータのdummy data
+  const [filteredData, setFilteredData] = useState<string[]>([]) //検索後のデータ。親階層はサーバーサイドでstate管理不可なのでグローバルステート管理が必要？
 
+  // useEffectの代替案を検討中
   useEffect(() => {
-    setFilteredData(
-      data.filter((item) =>
-        item.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+    const filteredChefs = chefData.filter((item) =>
+      item.toLowerCase().includes(searchTerm.toLowerCase())
     )
-  }, [searchTerm, data])
+    const filteredRecipes = recipesData.filter((item) =>
+      item.toLowerCase().includes(searchTerm.toLowerCase())
+    )
 
+    setFilteredData([...filteredChefs, ...filteredRecipes])
+  }, [searchTerm, chefData, recipesData])
+  console.log(searchTerm)
   return (
     <div className=" py-3">
       <div className="flex items-center border rounded-3xl  text-grey-darker py-2 px-4 bg-custom-gray">
