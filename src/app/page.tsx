@@ -4,6 +4,7 @@ import SearchBar from "./components/searchBar"
 import Sidebar from "./components/sidebar"
 import { SubHeader } from "./components/SubHeader"
 import TopChefCard from "./components/topChefCard"
+import TopChefPicCard from "./components/topChefPicCard"
 import TopRecipeCard from "./components/topRecipeCard"
 import { ChefCardProps, RecipeCardProps } from "./types"
 
@@ -14,7 +15,8 @@ const chefDummyData: ChefCardProps[] = [
     title: "チーム２シェフ",
     firstName: "チーム２",
     lastName: "シェフ",
-    recommend: "私は素晴らしい料理の鉄人です",
+    recommend:
+      "私は素晴らしい料理の鉄人です私は素晴らしい料理の鉄人です私は素晴らしい料理の鉄人です私は素晴らしい料理の鉄人です私は素晴らしい料理の鉄人です私は素晴らしい料理の鉄人です",
     recipeCount: 100,
   },
   {
@@ -107,7 +109,7 @@ const Home = () => {
           <div className="mt-2.5 mb-2.5">
             <SubHeader title="注目のシェフ" />
           </div>
-          <TopChefCard data={chefDummyData} />
+          <TopChefPicCard data={chefDummyData} />
           <div className="mt-6 mb-2.5">
             <SubHeader
               title="話題のレシピ"
