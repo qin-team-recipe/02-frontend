@@ -16,10 +16,11 @@ const AvatorButton = (props: AvatorButtonProps) => {
     <>
       <div className={className ? className : ""}>
         <button
-          className="flex flex-row justify-center items-center"
+          className="flex flex-row items-center justify-center"
           onClick={onClick}
         >
-          <img className="w-10 h-10 rounded-full" src={src} alt={name} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="h-10 w-10 rounded-full" src={src} alt={name} />
           <p className="ml-2">{name}</p>
         </button>
       </div>
