@@ -25,9 +25,9 @@ const SearchBar = () => {
 
     setFilteredData([...filteredChefs, ...filteredRecipes])
   }, [searchTerm, chefData, recipesData])
-  console.log(searchTerm)
+
   return (
-    <div className=" py-3">
+    <div className=" py-2 ">
       <div className="flex items-center border rounded-3xl  text-grey-darker py-2 px-4 bg-custom-gray">
         <Image
           src="/searchIcon.png"

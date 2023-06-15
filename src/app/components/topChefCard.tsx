@@ -6,12 +6,8 @@ import { FC } from "react"
 import React from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 
-type CardProps = {
-  image: string
-  title: string
-}
-
-const Card: FC<CardProps> = ({ image, title }) => (
+import { ChefCardProps } from "./../types"
+const Card: FC<ChefCardProps> = ({ image, title }) => (
   <div className=" relative overflow-hidden">
     <div
       className="relative w-full h-full"
@@ -31,12 +27,12 @@ const Card: FC<CardProps> = ({ image, title }) => (
 )
 
 type SwiperComponentProps = {
-  data: CardProps[]
+  data: ChefCardProps[]
 }
 
 const TopChefCard: FC<SwiperComponentProps> = ({ data }) => {
   return (
-    <div className="topChefSwiperComponent">
+    <div className="topPageSwiperComponent topPageChefComponent">
       <Swiper spaceBetween={16} slidesPerView={"auto"} className="px-4 ">
         {data.map((item, index) => (
           <SwiperSlide key={index}>
