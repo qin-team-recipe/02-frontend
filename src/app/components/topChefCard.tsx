@@ -3,7 +3,6 @@ import "swiper/swiper.min.css"
 
 import Image from "next/image"
 import { FC } from "react"
-import React from "react"
 
 import { ChefCardProps } from "../types"
 
