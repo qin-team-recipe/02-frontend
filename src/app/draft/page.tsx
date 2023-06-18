@@ -4,28 +4,36 @@ import Link from "next/link"
 import { useState } from "react"
 
 import { AddImages } from "./components/AddImages"
-import { ChooseNumbers } from "./components/ChooseNumbers"
+import { Counter } from "./components/Counter"
 import { HeaderButtons } from "./components/HeaderButtons"
 
 const Draft = () => {
-  const [inputValue, setInputValue] = useState("")
+  const [inputForms, setInputForms] = useState<string[]>([""])
+
+  const addInputForm = () => {
+    setInputForms([...inputForms, ""])
+  }
+
+  const handleInputChange = (index: number, value: string) => {
+    const newInputForms = [...inputForms]
+    newInputForms[index] = value
+    setInputForms(newInputForms)
+  }
+
   return (
     <>
       <div className="h-auto w-[390px]">
         <HeaderButtons />
         <div className="h-[148px] pt-[32px]">
-          <ChooseNumbers />
-          <div className="h-[49px] border-t-2">
-            <div className="py-[8px] px-[16px] border-b-2">
-              <div className="h-[17px] mb-[4px] text-[14px]">キャベツ</div>
-              <div className="h-[12px] text-[10px]">5〜6枚</div>
-            </div>
+          <Counter />
+          <div className="h-[42px] border-y-2">
+            <input type="text" className="h-full w-full px-2" />
           </div>
-          <div className="h-[49px]">
-            <div className="py-[8px] px-[16px] border-b-2">
-              <div className="h-[17px] mb-[4px] text-[14px]">チーズ</div>
-              <div className="h-[12px] text-[10px]">ピザ用</div>
-            </div>
+          <div className="h-[42px] border-b-2">
+            <input type="text" className="h-full w-full px-2" />
+          </div>
+          <div className="h-[42px] border-b-2">
+            <input type="text" className="h-full w-full px-2" />
           </div>
           <div className="h-[27px]">
             <div className="pt-[8px] px-4 flex text-red-400">
@@ -85,14 +93,26 @@ const Draft = () => {
                 リンク
               </div>
               <div className="h-[125px]">
-                <div className="h-[49px] border-y-2">
-                  <div className="py-[16px] pl-[16px]">{inputValue}</div>
+                <div className="w-full border-y-2 h-[42px] flex justify-center items-center">
+                  <input type="text" className="w-full" />
                 </div>
-              </div>
-              <div className="h-[27px] flex text-red-400">
-                <div className="ml-4 mr-1 mt-[9px] h-4 w-4">+</div>
-                <div className="h-[19px] w-[128px] text-[16px] mt-[8px]">
-                  <Link href="../draft/addLink">リンクを追加する</Link>
+                {inputForms.map((inputValue, index) => (
+                  <div
+                    key={index}
+                    className="w-full border-b-2 h-[42px] flex justify-center items-center"
+                  >
+                    <input
+                      value={inputValue}
+                      onChange={(e) => handleInputChange(index, e.target.value)}
+                      className="w-full"
+                    />
+                  </div>
+                ))}
+                <div className="h-[27px] flex text-red-400">
+                  <div className="ml-4 mr-1 mt-[9px] h-4 w-4">+</div>
+                  <div className="h-[19px] w-[128px] text-[16px] mt-[8px]">
+                    <button onClick={addInputForm}>リンクを追加する</button>
+                  </div>
                 </div>
               </div>
             </div>
