@@ -1,5 +1,3 @@
-import React from "react"
-
 export const metadata = {
   title: "Top Recipe",
   description: "Manage your favorite recipes.",
