@@ -39,7 +39,7 @@ export const AddLinks = () => {
 
   return (
     <>
-      <div className="h-[147px]">
+      <div className="h-[147px] pt-8">
         <div className="h-[19px] mt-[32px] px-[16px] font-bold text-[16px]">
           リンク
         </div>

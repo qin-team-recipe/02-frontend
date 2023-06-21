@@ -1,7 +1,5 @@
 "use client"
 
-import Link from "next/link"
-
 import { AddImages } from "./components/AddImages"
 import { AddLinks } from "./components/AddLinks"
 import { AddMaterial } from "./components/AddMaterial"
@@ -40,7 +38,7 @@ const Draft = () => {
           <div className="h-[27px] flex text-red-400">
             <div className="ml-4 mr-1 mt-[9px] h-4 w-4">+</div>
             <div className="h-[19px] w-[112px] text-[16px] mt-[8px]">
-              <Link href="../draft/addProcess">工程を追加する</Link>
+              工程を追加する
             </div>
           </div>
           <div className="h-[150px]">
