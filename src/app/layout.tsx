@@ -1,5 +1,5 @@
 import "./styles/globals.css"
-import "./styles/index.scss"
+import "./styles/pages.scss"
 
 import { Inter } from "next/font/google"
 

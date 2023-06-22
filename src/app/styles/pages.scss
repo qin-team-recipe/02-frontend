@@ -1,0 +1,13 @@
+.topPageSwiperComponent {
+  margin-right: -18px;
+}
+// トップページのスライダーの幅を変更
+.topPageSwiperComponent.topPageChefComponent .swiper-wrapper {
+  width: 148px;
+}
+.topPageSwiperComponent.topPageRecipeComponent .swiper-wrapper {
+  width: 160px;
+}
+.topPageSwiperComponent .swiper {
+  padding-right: 20px;
+}
