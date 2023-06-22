@@ -1,6 +1,6 @@
 "use client"
 
-import { AddImages } from "./components/addImages"
+import { AddImages } from "./components/AddImages"
 import { AddLinks } from "./components/AddLinks"
 import { AddMaterial } from "./components/AddMaterial"
 import { HeaderButtons } from "./components/HeaderButtons"
