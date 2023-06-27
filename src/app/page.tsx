@@ -104,19 +104,19 @@ const Home = () => {
         <Sidebar />
         <Container>
           <SearchBar />
-          <div className="border-b-2 -mx-[18px]"></div>
-          <div className="mt-2.5 mb-2.5">
+          <div className="-mx-[18px] border-b-2"></div>
+          <div className="mb-2.5 mt-2.5">
             <SubHeader title="注目のシェフ" />
           </div>
           <TopChefPicCard data={chefDummyData} />
-          <div className="mt-6 mb-2.5">
+          <div className="mb-2.5 mt-6">
             <SubHeader
               title="話題のレシピ"
               link={{ href: "/favorites", text: "もっと見る" }}
             />
           </div>
           <TopRecipeCard data={recipesDummyData} />
-          <div className="mt-6 mb-2.5">
+          <div className="mb-2.5 mt-6">
             <SubHeader
               title="シェフ"
               link={{ href: "/favorites", text: "もっと見る" }}
