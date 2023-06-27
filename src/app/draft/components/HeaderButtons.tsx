@@ -35,15 +35,15 @@ export const HeaderButtons = () => {
   return (
     <>
       {showModal && (
-        <div className="fixed top-1/2 left-0 w-[390px] h-[150px] flex items-center justify-center bg-gray-500 bg-opacity-50">
-          <div className="p-4 rounded">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+          <div className="bg-white rounded-lg p-8">
             <h2>保存または削除しますか？</h2>
             <div className="flex justify-end mt-4">
               <button onClick={handleSaveClick} className="mr-2">
                 保存
               </button>
               <button onClick={handleDeleteConfirmClick}>
-                <Link href="/">削除</Link>
+                <Link href="/favorites">削除</Link>
               </button>
               <button onClick={handleDeleteCancelClick} className="ml-2">
                 キャンセル
