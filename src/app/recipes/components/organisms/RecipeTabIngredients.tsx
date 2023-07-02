@@ -1,3 +1,5 @@
+import { IoCartOutline } from "react-icons/io5"
+
 import RecipeAddCartButton from "./RecipeAddCartButton"
 import RecipeTabCard from "./RecipeTabCard"
 
@@ -67,15 +69,18 @@ const RecipeTabIngredients = async (props: RecipeTabIngredientsProps) => {
 
   return (
     <>
-      <div className="flex flex-col w-full ">
-        <div className="flex flex-row h-8 mt-4">
+      <div className="flex w-full flex-col ">
+        <div className="mt-4 flex h-8 flex-row">
           {/* 材料分量 */}
-          <p className="font-bold text-xl ml-4">{ingredient.serving}</p>
+          <p className="ml-4 text-xl font-bold">{ingredient.serving}</p>
 
           {/* まとめてお買い物に追加 */}
           <span className="ml-auto mr-4">
             <RecipeAddCartButton ingredientList={ingredient.ingredientList}>
-              <p className="text-md text-gray">まとめてお買い物に追加</p>
+              <div className="text-md text-gray flex flex-row items-center">
+                <IoCartOutline />
+                まとめてお買い物に追加
+              </div>
             </RecipeAddCartButton>
           </span>
         </div>
@@ -88,7 +93,7 @@ const RecipeTabIngredients = async (props: RecipeTabIngredientsProps) => {
             subMessage={item.description}
             rightItem={
               <RecipeAddCartButton ingredientList={[item]}>
-                <p>🛒</p>
+                <IoCartOutline />
               </RecipeAddCartButton>
             }
           />
