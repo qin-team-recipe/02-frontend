@@ -141,12 +141,12 @@ const RecipeEditMenu = () => {
                 <div className="flex flex-row items-start text-sm">
                   {/* アイコン */}
                   <p className="pt-0.5">{item.icon}</p>
-                  <p className="pl-1">
+                  <div className="pl-1">
                     {/* タイトル */}
                     {item.title}
                     {/* コメント */}
                     <div className="text-xs">{item.comment}</div>
-                  </p>
+                  </div>
                 </div>
                 {/* セパレータ */}
                 {item.hr && <hr className="mt-2 border border-gray-300" />}
