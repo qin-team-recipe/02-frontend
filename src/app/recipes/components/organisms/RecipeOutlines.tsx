@@ -41,27 +41,27 @@ const getRecipeOutlineData = async (
     {
       recipeId: 1,
       title: "グラタン",
-      chefImageUrl: "https://placehold.jp/50x50.png",
+      chefImageUrl: "/takada-images/chefs/chef1.jpg",
       chefName: "山田シェフ",
       description:
         "はじめてでも失敗なく作れるような、鶏肉や玉ねぎを具とした基本的なマカロニグラタンのレシピです。\n" +
         "ソースと具材炒めを別器具で行うレシピも多いですが、グラタンの具を炒めたフライパンの中で、そのままホワイトソースを仕上げる手軽な作り方にしています。ぜひお試しください。",
       favoriteCount: 768,
-      imageUrl: "https://placehold.jp/400x300.png",
+      imageUrl: "/takada-images/new-recipes/recipe1.jpg",
       isMyFavorite: false,
       isMyRecipe: false,
     },
     {
       recipeId: 2,
       title: "パスタ",
-      chefImageUrl: "https://placehold.jp/50x50.png",
+      chefImageUrl: undefined,
       chefName: "",
       description:
         "おいしい冷製パスタのレシピです。\n" +
         "夏にぴったりです。ぜひお試しください。",
       favoriteCount: 1768,
-      imageUrl: "https://placehold.jp/200x500.png",
-      isMyFavorite: true,
+      imageUrl: "/takada-images/my-recipes/recipe1.jpg",
+      isMyFavorite: false,
       isMyRecipe: true,
     },
   ]
