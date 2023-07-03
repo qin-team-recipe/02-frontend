@@ -1,17 +1,12 @@
 import { IoCartOutline } from "react-icons/io5"
 
+import { dummyRecipeIngredientList } from "../../[id]/mock"
+import { RecipeIngredientType } from "../../[id]/type"
 import RecipeAddCartButton from "./RecipeAddCartButton"
 import RecipeTabCard from "./RecipeTabCard"
 
 type RecipeTabIngredientsProps = {
   id: string
-}
-type RecipeIngredientType = {
-  ingredientList: {
-    id: number
-    name: string
-    description: string
-  }[]
   serving: string
 }
 
@@ -22,7 +17,7 @@ type RecipeIngredientType = {
  */
 const getRecipeIngredientsData = async (
   id: string
-): Promise<RecipeIngredientType> => {
+): Promise<RecipeIngredientType[] | undefined> => {
   console.log("レシピ材料データ取得 id=" + id)
 
   // const response = await fetch(
@@ -36,26 +31,10 @@ const getRecipeIngredientsData = async (
   // return data;
 
   // ダミーデータ
-  return {
-    ingredientList: [
-      {
-        id: 1,
-        name: "キャベツ",
-        description: "5～6枚",
-      },
-      {
-        id: 2,
-        name: "レタス",
-        description: "5～6枚",
-      },
-      {
-        id: 3,
-        name: "はくさい",
-        description: "5～6枚",
-      },
-    ],
-    serving: "2人前",
-  }
+  const dummy = dummyRecipeIngredientList.find(
+    (item) => item.recipeId === Number(id)
+  )
+  return dummy?.ingredientList
 }
 
 /**
@@ -64,19 +43,31 @@ const getRecipeIngredientsData = async (
  * @returns
  */
 const RecipeTabIngredients = async (props: RecipeTabIngredientsProps) => {
-  const { id } = props
+  const { id, serving } = props
   const ingredient = await getRecipeIngredientsData(id)
+
+  if (!ingredient) {
+    return (
+      <>
+        <div className="w-full p-4">
+          <div className="flex flex-row justify-center">
+            <div className="m-10 text-xl">材料が登録されていません</div>
+          </div>
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
       <div className="flex w-full flex-col ">
         <div className="mt-4 flex h-8 flex-row">
           {/* 材料分量 */}
-          <p className="ml-4 text-xl font-bold">{ingredient.serving}</p>
+          <p className="ml-4 text-xl font-bold">{serving}</p>
 
           {/* まとめてお買い物に追加 */}
           <span className="ml-auto mr-4">
-            <RecipeAddCartButton ingredientList={ingredient.ingredientList}>
+            <RecipeAddCartButton ingredientList={ingredient}>
               <div className="text-md text-gray flex flex-row items-center">
                 <IoCartOutline />
                 まとめてお買い物に追加
@@ -86,7 +77,7 @@ const RecipeTabIngredients = async (props: RecipeTabIngredientsProps) => {
         </div>
 
         {/* 材料リスト */}
-        {ingredient.ingredientList.map((item, i) => (
+        {ingredient.map((item, i) => (
           <RecipeTabCard
             key={i}
             mainMessage={item.name}
