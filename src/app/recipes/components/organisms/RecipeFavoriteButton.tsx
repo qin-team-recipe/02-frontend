@@ -12,7 +12,7 @@ type RecipeFavoriteButtonProps = {
  * レシピ概要
  * @returns
  */
-const RecipeFavoriteButton = async (props: RecipeFavoriteButtonProps) => {
+const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
   const { className, isMyFavorite } = props
   const [isFavorite, setIsFavorite] = useState(isMyFavorite)
 
