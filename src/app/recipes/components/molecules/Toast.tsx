@@ -9,19 +9,20 @@ const Toast = (props: ToastProps) => {
 
   let typeColorClass = ""
   if (type === "success") {
-    typeColorClass = "bg-green-500 text-green-100"
+    typeColorClass = "bg-gray-600"
   } else if (type === "error") {
-    typeColorClass = "bg-red-500 text-red-100"
+    typeColorClass = "bg-red-400"
   }
 
   return (
     <>
       {/* 画面右下から左にスライドして表示 */}
       <div
-        className={`fixed bottom-8 right-0 transform rounded p-4 ${typeColorClass} transition-transform duration-300 ${
+        className={`transform transition-transform duration-300 ${
           showToast ? "translate-x-0" : "translate-x-full"
-        }`}
+        } rounded-l-xs fixed bottom-8 right-0 flex flex-row items-center justify-center border border-gray-300 bg-white p-4 text-xs shadow-lg`}
       >
+        <div className={`mr-2 h-2 w-2 rounded-full ${typeColorClass}`}></div>
         {message}
       </div>
     </>
