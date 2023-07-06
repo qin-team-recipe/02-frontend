@@ -3,6 +3,7 @@ import { ReactElement, useState } from "react"
 
 type RecipeTabsProps = {
   children: ReactElement[]
+  activeIndex?: number
 }
 
 /**
@@ -10,8 +11,8 @@ type RecipeTabsProps = {
  * @returns
  */
 const RecipeTabs = (props: RecipeTabsProps) => {
-  const { children } = props
-  const [tabIndex, setTabIndex] = useState(0)
+  const { children, activeIndex } = props
+  const [tabIndex, setTabIndex] = useState(activeIndex ? activeIndex : 0)
 
   const tabComponents = [
     {
@@ -27,7 +28,7 @@ const RecipeTabs = (props: RecipeTabsProps) => {
   return (
     <>
       {/* ヘッダー */}
-      <ul className="flex text-sm font-medium text-center border-b border-gray-200 mt-2">
+      <ul className="mt-2 flex border-b border-gray-200 text-center text-sm font-medium">
         {tabComponents.map((item, i) => {
           return (
             <li key={i} className="w-full">

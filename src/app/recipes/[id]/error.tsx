@@ -1,30 +1,21 @@
-"use client" // Error components must be Client Components
-
+"use client"
 import { useEffect } from "react"
 
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error
-  reset: () => void
-}) {
+import PageBackButton from "../components/organisms/PageBackButton"
+
+export default function Error({ error }: { error: Error }) {
   useEffect(() => {
-    // Log the error to an error reporting service
     console.error(error)
   }, [error])
 
   return (
-    <div>
-      <h2>レシピページ作成失敗</h2>
-      <button
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
-      >
-        Try again
-      </button>
-    </div>
+    <>
+      <main className="flex-1 overflow-hidden sm:border-x">
+        <div className=" flex h-screen w-full flex-col items-center justify-center">
+          <div className="text-xl">レシピページ作成失敗</div>
+          <PageBackButton />
+        </div>
+      </main>
+    </>
   )
 }

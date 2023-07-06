@@ -27,6 +27,11 @@ const getRecipeProcessData = async (
   // console.log("レシピ工程データ取得結果 data=" + JSON.stringify(data));
   // return data;
 
+  // 疑似遅延
+  const _sleep = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms))
+  await _sleep(3000)
+
   // ダミーデータ
   const dummy = dummyRecipeProcessList.find(
     (item) => item.recipeId === Number(id)

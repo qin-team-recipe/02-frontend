@@ -158,62 +158,101 @@ export const dummyRecipeProcessList = [
 export const dummyRecipeIngredientList = [
   {
     recipeId: 1,
-    ingredientList: [
-      {
-        id: 1,
-        name: "キャベツ",
-        description: "5～6枚",
-      },
-      {
-        id: 2,
-        name: "レタス",
-        description: "5～6枚",
-      },
-      {
-        id: 3,
-        name: "はくさい",
-        description: "5～6枚",
-      },
-    ],
+    ingredient: {
+      serving: "2人前",
+      ingredientList: [
+        {
+          id: 1,
+          name: "キャベツ",
+          description: "5～6枚",
+        },
+        {
+          id: 2,
+          name: "レタス",
+          description: "5～6枚",
+        },
+        {
+          id: 3,
+          name: "はくさい",
+          description: "5～6枚",
+        },
+        {
+          id: 4,
+          name: "牛乳",
+          description: "1パック",
+        },
+        {
+          id: 5,
+          name: "パスタ",
+          description: "200g",
+        },
+      ],
+    },
   },
   {
     recipeId: 2,
-    ingredientList: [
-      {
-        id: 1,
-        name: "麺",
-        description: "400g",
-      },
-      {
-        id: 2,
-        name: "ベーコン",
-        description: "たくさん",
-      },
-      {
-        id: 3,
-        name: "牛乳",
-        description: "200ml",
-      },
-    ],
+    ingredient: {
+      serving: "2人前",
+      ingredientList: [
+        {
+          id: 1,
+          name: "キャベツ",
+          description: "5～6枚",
+        },
+        {
+          id: 2,
+          name: "レタス",
+          description: "5～6枚",
+        },
+        {
+          id: 3,
+          name: "はくさい",
+          description: "5～6枚",
+        },
+        {
+          id: 4,
+          name: "牛乳",
+          description: "1パック",
+        },
+        {
+          id: 5,
+          name: "パスタ",
+          description: "200g",
+        },
+      ],
+    },
   },
   {
     recipeId: 4,
-    ingredientList: [
-      {
-        id: 1,
-        name: "キャベツ",
-        description: "5～6枚",
-      },
-      {
-        id: 2,
-        name: "レタス",
-        description: "5～6枚",
-      },
-      {
-        id: 3,
-        name: "はくさい",
-        description: "5～6枚",
-      },
-    ],
+    ingredient: {
+      serving: "2人前",
+      ingredientList: [
+        {
+          id: 1,
+          name: "キャベツ",
+          description: "5～6枚",
+        },
+        {
+          id: 2,
+          name: "レタス",
+          description: "5～6枚",
+        },
+        {
+          id: 3,
+          name: "はくさい",
+          description: "5～6枚",
+        },
+        {
+          id: 4,
+          name: "牛乳",
+          description: "1パック",
+        },
+        {
+          id: 5,
+          name: "パスタ",
+          description: "200g",
+        },
+      ],
+    },
   },
 ]

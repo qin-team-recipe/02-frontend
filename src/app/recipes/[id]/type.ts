@@ -19,7 +19,10 @@ export type RecipeCookingProcessType = {
 }
 
 export type RecipeIngredientType = {
-  id: number
-  name: string
-  description: string
+  serving: string
+  ingredientList: {
+    id: number
+    name: string
+    description: string
+  }[]
 }
