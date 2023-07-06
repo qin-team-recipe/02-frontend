@@ -2,11 +2,19 @@
 
 import { useRouter } from "next/navigation"
 import { usePathname } from "next/navigation"
-import { FC, ReactNode, useEffect } from "react"
-import React from "react"
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
+
+import { PAGE_INFO } from "../pageInfo"
 
 // 認証不要なページリスト(リダイレクトしないページ)
-const NOT_AUTHED_PAGE_LIST = ["/", "/auth/signin", "/draft", "/favorites"]
+const NOT_AUTHED_PAGE_LIST = ["/", "signin", "/draft"]
 
 type PropsType = {
   children: ReactNode
@@ -23,13 +31,13 @@ type UserContextType = {
   setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>
 }
 
-const UserContext = React.createContext<UserContextType | undefined>(undefined)
+const UserContext = createContext<UserContextType | undefined>(undefined)
 
 const AuthedCheckProvider: FC<PropsType> = (props) => {
   const { children } = props
   const router = useRouter()
 
-  const [user, setUser] = React.useState<UserType | undefined>({
+  const [user, setUser] = useState<UserType | undefined>({
     id: 0,
     name: "",
     image: "",
@@ -38,8 +46,12 @@ const AuthedCheckProvider: FC<PropsType> = (props) => {
 
   useEffect(() => {
     // useridが０の場合（初期値）はログインしていないと判断しリダイレクト
+    const pageInfo = PAGE_INFO[pathname]
+    if (pageInfo) {
+      localStorage.setItem("redirectPageInfo", JSON.stringify(pageInfo))
+    }
     if (!user?.id && !NOT_AUTHED_PAGE_LIST.includes(pathname)) {
-      router.push("/auth/signin")
+      router.push("signin")
     }
   }, [router, user, pathname])
 
@@ -56,7 +68,7 @@ const AuthedCheckProvider: FC<PropsType> = (props) => {
 
 // signinページでログインしたらuser情報をセットする関数
 export function useUser() {
-  const context = React.useContext(UserContext)
+  const context = useContext(UserContext)
   if (context === undefined) {
     throw new Error("useUser must be used within a UserProvider")
   }
