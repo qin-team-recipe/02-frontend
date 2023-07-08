@@ -13,6 +13,21 @@ type PageInfoType = {
   image: string
 }
 
+const handleClick = async () => {
+  const response = await fetch(
+    "http://localhost:8083/api/v1/authenticates/google"
+  )
+
+  if (!response.ok) {
+    console.error("フェッチに失敗しました:", response.statusText)
+    return
+  }
+
+  const data = await response.json()
+  window.location.href = data.data.login_url
+  console.log(data)
+}
+
 const Auth = () => {
   const [pageInfo, setPageInfo] = useState<PageInfoType | null>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -99,7 +114,10 @@ const Auth = () => {
               こちらの機能を利用するにはログインが必要です
             </div>
             <div className="mt-5 flex items-center justify-center gap-6">
-              <button className="inline-flex items-center rounded-md bg-blue-500 px-3 py-2">
+              <button
+                className="inline-flex items-center rounded-md bg-blue-500 px-3 py-2"
+                onClick={handleClick}
+              >
                 <Image
                   src="/signin/tabler-icon-brand-google.png"
                   alt="Googleボタン"

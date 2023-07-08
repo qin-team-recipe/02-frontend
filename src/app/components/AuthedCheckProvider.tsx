@@ -13,8 +13,8 @@ import {
 
 import { PAGE_INFO } from "../pageInfo"
 
-// 認証不要なページリスト(リダイレクトしないページ)
-const NOT_AUTHED_PAGE_LIST = ["/", "signin", "/draft"]
+// 認証不要なページリスト(リダイレクトしないページ) GoogleAuthのページものぞく
+const NOT_AUTHED_PAGE_LIST = ["/", "signin", "/draft", "/auth/callback/google"]
 
 type PropsType = {
   children: ReactNode
