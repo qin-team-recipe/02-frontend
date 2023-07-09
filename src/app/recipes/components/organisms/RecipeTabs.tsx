@@ -1,8 +1,10 @@
 "use client"
-import { ReactElement, useState } from "react"
+import { useState } from "react"
+
+import { RecipeTabComponent } from "../../[id]/type"
 
 type RecipeTabsProps = {
-  children: ReactElement[]
+  tabComponents: RecipeTabComponent[]
   activeIndex?: number
 }
 
@@ -11,19 +13,8 @@ type RecipeTabsProps = {
  * @returns
  */
 const RecipeTabs = (props: RecipeTabsProps) => {
-  const { children, activeIndex } = props
+  const { tabComponents, activeIndex } = props
   const [tabIndex, setTabIndex] = useState(activeIndex ? activeIndex : 0)
-
-  const tabComponents = [
-    {
-      title: "作り方",
-      contents: <>{children[0]}</>,
-    },
-    {
-      title: "材料",
-      contents: <>{children[1]} </>,
-    },
-  ]
 
   return (
     <>

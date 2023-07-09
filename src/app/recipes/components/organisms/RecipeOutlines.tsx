@@ -61,7 +61,11 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
               <div className="m-2 flex flex-col items-center justify-center">
                 <div className="m-2 text-xl">レシピがありません</div>
                 <div className="mt-2">
-                  <PageBackButton />
+                  <PageBackButton>
+                    <div className="rounded bg-blue-400 px-2 py-1 text-white hover:bg-blue-500">
+                      戻る
+                    </div>
+                  </PageBackButton>
                 </div>
               </div>
             </>

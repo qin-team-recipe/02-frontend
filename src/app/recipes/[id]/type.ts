@@ -1,3 +1,5 @@
+import { ReactElement } from "react"
+
 export type RecipeOutlineType = {
   title: string
   chef: {
@@ -10,6 +12,11 @@ export type RecipeOutlineType = {
   isMyFavorite: boolean
   isMyRecipe: boolean // TODO 暫定対応　本来はログインidとレシピの作成者idでマイレシピか判定する
   serving: string
+}
+
+export type RecipeTabComponent = {
+  title: string
+  contents: ReactElement
 }
 
 export type RecipeCookingProcessType = {
