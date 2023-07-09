@@ -21,6 +21,7 @@ module.exports = {
       },
       colors: {
         "custom-gray": "#EEEDEF",
+        "custom-purple": "#1A1523",
       },
     },
   },
