@@ -1,10 +1,9 @@
 "use client"
 import { useCallback, useState } from "react"
 
-import FavoriteButton from "../../commonComponents/molecules/FavoriteButton"
+import FavoriteButton from "@/app/recipes/commonComponents/molecules/FavoriteButton"
 
-type RecipeFavoriteButtonProps = {
-  className?: string
+type ChefFollowButtonProps = {
   isMyFavorite: boolean
 }
 
@@ -12,8 +11,8 @@ type RecipeFavoriteButtonProps = {
  * レシピ概要
  * @returns
  */
-const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
-  const { className, isMyFavorite } = props
+const ChefFollowButton = (props: ChefFollowButtonProps) => {
+  const { isMyFavorite } = props
   const [isFavorite, setIsFavorite] = useState(isMyFavorite)
 
   /**
@@ -30,10 +29,10 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
       <FavoriteButton
         onClick={handleFavoriteClick}
         isActive={isFavorite}
-        activeTitle="お気に入りから削除"
-        inactiveTitle="お気に入りに追加"
+        activeTitle="フォロー中"
+        inactiveTitle="フォローする"
       />
     </>
   )
 }
-export default RecipeFavoriteButton
+export default ChefFollowButton

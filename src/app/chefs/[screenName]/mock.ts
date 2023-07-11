@@ -1,0 +1,182 @@
+import { RecipeImage } from "@/app/favorites/type"
+
+import { LinkType } from "./type"
+
+// シェフ概要ダミーデータ
+export const dummyChefDataList = [
+  {
+    screenName: "hogescreen",
+    outline: {
+      title: "山田シェフ",
+      description:
+        "初の絵本出版！『まねっこシェフ』・ふわふわ！スクランブルエッグ・にぎにぎ！おにぎり主婦の友社より３月３日、２冊同時発売！絶賛発売中！",
+      favoriteCount: 768,
+      imageUrl: "/takada-images/chefs/chef1.jpg",
+      isMyFavorite: false,
+      isFamousChef: true,
+    },
+  },
+  {
+    screenName: "hoge",
+    outline: {
+      title: "鈴木",
+      description: "初心者です。料理を作ったことが２回しかありません。",
+      favoriteCount: 1768,
+      imageUrl: undefined,
+      isMyFavorite: false,
+      isFamousChef: false,
+    },
+  },
+  {
+    screenName: "hogehoge3",
+    outline: {
+      title: "田中シェフ",
+      description:
+        "初の絵本出版！『まねっこシェフ』・ふわふわ！スクランブルエッグ・にぎにぎ！おにぎり主婦の友社より３月３日、２冊同時発売！絶賛発売中！",
+      favoriteCount: 768,
+      imageUrl: "/takada-images/chefs/chef2.jpg",
+      isMyFavorite: false,
+      isFamousChef: true,
+    },
+  },
+]
+
+// リンクダミーデータ
+export const dummyLinkDataList: {
+  screenName: string
+  links: LinkType[]
+}[] = [
+  {
+    screenName: "hogescreen",
+    links: [
+      {
+        name: "YouTube",
+        type: "YouTube",
+        url: "http://www.youtube.com/",
+        image: undefined,
+      },
+      {
+        name: "Twitter",
+        url: "http://www.twitter.com/",
+        type: "Twitter",
+        image: undefined,
+      },
+      {
+        name: "Instagram",
+        url: "http://www.instagram.com/",
+        type: "Instagram",
+        image: undefined,
+      },
+      {
+        name: "ほげほげ.com",
+        url: "http://www.hogehoge.com/",
+        type: undefined,
+        image: "/takada-images/my-recipes/recipe1.jpg",
+      },
+    ],
+  },
+  {
+    screenName: "hoge",
+    links: [
+      {
+        name: "YouTube",
+        url: "http://www.youtube.com/",
+        type: "YouTube",
+        image: undefined,
+      },
+      {
+        name: "Twitter",
+        url: "http://www.twitter.com/",
+        type: "Twitter",
+        image: undefined,
+      },
+      {
+        name: "Instagram",
+        url: "http://www.instagram.com/",
+        type: "Instagram",
+        image: undefined,
+      },
+      {
+        name: "ほげほげ.com",
+        url: "http://www.hogehoge.com/",
+        type: undefined,
+        image: "/takada-images/my-recipes/recipe1.jpg",
+      },
+    ],
+  },
+]
+
+// 新着レシピ
+export const newRecipeImages: RecipeImage[] = [
+  {
+    id: 1,
+    name: "長いマイレシピ1長いマイレシピ1長いマイレシピ1長いマイレシピ1長いマイレシピ1長いマイレシピ1長いマイレシピ1長いマイレシピ1長いマイレシピ1長いマイレシピ1長いマイレシピ1",
+    description:
+      "長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1",
+    path: "/takada-images/my-recipes/recipe1.jpg",
+  },
+  {
+    id: 2,
+    name: "新レシピ2",
+    description: "説明2",
+    path: "/takada-images/new-recipes/recipe1.jpg",
+  },
+  {
+    id: 3,
+    name: "新レシピ3",
+    description: "説明3",
+    path: "/takada-images/my-recipes/recipe1.jpg",
+  },
+  {
+    id: 4,
+    name: "新レシピ4",
+    description: "説明4",
+    path: "/takada-images/my-recipes/recipe1.jpg",
+  },
+  {
+    id: 5,
+    name: "新レシピ5",
+    description: "説明5",
+    path: "/takada-images/new-recipes/recipe1.jpg",
+  },
+]
+
+// 人気レシピ
+export const popularRecipeImages: RecipeImage[] = [
+  {
+    id: 1,
+    name: "人気グラタン",
+    description: "グラタン",
+    path: "/takada-images/my-recipes/recipe1.jpg",
+  },
+  {
+    id: 2,
+    name: "人気ラーメン",
+    description: "説明2",
+    path: "/takada-images/my-recipes/recipe1.jpg",
+  },
+  {
+    id: 3,
+    name: "人気そば",
+    description: "説明3",
+    path: "/takada-images/my-recipes/recipe1.jpg",
+  },
+  {
+    id: 4,
+    name: "人気チャーハン",
+    description: "説明4",
+    path: "/takada-images/my-recipes/recipe1.jpg",
+  },
+  {
+    id: 5,
+    name: "人気ハンバーグ",
+    description: "説明5",
+    path: "/takada-images/my-recipes/recipe1.jpg",
+  },
+  {
+    id: 6,
+    name: "人気スイーツ",
+    description: "説明5",
+    path: "/takada-images/my-recipes/recipe1.jpg",
+  },
+]

@@ -15,7 +15,7 @@ const FavoriteCounterLabel = (props: FavoriteCounterLabelProps) => {
       <div className={className ? className : ""}>
         <span className="flex align-text-bottom">
           {/* お気に入り件数 */}
-          <p className="font-bold text-sm">{count ? count : 0}</p>
+          <p className="text-sm font-bold">{count ? count : 0}</p>
 
           {/* お気に入りラベル */}
           <p className="ml-2 text-sm text-gray-400 dark:text-gray-400">

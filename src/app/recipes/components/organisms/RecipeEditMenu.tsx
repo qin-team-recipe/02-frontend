@@ -1,6 +1,6 @@
 "use client"
 
-import React, { ReactElement, useState } from "react"
+import React, { useState } from "react"
 import {
   IoCopyOutline,
   IoEllipsisVertical,
@@ -10,18 +10,11 @@ import {
   IoTrashOutline,
 } from "react-icons/io5"
 
-import Toast from "../molecules/Toast"
-
-type MenuItemType = {
-  icon?: ReactElement
-  title?: string
-  comment?: string
-  hr?: boolean
-  action?: (item?: MenuItemType) => void
-}
+import { MenuItemType } from "../../[id]/type"
+import Toast from "../../commonComponents/molecules/Toast"
+import Menu from "../../commonComponents/organisms/Menu"
 
 const RecipeEditMenu = () => {
-  const [isOpen, setIsOpen] = useState(false)
   const [showToast, setShowToast] = useState(false)
   const [toastProp, setToastProp] = useState<{
     message: string
@@ -101,60 +94,14 @@ const RecipeEditMenu = () => {
     },
   ]
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    setIsOpen((pre) => !pre)
-  }
-
   return (
-    <div className="absolute">
-      {/* メニューボタン */}
-      <button
-        className="relative right-8 text-2xl text-gray-600"
-        onClick={handleClick}
-      >
-        <IoEllipsisVertical />
-      </button>
-
+    <div>
       {/* メニュー */}
-      {isOpen && (
-        <div
-          className=" relative mt-2"
-          style={{ right: MENU_WIDTH - 10, width: MENU_WIDTH }}
-        >
-          <ul className="rounded border border-gray-300 bg-white px-2 py-2 shadow">
-            {/* メニューアイテムリスト */}
-            {MENU_ITMES.map((item, i) => (
-              <li
-                key={i}
-                className={
-                  "rounded py-2 transition-colors duration-300 " +
-                  (item.action && "hover:bg-blue-50 active:bg-indigo-200")
-                }
-                onClick={() => {
-                  if (item.action) {
-                    item.action(item)
-                    setIsOpen(false)
-                  }
-                }}
-              >
-                <div className="flex flex-row items-start text-sm">
-                  {/* アイコン */}
-                  <p className="pt-0.5">{item.icon}</p>
-                  <div className="pl-1">
-                    {/* タイトル */}
-                    {item.title}
-                    {/* コメント */}
-                    <div className="text-xs">{item.comment}</div>
-                  </div>
-                </div>
-                {/* セパレータ */}
-                {item.hr && <hr className="mt-2 border border-gray-300" />}
-              </li>
-            ))}
-          </ul>
+      <Menu menuWidth={MENU_WIDTH} menuItems={MENU_ITMES}>
+        <div className="text-2xl text-gray-600">
+          <IoEllipsisVertical />
         </div>
-      )}
+      </Menu>
 
       {/* トースト */}
       <Toast

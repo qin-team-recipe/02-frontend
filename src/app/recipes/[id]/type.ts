@@ -33,3 +33,11 @@ export type RecipeIngredientType = {
     description: string
   }[]
 }
+
+export type MenuItemType = {
+  icon?: ReactElement
+  title?: string
+  comment?: string
+  hr?: boolean
+  action?: (item?: MenuItemType) => void
+}

@@ -1,4 +1,4 @@
-import Skeleton from "../atoms/Skeleton"
+import Skeleton from "../../commonComponents/atoms/Skeleton"
 
 /**
  * レシピタブ工程コンテンツスケルトン

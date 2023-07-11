@@ -1,10 +1,10 @@
 "use client"
 import { useCallback } from "react"
 
-import AvatorButton from "../molecules/AvatorButton"
+import AvatorButton from "../../commonComponents/molecules/AvatorButton"
 
 type RecipeChefAvatorButtonProps = {
-  name: string
+  name?: string
   src?: string
   isMyRecipe: boolean
 }

@@ -1,9 +1,9 @@
 import { dummyRecipeDataList } from "../../[id]/mock"
 import { RecipeOutlineType } from "../../[id]/type"
-import FavoriteCounterLabel from "../molecules/FavoriteCounterLabel"
-import ImageWithBlurType from "../molecules/ImageWithBlur"
-import Modal from "./Modal"
-import PageBackButton from "./PageBackButton"
+import FavoriteCounterLabel from "../../commonComponents/molecules/FavoriteCounterLabel"
+import ImageWithBlurType from "../../commonComponents/molecules/ImageWithBlur"
+import Modal from "../../commonComponents/organisms/Modal"
+import PageBackButton from "../../commonComponents/organisms/PageBackButton"
 import RecipeChefAvatorButton from "./RecipeChefAvatorButton"
 import RecipeEditMenu from "./RecipeEditMenu"
 import RecipeFavoriteButton from "./RecipeFavoriteButton"
@@ -82,13 +82,15 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
         <ImageWithBlurType src={recipe.imageUrl} alt={recipe.title} />
       </div>
       <div className="p-4">
-        <div className="flex flex-row">
+        <div className="mb-1 flex flex-row">
           {/* レシピタイトル */}
-          <div className="mb-2 text-2xl font-bold">{recipe.title}</div>
+          <div className="flex items-center text-2xl font-bold">
+            {recipe.title}
+          </div>
 
           {/* 編集メニュー（マイレシピのみ表示）*/}
           {recipe.isMyRecipe && (
-            <div className="ml-auto">
+            <div className="ml-auto flex">
               <RecipeEditMenu />
             </div>
           )}
@@ -111,14 +113,11 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
         </div>
 
         {/* お気に入りボタン（マイレシピ以外表示）*/}
-        <div>
-          {!recipe.isMyRecipe && (
-            <RecipeFavoriteButton
-              className="mt-2"
-              isMyFavorite={recipe.isMyFavorite}
-            />
-          )}
-        </div>
+        {!recipe.isMyRecipe && (
+          <div className="mt-2">
+            <RecipeFavoriteButton isMyFavorite={recipe.isMyFavorite} />
+          </div>
+        )}
       </div>
     </>
   )
