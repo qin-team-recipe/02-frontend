@@ -3,6 +3,8 @@ import "./styles/pages.scss"
 
 import { Inter } from "next/font/google"
 
+import { AuthedCheckProvider } from "./components/AuthedCheckProvider"
+
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
@@ -16,10 +18,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    // <AuthedCheckProvider>
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
-    // </AuthedCheckProvider>
+    <>
+      <AuthedCheckProvider>
+        <html lang="en">
+          <body className={inter.className}>{children}</body>
+        </html>
+      </AuthedCheckProvider>
+    </>
   )
 }
