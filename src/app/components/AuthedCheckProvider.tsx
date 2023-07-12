@@ -6,7 +6,6 @@ import {
   createContext,
   FC,
   ReactNode,
-  useContext,
   useEffect,
   useState,
 } from "react"
@@ -14,64 +13,75 @@ import {
 import { PAGE_INFO } from "../pageInfo"
 
 // 認証不要なページリスト(リダイレクトしないページ) GoogleAuthのページものぞく
-const NOT_AUTHED_PAGE_LIST = ["/", "signin", "/draft", "/auth/callback/google"]
+const NOT_AUTHED_PAGE_LIST = [
+  "/",
+  "signinpage",
+  "/draft",
+  "/auth/callback/google",
+]
 
 type PropsType = {
   children: ReactNode
 }
 
 type UserType = {
-  id: number
-  name: string
-  image: string
+  display_name?: string
+  email?: string
+  service_name?: string
+  service_user_id?: string
 }
 
 type UserContextType = {
-  user: UserType
+  user: UserType | undefined
   setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>
 }
 
-const UserContext = createContext<UserContextType | undefined>(undefined)
+const UserContext = createContext<UserContextType>({
+  user: {
+    display_name: "",
+    email: "",
+    service_name: "",
+    service_user_id: "",
+  },
+  setUser: () => {},
+})
 
 const AuthedCheckProvider: FC<PropsType> = (props) => {
   const { children } = props
   const router = useRouter()
 
   const [user, setUser] = useState<UserType | undefined>({
-    id: 0,
-    name: "",
-    image: "",
+    display_name: "",
+    email: "",
+    service_name: "",
+    service_user_id: "",
   })
   const pathname = usePathname()
 
   useEffect(() => {
-    // useridが０の場合（初期値）はログインしていないと判断しリダイレクト
     const pageInfo = PAGE_INFO[pathname]
     if (pageInfo) {
       localStorage.setItem("redirectPageInfo", JSON.stringify(pageInfo))
     }
-    if (!user?.id && !NOT_AUTHED_PAGE_LIST.includes(pathname)) {
-      router.push("signin")
+  }, [user, pathname])
+
+  // useEffect to handle redirection
+  useEffect(() => {
+    const checkUser = async () => {
+      if (
+        user &&
+        !user.display_name &&
+        !NOT_AUTHED_PAGE_LIST.includes(pathname)
+      ) {
+        router.push("signinpage")
+      }
     }
+    checkUser()
   }, [router, user, pathname])
 
-  return (
-    <>
-      {user && (
-        <UserContext.Provider value={{ user, setUser }}>
-          {children}
-        </UserContext.Provider>
-      )}
-    </>
-  )
+  console.log(user?.display_name)
+  const value = { user: { ...user }, setUser }
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }
 
-// signinページでログインしたらuser情報をセットする関数
-export function useUser() {
-  const context = useContext(UserContext)
-  if (context === undefined) {
-    throw new Error("useUser must be used within a UserProvider")
-  }
-  return context
-}
-export default AuthedCheckProvider
+export { AuthedCheckProvider, UserContext }

@@ -1,4 +1,6 @@
 // 以下の型定義は、同じディれくりトリにあるtypes.tsに移動しましたので、そこからインポートする
+
+
 import Container from "./components/Container"
 import FooterMenu from "./components/FooterMenu"
 import SearchBar from "./components/SearchBar"
@@ -96,7 +98,6 @@ const recipesDummyData: RecipeCardProps[] = [
     updatedAt: "2021-01-01 00:00:00",
   },
 ]
-
 const Home = () => {
   return (
     <>
