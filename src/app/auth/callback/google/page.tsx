@@ -23,14 +23,14 @@ const GoogleAuth = () => {
       )
         .then((response) => response.json())
         .then((data) => {
-          setUser(data)
+          setUser(data.data)
           router.push("/")
           setIsLoading(false)
         })
     } else {
       setIsLoading(false)
     }
-  }, [router])
+  }, [code, router, setUser])
 
   console.log(user)
   return <div>Loading...</div>
