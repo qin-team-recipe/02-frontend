@@ -7,9 +7,9 @@ import Skeleton from "@/app/recipes/commonComponents/atoms/Skeleton"
 const ChefOutlineSkeletons = () => {
   return (
     <>
-      <div className="mt-2 flex justify-end">
+      <div className="right-2 mt-2 flex justify-end">
         {/* リンク */}
-        <Skeleton className="mb-2 mr-4 h-6 w-24"></Skeleton>
+        <Skeleton className="mb-2 mr-2 mt-2 h-6 w-24"></Skeleton>
       </div>
       <div className="pl-4 pr-4">
         <div className="mb-2 flex flex-row">

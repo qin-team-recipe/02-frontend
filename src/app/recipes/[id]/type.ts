@@ -1,22 +1,16 @@
-import { ReactElement } from "react"
-
 export type RecipeOutlineType = {
   title: string
   chef: {
     chefImageUrl?: string
-    chefName: string
+    chefName?: string
+    screenName?: string
   }
   description: string
   favoriteCount?: number
   imageUrl?: string
   isMyFavorite: boolean
   isMyRecipe: boolean // TODO 暫定対応　本来はログインidとレシピの作成者idでマイレシピか判定する
-  serving: string
-}
-
-export type RecipeTabComponent = {
-  title: string
-  contents: ReactElement
+  isPublished: boolean
 }
 
 export type RecipeCookingProcessType = {
@@ -32,12 +26,4 @@ export type RecipeIngredientType = {
     name: string
     description: string
   }[]
-}
-
-export type MenuItemType = {
-  icon?: ReactElement
-  title?: string
-  comment?: string
-  hr?: boolean
-  action?: (item?: MenuItemType) => void
 }

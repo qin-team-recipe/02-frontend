@@ -4,11 +4,10 @@ import { Suspense } from "react"
 import RecipeOutlines from "../components/organisms/RecipeOutlines"
 import RecipeTabCookingProcess from "../components/organisms/RecipeTabCookingProcess"
 import RecipeTabIngredients from "../components/organisms/RecipeTabIngredients"
-import RecipeTabs from "../commonComponents/organisms/RecipeTabs"
+import Tabs, { TabComponent } from "../commonComponents/organisms/Tabs"
 import RecipeOutlineSkeletons from "../components/organisms/RecipeOutlineSkeletons"
 import RecipeTabCookingProcessSkeletons from "../components/organisms/RecipeTabCookingProcessSkeletons"
 import RecipeTabIngredientSkeletons from "../components/organisms/RecipeTabIngredientSkeletons"
-import { RecipeTabComponent } from "./type"
 
 const Recipes = async ({
   params,
@@ -18,7 +17,7 @@ const Recipes = async ({
   searchParams: { tab: string }
 }) => {
   const activeIndex = searchParams.tab ? Number(searchParams.tab) : undefined
-  const tabComponents: RecipeTabComponent[] = [
+  const tabComponents: TabComponent[] = [
     {
       title: "作り方",
       contents: (
@@ -47,7 +46,7 @@ const Recipes = async ({
 
         {/* レシピ情報タブ */}
         <div>
-          <RecipeTabs activeIndex={activeIndex} tabComponents={tabComponents} />
+          <Tabs activeIndex={activeIndex} tabComponents={tabComponents} />
         </div>
       </main>
     </>

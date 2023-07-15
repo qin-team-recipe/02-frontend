@@ -2,6 +2,7 @@ type AvatorButtonProps = {
   name?: string
   onClick?: () => void
   src?: string
+  size?: number
 }
 
 /**
@@ -10,7 +11,9 @@ type AvatorButtonProps = {
  * @returns
  */
 const AvatorButton = (props: AvatorButtonProps) => {
-  const { name, onClick, src } = props
+  const { name, onClick, src, size } = props
+  let avatorSize = size && size > 0 ? size : 50
+
   return (
     <>
       <button
@@ -18,7 +21,12 @@ const AvatorButton = (props: AvatorButtonProps) => {
         onClick={onClick}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="h-12 w-12 rounded-full" src={src} alt={name} />
+        <img
+          className="rounded-full"
+          src={src}
+          alt={name}
+          style={{ width: avatorSize, height: avatorSize }}
+        />
         {name && <p className="ml-2">{name}</p>}
       </button>
     </>

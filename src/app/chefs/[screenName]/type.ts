@@ -1,15 +1,16 @@
 export type ChefOutlineType = {
   title: string
   description: string
-  favoriteCount?: number
+  followerCount?: number
   imageUrl?: string
   isMyFavorite: boolean
   isFamousChef: boolean
+  recipeCount: number
 }
 
-export type LinkType = {
+export type RecipeImage = {
+  id: number
   name: string
-  type?: "YouTube" | "Instagram" | "Twitter"
-  image?: string
-  url: string
+  description: string
+  path: string
 }

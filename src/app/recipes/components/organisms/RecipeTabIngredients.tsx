@@ -32,7 +32,7 @@ const getRecipeIngredientsData = async (
   // 疑似遅延
   const _sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms))
-  await _sleep(3000)
+  await _sleep(1000)
 
   // ダミーデータ
   const dummy = dummyRecipeIngredientList.find(

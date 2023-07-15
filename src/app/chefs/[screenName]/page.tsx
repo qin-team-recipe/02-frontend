@@ -4,8 +4,9 @@ import { Suspense } from "react"
 import ChefOutlines from "../components/organisms/ChefOutlines"
 import ChefOutlineSkeletons from "../components/organisms/ChefOutlineSkeletons"
 import ChefTabRecipeSkeletons from "../components/organisms/ChefTabRecipeSkeletons"
-import RecipeTabs from "@/app/recipes/commonComponents/organisms/RecipeTabs"
-import { RecipeTabComponent } from "@/app/recipes/[id]/type"
+import Tabs, {
+  TabComponent,
+} from "@/app/recipes/commonComponents/organisms/Tabs"
 import ChefTabPopularRecipes from "../components/organisms/ChefTabPopularRecipes"
 import ChefTabNewRecipes from "../components/organisms/ChefTabNewRecipes"
 
@@ -17,7 +18,7 @@ const Recipes = async ({
   searchParams: { tab: string }
 }) => {
   const activeIndex = searchParams.tab ? Number(searchParams.tab) : undefined
-  const tabComponents: RecipeTabComponent[] = [
+  const tabComponents: TabComponent[] = [
     {
       title: "新着レシピ",
       contents: (
@@ -46,7 +47,7 @@ const Recipes = async ({
 
         {/* シェフ情報タブ */}
         <div>
-          <RecipeTabs activeIndex={activeIndex} tabComponents={tabComponents} />
+          <Tabs activeIndex={activeIndex} tabComponents={tabComponents} />
         </div>
       </main>
     </>

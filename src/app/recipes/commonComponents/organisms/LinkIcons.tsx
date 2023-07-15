@@ -9,9 +9,14 @@ import {
   IoLogoYoutube,
 } from "react-icons/io5"
 
-import { LinkType } from "../../../chefs/[screenName]/type"
-import { MenuItemType } from "../../[id]/type"
-import Menu from "./Menu"
+import Menu, { MenuItemType } from "./Menu"
+
+export type LinkType = {
+  name: string
+  type?: "YouTube" | "Instagram" | "Twitter" | "TikTok" | "Facebook"
+  image?: string
+  url: string
+}
 
 type LinkIconsProps = {
   links: LinkType[]
@@ -24,62 +29,64 @@ type LinkIconsProps = {
  */
 const LinkIcons = (props: LinkIconsProps) => {
   const { links } = props
-
-  const youtubeLink = links.find((el) => el.type == "YouTube")
-  const instagramLink = links.find((el) => el.type == "Instagram")
+  if (links.length == 0) return <></>
 
   const MENU_WIDTH = 220
-  const MENU_ITMES: MenuItemType[] = [
-    {
-      icon: <IoLogoTiktok />,
-      title: "TikTok",
-      comment: undefined,
-      hr: false,
-      action: (item?: MenuItemType) => {
-        // TODO
-        alert("TikTok")
-      },
-    },
-    {
-      // eslint-disable-next-line react/jsx-no-undef
-      icon: <IoLogoTwitter />,
-      title: "Twitter",
-      comment: undefined,
-      hr: false,
-      action: (item?: MenuItemType) => {
-        // TODO
-        alert("Twitter")
-      },
-    },
+  const famousSitesInMenu = [
     {
       icon: <IoLogoFacebook />,
       title: "Facebook",
-      comment: undefined,
-      hr: false,
-      action: (item?: MenuItemType) => {
-        // TODO
-        alert("Facebook")
-      },
     },
     {
-      icon: undefined,
-      title: undefined,
-      comment: undefined,
-      hr: true,
+      icon: <IoLogoTiktok />,
+      title: "TikTok",
     },
     {
-      icon: <IoLink />,
-      title: "HogeHoge.com",
-      comment: undefined,
-      hr: false,
-      action: (item?: MenuItemType) => {
-        alert("HogeHoge")
-      },
+      icon: <IoLogoTwitter />,
+      title: "Twitter",
     },
   ]
 
+  // 表にボタンで表示する有名サイト
+  const youtubeLink = links.find((el) => el.type == "YouTube")
+  const instagramLink = links.find((el) => el.type == "Instagram")
+
+  // メニュー内で表示する有名サイト
+  const famousSiteInMenuLinks = links.filter(
+    (l) => l.url && famousSitesInMenu.find((f) => f.title == l.type)
+  )
+  const famousSiteMenuItems: MenuItemType[] = famousSiteInMenuLinks.map((l) => {
+    const flink = famousSitesInMenu.find((el) => el.title == l.type)
+    return {
+      icon: flink?.icon,
+      title: l.type,
+      action: () => {
+        window.open(l.url, "_blank")
+      },
+    }
+  })
+
+  // メニュー内で表示するオリジナルサイト
+  const orginalSiteLinks = links.filter((l) => !l.type)
+  const orginalSiteMenuItems: MenuItemType[] = orginalSiteLinks.map((l) => {
+    return {
+      icon: <IoLink />,
+      title: l.name,
+      action: () => {
+        window.open(l.url, "_blank")
+      },
+    }
+  })
+
+  // メニュー要素
+  const menuItems = [
+    ...famousSiteMenuItems,
+    { hr: true },
+    ...orginalSiteMenuItems,
+  ]
+
   const handleLinkClick = (item: LinkType) => {
-    alert(item.url)
+    window.open(item.url, "_blank")
   }
 
   return (
@@ -87,7 +94,7 @@ const LinkIcons = (props: LinkIconsProps) => {
       <div className="m-1 flex flex-row items-center justify-center">
         {/* YouTube */}
         {youtubeLink && (
-          <div className="flex-0.3 mr-1">
+          <div className="flex-0.3 mr-2">
             <button
               className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-200"
               onClick={() => handleLinkClick(youtubeLink)}
@@ -99,7 +106,7 @@ const LinkIcons = (props: LinkIconsProps) => {
 
         {/* Instagram */}
         {instagramLink && (
-          <div className="flex-0.3 mr-1">
+          <div className="flex-0.3 mr-2">
             <button
               className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-200"
               onClick={() => handleLinkClick(instagramLink)}
@@ -108,12 +115,15 @@ const LinkIcons = (props: LinkIconsProps) => {
             </button>
           </div>
         )}
+
         {/* メニュー */}
-        <div className="flex-0.3 mr-1 mt-1">
-          <Menu menuWidth={MENU_WIDTH} menuItems={MENU_ITMES}>
-            <IoEllipsisVerticalCircle className="flex h-6 w-6 rounded-full text-gray-600 hover:bg-gray-200" />
-          </Menu>
-        </div>
+        {menuItems && (
+          <div className="flex-0.3 mr-2 mt-1">
+            <Menu menuWidth={MENU_WIDTH} menuItems={menuItems}>
+              <IoEllipsisVerticalCircle className="flex h-6 w-6 rounded-full text-gray-600 hover:bg-gray-200" />
+            </Menu>
+          </div>
+        )}
       </div>
     </>
   )

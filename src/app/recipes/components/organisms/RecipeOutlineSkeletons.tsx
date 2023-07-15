@@ -23,7 +23,7 @@ const RecipeOutlineSkeletons = () => {
         {/* シェフ */}
         <div className="flex flex-row items-center justify-start">
           {/* アバター */}
-          <Skeleton type="circle" className="mr-2 h-10 w-10"></Skeleton>
+          <Skeleton type="circle" className="mr-2 h-8 w-8"></Skeleton>
           <Skeleton className="mr-2 h-6 w-24"></Skeleton>
 
           {/* お気に入り件数 */}

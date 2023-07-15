@@ -1,11 +1,13 @@
 import AvatorButton from "@/app/recipes/commonComponents/molecules/AvatorButton"
-import FavoriteCounterLabel from "@/app/recipes/commonComponents/molecules/FavoriteCounterLabel"
+import CounterLabel from "@/app/recipes/commonComponents/molecules/CounterLabel"
 import Modal from "@/app/recipes/commonComponents/organisms/Modal"
 import PageBackButton from "@/app/recipes/commonComponents/organisms/PageBackButton"
 
-import LinkIcons from "../../../recipes/commonComponents/organisms/LinkIcons"
+import LinkIcons, {
+  LinkType,
+} from "../../../recipes/commonComponents/organisms/LinkIcons"
 import { dummyChefDataList, dummyLinkDataList } from "../../[screenName]/mock"
-import { ChefOutlineType, LinkType } from "../../[screenName]/type"
+import { ChefOutlineType } from "../../[screenName]/type"
 import ChefFollowButton from "./ChefFollowButton"
 import ChefOutlineSkeletons from "./ChefOutlineSkeletons"
 
@@ -29,7 +31,7 @@ const getChefData = async (
   // 疑似遅延
   const _sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms))
-  await _sleep(2000)
+  await _sleep(1000)
 
   console.log(new Date().toLocaleString() + " シェフデータ取得完了")
 
@@ -54,7 +56,7 @@ const getChefLinkData = async (
   // 疑似遅延
   const _sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms))
-  await _sleep(2000)
+  await _sleep(1000)
 
   // ダミーデータ
   const dummy = dummyLinkDataList.find((item) => item.screenName === screenName)
@@ -121,8 +123,18 @@ const ChefOutlines = async (props: ChefOutlinesProps) => {
 
         {/* シェフ */}
         <div className="flex flex-row items-center">
-          {/* お気に入り件数 */}
-          <FavoriteCounterLabel className="ml-1" count={chef.favoriteCount} />
+          {/* レシピ件数 */}
+          <CounterLabel
+            className="ml-1"
+            count={chef.recipeCount}
+            label="レシピ"
+          />
+          {/* フォロー件数 */}
+          <CounterLabel
+            className="ml-4"
+            count={chef.followerCount}
+            label="フォロー"
+          />
         </div>
 
         {/* お気に入りボタン */}

@@ -28,6 +28,7 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
     <>
       {/* お気に入りボタン */}
       <FavoriteButton
+        className={className}
         onClick={handleFavoriteClick}
         isActive={isFavorite}
         activeTitle="お気に入りから削除"

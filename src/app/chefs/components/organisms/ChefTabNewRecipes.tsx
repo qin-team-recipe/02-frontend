@@ -1,9 +1,8 @@
 import React from "react"
 
-import { RecipesGallery } from "@/app/favorites/components/RecipesGallery"
-import { RecipeImage } from "@/app/favorites/type"
-
 import { newRecipeImages } from "../../[screenName]/mock"
+import { RecipeImage } from "../../[screenName]/type"
+import { RecipesGallery } from "./RecipesGallery"
 
 type ChefTabNewRecipesProps = {
   screenName: string
@@ -63,7 +62,9 @@ const ChefTabNewRecipes = async (props: ChefTabNewRecipesProps) => {
   return (
     <>
       {/* レシピリスト */}
-      <RecipesGallery recipeImages={recipes} />
+      <div className="p-2">
+        <RecipesGallery recipeImages={recipes} />
+      </div>
     </>
   )
 }
