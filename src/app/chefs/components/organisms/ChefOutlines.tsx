@@ -139,7 +139,10 @@ const ChefOutlines = async (props: ChefOutlinesProps) => {
 
         {/* お気に入りボタン */}
         <div className="mt-2">
-          <ChefFollowButton isMyFavorite={chef.isMyFavorite} />
+          <ChefFollowButton
+            className="w-full"
+            isMyFavorite={chef.isMyFavorite}
+          />
         </div>
       </div>
     </>

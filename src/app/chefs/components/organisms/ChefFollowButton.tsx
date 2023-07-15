@@ -5,6 +5,7 @@ import FavoriteButton from "@/app/recipes/commonComponents/molecules/FavoriteBut
 
 type ChefFollowButtonProps = {
   isMyFavorite: boolean
+  className: string
 }
 
 /**
@@ -12,7 +13,7 @@ type ChefFollowButtonProps = {
  * @returns
  */
 const ChefFollowButton = (props: ChefFollowButtonProps) => {
-  const { isMyFavorite } = props
+  const { isMyFavorite, className } = props
   const [isFavorite, setIsFavorite] = useState(isMyFavorite)
 
   /**
@@ -27,6 +28,7 @@ const ChefFollowButton = (props: ChefFollowButtonProps) => {
     <>
       {/* お気に入りボタン */}
       <FavoriteButton
+        className={className}
         onClick={handleFavoriteClick}
         isActive={isFavorite}
         activeTitle="フォロー中"
