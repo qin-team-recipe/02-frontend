@@ -28,7 +28,7 @@ const handleClick = async () => {
   console.log(data)
 }
 
-const Auth = () => {
+const Signin = () => {
   const [pageInfo, setPageInfo] = useState<PageInfoType | null>(null)
   const [isOpen, setIsOpen] = useState(false)
 
@@ -148,4 +148,4 @@ const Auth = () => {
   )
 }
 
-export default Auth
+export default Signin
