@@ -19,11 +19,11 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <AuthedCheckProvider>
-        <html lang="en">
-          <body className={inter.className}>{children}</body>
-        </html>
-      </AuthedCheckProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <AuthedCheckProvider>{children}</AuthedCheckProvider>
+        </body>
+      </html>
     </>
   )
 }
