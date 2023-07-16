@@ -1,5 +1,6 @@
 "use client"
 
+import { NextPage } from "next"
 import Image from "next/image"
 import React, { useEffect, useState } from "react"
 
@@ -28,7 +29,7 @@ const handleClick = async () => {
   console.log(data)
 }
 
-const Signin = () => {
+const Signin: NextPage = () => {
   const [pageInfo, setPageInfo] = useState<PageInfoType | null>(null)
   const [isOpen, setIsOpen] = useState(false)
 

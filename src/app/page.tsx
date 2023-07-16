@@ -1,5 +1,6 @@
 // 以下の型定義は、同じディれくりトリにあるtypes.tsに移動しましたので、そこからインポートする
 
+import { NextPage } from "next"
 
 import Container from "./components/Container"
 import FooterMenu from "./components/FooterMenu"
@@ -98,7 +99,7 @@ const recipesDummyData: RecipeCardProps[] = [
     updatedAt: "2021-01-01 00:00:00",
   },
 ]
-const Home = () => {
+const Home: NextPage = () => {
   return (
     <>
       <div className="flex justify-center">
