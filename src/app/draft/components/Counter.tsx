@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 
 export const Counter = () => {
-  const [count, setCount] = useState(1)
+  const [count, setCount] = useState(2)
 
   const increment = () => {
     if (count < 6) {
@@ -19,21 +19,21 @@ export const Counter = () => {
 
   return (
     <>
-      <div className="h-[19px] px-[16px] flex mb-1">
-        <div className="font-bold text-[16px] w-24 mr-[6.67px]">
+      <div className="mb-1 flex h-[19px] px-[16px]">
+        <div className="mr-[6.67px] w-24 text-[16px] font-bold">
           材料/{count}人前
         </div>
         <button
-          className={`text-[16px] h-5 w-5 flex justify-center item-center ${
-            count === 1 ? "text-gray-400" : "text-red-500 bg-red-200"
+          className={`item-center flex h-5 w-5 justify-center text-[16px] ${
+            count === 1 ? "text-gray-400" : "bg-red-200 text-red-500"
           }`}
           onClick={decrement}
         >
           -
         </button>
         <button
-          className={`ml-2 text-[16px] h-5 w-5 flex justify-center item-center ${
-            count === 6 ? "text-gray-400" : "text-red-500 bg-red-200"
+          className={`item-center ml-2 flex h-5 w-5 justify-center text-[16px] ${
+            count === 6 ? "text-gray-400" : "bg-red-200 text-red-500"
           }`}
           onClick={increment}
         >

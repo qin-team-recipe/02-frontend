@@ -14,7 +14,7 @@ const Page = () => (
       <div />
       <p className="font-bold">お気に入り</p>
       <div className="cursor-pointer">
-        <Link href="/logout">
+        <Link href="/settings">
           <SettingIcon />
         </Link>
       </div>

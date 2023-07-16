@@ -44,15 +44,17 @@ export const AddImages = () => {
 
   return (
     <>
-      <div className="h-[19px] mt-8 mb-2 mx-4 font-bold text-[16px]">画像</div>
+      <div className="mx-4 mb-2 mt-8 h-[19px] text-[16px] font-bold">
+        画像(任意)
+      </div>
       <div className="h-[127px]">
         <div className="flex">
           {image ? (
             <div className="relative ml-2">
-              <img src={image} alt="新しい画像" className="max-h-32 max-w-32" />
+              <img src={image} alt="新しい画像" className="max-w-32 max-h-32" />
               <button
                 onClick={openModal}
-                className="absolute top-0 right-0 -mt-2 -mr-2 text-red-300 bg-red-500 rounded-full w-5 h-5 text-[12px] border-none text-center items-center justify-center"
+                className="absolute right-0 top-0 -mr-2 -mt-2 h-5 w-5 items-center justify-center rounded-full border-none bg-red-500 text-center text-[12px] text-red-300"
               >
                 ×
               </button>
@@ -62,7 +64,7 @@ export const AddImages = () => {
           )}
         </div>
       </div>
-      <div className="h-[27px] flex text-red-400">
+      <div className="flex h-[27px] text-red-400">
         <div className="ml-4 mr-1 mt-[9px] h-4 w-4">
           {!image && (
             <>
@@ -78,7 +80,7 @@ export const AddImages = () => {
             </>
           )}
         </div>
-        <div className="h-[19px] w-[112px] text-[16px] mt-[8px]">
+        <div className="mt-[8px] h-[19px] w-[112px] text-[16px]">
           {!image && (
             <>
               <label htmlFor="image-upload-input">画像を追加する</label>
@@ -88,18 +90,18 @@ export const AddImages = () => {
       </div>
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="bg-white rounded-lg p-8">
+          <div className="rounded-lg bg-white p-8">
             <p>画像を削除しますか？</p>
             <div className="mt-4 flex justify-end">
               <button
                 onClick={handleImageDelete}
-                className="px-4 py-2 bg-red-500 text-white rounded-md"
+                className="rounded-md bg-red-500 px-4 py-2 text-white"
               >
                 削除
               </button>
               <button
                 onClick={closeModal}
-                className="ml-4 px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
+                className="ml-4 rounded-md bg-gray-300 px-4 py-2 text-gray-700"
               >
                 キャンセル
               </button>

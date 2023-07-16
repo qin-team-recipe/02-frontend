@@ -18,18 +18,18 @@ const Card: FC<ChefCardProps> = (props) => {
           alt=""
           width={88}
           height={116}
-          className="absolute top-0 left-0 w-full h-full rounded-3xl object-cover"
+          className="absolute left-0 top-0 h-full w-full rounded-3xl object-cover"
         />
       </div>
       <div>
-        <p className="font-bold text-lg leading-5">
+        <p className="text-lg font-bold leading-5">
           {firstName}
           {lastName}
         </p>
-        <p className="text-base leading-5 mt-1 min-h-59 line-clamp-3">
+        <p className="mt-1 line-clamp-3 min-h-59 text-base leading-5">
           {recommend}
         </p>
-        <div className="flex items-center mt-1 space-x-1.5">
+        <div className="mt-1 flex items-center space-x-1.5">
           <Image
             src="/toppage/tabler-icon-tools-kitchen-2.png"
             alt=""

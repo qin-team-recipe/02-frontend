@@ -9,7 +9,7 @@ import { ChefCardProps } from "../types"
 const Card: FC<ChefCardProps> = ({ image, title }) => (
   <div className=" relative overflow-hidden">
     <div
-      className="relative w-full h-full"
+      className="relative h-full w-full"
       style={{ paddingTop: "148%" }}
     ></div>
     <Image
@@ -17,9 +17,9 @@ const Card: FC<ChefCardProps> = ({ image, title }) => (
       alt=""
       width={148}
       height={220}
-      className="absolute top-0 left-0 w-full h-full rounded-3xl"
+      className="absolute left-0 top-0 h-full w-full rounded-3xl"
     />
-    <h2 className="absolute bottom-2.5 left-0 w-full text-white text-base truncate text-center">
+    <h2 className="absolute bottom-2.5 left-0 w-full truncate text-center text-base text-white">
       {title}
     </h2>
   </div>

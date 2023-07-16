@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar"
 import { AddImages } from "./components/AddImages"
 import { AddLinks } from "./components/AddLinks"
 import { AddMaterial } from "./components/AddMaterial"
+import { FooterButtons } from "./components/FooterButton"
 import { HeaderButtons } from "./components/HeaderButtons"
 
 const Draft = () => {
@@ -11,15 +12,15 @@ const Draft = () => {
     <>
       <div className="flex justify-center">
         <Sidebar />
-        <div className="w-[390px] border-x-2 pb-16">
+        <div className="w-[480px] border-x-2 pb-16">
           <HeaderButtons />
           <AddMaterial />
           <div className="pt-8">
-            <div className="pl-4 mb-[4px] h-[19px]">
-              <div className="w-[48px] font-bold text-[16px]">作り方</div>
+            <div className="mb-[4px] h-[19px] pl-4">
+              <div className="w-[48px] text-[16px] font-bold">作り方</div>
             </div>
-            <div className="max-h-[108px] flex border-y-2 py-2 px-4">
-              <div className="gap-x-2 w-[20px] h-[20px] rounded-full bg-red-600 flex items-center justify-center">
+            <div className="flex max-h-[108px] border-y-2 px-4 py-2">
+              <div className="flex h-[20px] w-[20px] items-center justify-center gap-x-2 rounded-full bg-red-600">
                 <span className="text-white">1</span>
               </div>
               <div>
@@ -28,8 +29,8 @@ const Draft = () => {
                 </div>
               </div>
             </div>
-            <div className="max-h-[108px] flex border-b-2 py-2 px-4">
-              <div className="gap-x-2 w-[20px] h-[20px] rounded-full bg-red-600 flex items-center justify-center">
+            <div className="flex max-h-[108px] border-b-2 px-4 py-2">
+              <div className="flex h-[20px] w-[20px] items-center justify-center gap-x-2 rounded-full bg-red-600">
                 <span className="text-white">2</span>
               </div>
               <div>
@@ -39,14 +40,23 @@ const Draft = () => {
               </div>
             </div>
           </div>
-          <div className="h-[27px] flex text-red-400">
+          <div className="flex h-[27px] text-red-400">
             <div className="ml-4 mr-1 mt-[9px] h-4 w-4">+</div>
-            <div className="h-[19px] w-[112px] text-[16px] mt-[8px]">
+            <div className="mt-[8px] h-[19px] w-[112px] text-[16px]">
               工程を追加する
             </div>
           </div>
           <AddImages />
+          <div className="mt-5">
+            <div className="ml-4 h-[19px] text-[16px] font-bold">
+              レシピの紹介文(任意)
+            </div>
+            <div className="mt-1 min-h-[72px] border-y-2">
+              <input className="min-h-[72px] w-full" form="text"></input>
+            </div>
+          </div>
           <AddLinks />
+          <FooterButtons />
         </div>
       </div>
     </>

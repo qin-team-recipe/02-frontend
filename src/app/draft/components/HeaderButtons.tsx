@@ -36,9 +36,9 @@ export const HeaderButtons = () => {
     <>
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="bg-white rounded-lg p-8">
+          <div className="rounded-lg bg-white p-8">
             <h2>保存または削除しますか？</h2>
-            <div className="flex justify-end mt-4">
+            <div className="mt-4 flex justify-end">
               <button onClick={handleSaveClick} className="mr-2">
                 保存
               </button>
@@ -52,11 +52,11 @@ export const HeaderButtons = () => {
           </div>
         </div>
       )}
-      <div className="py-[12px] px-[16px] border-b-2">
-        <div className="flex justify-between h-[48px]">
+      <div className="border-b-2 px-[16px] py-[12px]">
+        <div className="flex h-[48px] justify-between">
           {inputValue ? (
             <div
-              className="h-[24px] w-[24px] cursor-pointer"
+              className="my-5 h-[24px] w-[24px] cursor-pointer"
               onClick={handleDeleteClick}
             >
               ×
@@ -66,19 +66,12 @@ export const HeaderButtons = () => {
           )}
           <div className="flex justify-end">
             {!inputValue ? (
-              <div className="h-[24px] w-[48px] mr-[16px] font-bold text-[16px] hover:text-red-500">
-                <Link href="../draft/addDraft">下書き</Link>
+              <div className="my-5 mr-[16px] w-[100px] items-center text-center text-[16px] font-bold hover:text-red-500">
+                <Link href="../draft/addDraft">下書き一覧</Link>
               </div>
             ) : (
-              <div className="h-[24px] w-[48px] mr-[16px] font-bold text-[16px] text-gray-400"></div>
-            )}
-            {inputValue ? (
-              <div className="h-[24px] w-[64px] font-bold text-[16px] hover:text-red-500">
-                <Link href="/">作成する</Link>
-              </div>
-            ) : (
-              <div className="h-[24px] w-[64px] font-bold text-[16px] text-gray-400">
-                作成する
+              <div className="my-5 mr-[16px] w-[100px] items-center text-center text-[16px] font-bold text-gray-400">
+                下書き一覧
               </div>
             )}
           </div>
@@ -93,7 +86,7 @@ export const HeaderButtons = () => {
             <div>
               <form>
                 <input
-                  className="pt-[13px] pb-[12px] w-full pl-[19.54px] border-y-2 border-x-2"
+                  className="w-full border-x-2 border-y-2 pb-[12px] pl-[19.54px] pt-[13px]"
                   type="text"
                   value={inputValue}
                   onChange={handleChange}
