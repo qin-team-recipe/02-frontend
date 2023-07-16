@@ -1,5 +1,6 @@
-import { RecipeImage } from "@/app/favorites/type"
 import { LinkType } from "@/app/recipes/commonComponents/organisms/LinkIcons"
+
+import { RecipeImage } from "./type"
 
 // シェフ概要ダミーデータ
 export const dummyChefDataList = [
@@ -125,30 +126,35 @@ export const newRecipeImages: RecipeImage[] = [
     description:
       "長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1長い説明1",
     path: "/takada-images/new-recipes/recipe1.jpg",
+    favoriteCount: 123,
   },
   {
     id: 2,
     name: "新レシピ2",
     description: "説明2",
     path: "/takada-images/new-recipes/recipe2.jpg",
+    favoriteCount: 45,
   },
   {
     id: 3,
     name: "新レシピ3",
     description: "説明3",
     path: "/takada-images/new-recipes/recipe3.jpg",
+    favoriteCount: 0,
   },
   {
     id: 4,
     name: "新レシピ4",
     description: "説明4",
     path: "/takada-images/new-recipes/recipe4.jpg",
+    favoriteCount: 1234,
   },
   {
     id: 5,
     name: "新レシピ5",
     description: "説明5",
     path: "/takada-images/new-recipes/recipe5.jpg",
+    favoriteCount: 12345,
   },
 ]
 
@@ -159,41 +165,48 @@ export const popularRecipeImages: RecipeImage[] = [
     name: "人気グラタン",
     description: "グラタン",
     path: "/takada-images/my-recipes/recipe1.jpg",
+    favoriteCount: 10,
   },
   {
     id: 2,
     name: "人気ラーメン",
     description: "説明2",
     path: "/takada-images/my-recipes/recipe2.jpg",
+    favoriteCount: 0,
   },
   {
     id: 3,
     name: "人気そば",
     description: "説明3",
     path: "/takada-images/my-recipes/recipe3.jpg",
+    favoriteCount: 1234,
   },
   {
     id: 4,
     name: "人気チャーハン",
     description: "説明4",
     path: "/takada-images/my-recipes/recipe4.jpg",
+    favoriteCount: 12345,
   },
   {
     id: 5,
     name: "人気ハンバーグ",
     description: "説明5",
     path: "/takada-images/my-recipes/recipe5.jpg",
+    favoriteCount: 1234,
   },
   {
     id: 6,
     name: "人気スイーツ",
     description: "説明6",
     path: "/takada-images/my-recipes/recipe6.jpg",
+    favoriteCount: 1234,
   },
   {
     id: 7,
     name: "カレー",
     description: "説明7",
     path: "/takada-images/my-recipes/recipe7.jpg",
+    favoriteCount: 1234,
   },
 ]

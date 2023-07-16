@@ -14,4 +14,5 @@ export type RecipeImage = {
   name: string
   description: string
   path: string
+  favoriteCount: number
 }

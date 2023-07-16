@@ -2,7 +2,7 @@ import React from "react"
 
 import { newRecipeImages } from "../../[screenName]/mock"
 import { RecipeImage } from "../../[screenName]/type"
-import { RecipesGallery } from "./RecipesGallery"
+import ChefRecipesGallery from "./ChefRecipesGallery"
 
 type ChefTabNewRecipesProps = {
   screenName: string
@@ -63,7 +63,7 @@ const ChefTabNewRecipes = async (props: ChefTabNewRecipesProps) => {
     <>
       {/* レシピリスト */}
       <div className="p-2">
-        <RecipesGallery recipeImages={recipes} />
+        <ChefRecipesGallery recipeImages={recipes} />
       </div>
     </>
   )

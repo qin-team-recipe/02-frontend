@@ -16,7 +16,7 @@ const FavoriteButton = (props: FavoriteButtonProps) => {
 
   const buttonClass = "px-1 py-1 rounded text-sm " + className + " "
   const activeButtonClass = "text-red-500 bg-white border border-red-500 "
-  const inactiveButtonClass = "text-white bg-red-500 "
+  const inactiveButtonClass = "text-white bg-red-500 border border-red-500 "
   return (
     <>
       <button
