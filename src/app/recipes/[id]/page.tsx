@@ -1,33 +1,53 @@
+// eslint-disable-next-line simple-import-sort/imports
 import { Suspense } from "react"
 
-import RecipeTabCookingProcess from "@/app/recipes/components/organisms/RecipeTabCookingProcess"
-import RecipeTabIngredients from "@/app/recipes/components/organisms/RecipeTabIngredients"
-
-import LoadingSpinner from "../components/molecules/LoadingSpinner"
 import RecipeOutlines from "../components/organisms/RecipeOutlines"
+import RecipeTabCookingProcess from "../components/organisms/RecipeTabCookingProcess"
+import RecipeTabIngredients from "../components/organisms/RecipeTabIngredients"
 import RecipeTabs from "../components/organisms/RecipeTabs"
+import RecipeOutlineSkeletons from "../components/organisms/RecipeOutlineSkeletons"
+import RecipeTabCookingProcessSkeletons from "../components/organisms/RecipeTabCookingProcessSkeletons"
+import RecipeTabIngredientSkeletons from "../components/organisms/RecipeTabIngredientSkeletons"
+import { RecipeTabComponent } from "./type"
 
-const Recipes = ({ params }: { params: { id: string } }) => {
+const Recipes = async ({
+  params,
+  searchParams,
+}: {
+  params: { id: string }
+  searchParams: { tab: string }
+}) => {
+  const activeIndex = searchParams.tab ? Number(searchParams.tab) : undefined
+  const tabComponents: RecipeTabComponent[] = [
+    {
+      title: "作り方",
+      contents: (
+        <Suspense fallback={<RecipeTabCookingProcessSkeletons />}>
+          <RecipeTabCookingProcess id={params.id} />
+        </Suspense>
+      ),
+    },
+    {
+      title: "材料",
+      contents: (
+        <Suspense fallback={<RecipeTabIngredientSkeletons />}>
+          <RecipeTabIngredients id={params.id} />
+        </Suspense>
+      ),
+    },
+  ]
+
   return (
     <>
       <main className="flex-1 overflow-hidden sm:border-x">
         {/* レシピ概要 */}
-        <div>
-          <Suspense fallback={<LoadingSpinner />}>
-            <RecipeOutlines id={params.id} />
-          </Suspense>
-        </div>
+        <Suspense fallback={<RecipeOutlineSkeletons />}>
+          <RecipeOutlines id={params.id} />
+        </Suspense>
 
         {/* レシピ情報タブ */}
         <div>
-          <Suspense fallback={<LoadingSpinner />}>
-            <RecipeTabs>
-              {/* 作り方 */}
-              <RecipeTabCookingProcess id={params.id} />
-              {/* 材料 */}
-              <RecipeTabIngredients id={params.id} />
-            </RecipeTabs>
-          </Suspense>
+          <RecipeTabs activeIndex={activeIndex} tabComponents={tabComponents} />
         </div>
       </main>
     </>

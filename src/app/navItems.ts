@@ -4,6 +4,6 @@ export const navItems = [
   {
     name: "買い物リスト",
     icon: "/toppage/Cart.png",
-    href: "/cart",
+    href: "/shoppinglist",
   },
 ]
