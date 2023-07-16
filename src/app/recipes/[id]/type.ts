@@ -4,12 +4,12 @@ export type RecipeOutlineType = {
     chefImageUrl?: string
     chefName?: string
     screenName?: string
+    userId: number
   }
   description: string
   favoriteCount?: number
   imageUrl?: string
   isMyFavorite: boolean
-  isMyRecipe: boolean // TODO 暫定対応　本来はログインidとレシピの作成者idでマイレシピか判定する
   isPublished: boolean
 }
 

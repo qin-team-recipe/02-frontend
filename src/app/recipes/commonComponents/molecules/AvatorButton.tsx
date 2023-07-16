@@ -20,13 +20,15 @@ const AvatorButton = (props: AvatorButtonProps) => {
         className="flex flex-row items-center justify-center"
         onClick={onClick}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className="rounded-full"
-          src={src}
-          alt={name}
-          style={{ width: avatorSize, height: avatorSize }}
-        />
+        {src && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            className="rounded-full"
+            src={src}
+            alt={name}
+            style={{ width: avatorSize, height: avatorSize }}
+          />
+        )}
         {name && <p className="ml-2">{name}</p>}
       </button>
     </>

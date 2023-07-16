@@ -8,6 +8,7 @@ export const dummyRecipeDataList = [
         chefImageUrl: "/takada-images/chefs/chef1.jpg",
         chefName: "山田シェフ",
         screenName: "hogescreen",
+        userId: 100,
       },
       description:
         "はじめてでも失敗なく作れるような、鶏肉や玉ねぎを具とした基本的なマカロニグラタンのレシピです。\n" +
@@ -15,7 +16,6 @@ export const dummyRecipeDataList = [
       favoriteCount: 768,
       imageUrl: "/takada-images/new-recipes/recipe1.jpg",
       isMyFavorite: false,
-      isMyRecipe: false,
       isPublished: true,
     },
   },
@@ -27,6 +27,7 @@ export const dummyRecipeDataList = [
         chefImageUrl: undefined,
         chefName: "",
         screenName: "hoge",
+        userId: 101,
       },
       description:
         "おいしいラーメンのレシピです。\n" +
@@ -34,7 +35,6 @@ export const dummyRecipeDataList = [
       favoriteCount: 1768,
       imageUrl: "/takada-images/my-recipes/recipe2.jpg",
       isMyFavorite: false,
-      isMyRecipe: true,
       isPublished: true,
     },
   },
@@ -46,6 +46,7 @@ export const dummyRecipeDataList = [
         chefImageUrl: undefined,
         chefName: "",
         screenName: "hoge",
+        userId: 102,
       },
       description:
         "おいしい冷製パスタのレシピです。\n" +
@@ -53,7 +54,6 @@ export const dummyRecipeDataList = [
       favoriteCount: 1768,
       imageUrl: "/takada-images/my-recipes/recipe3.jpg",
       isMyFavorite: false,
-      isMyRecipe: true,
       isPublished: false,
     },
   },

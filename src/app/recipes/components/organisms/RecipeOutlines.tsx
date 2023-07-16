@@ -68,6 +68,7 @@ const getChefLinkData = async (
 
 type RecipeOutlinesProps = {
   id: string
+  loginUserId?: number
 }
 
 /**
@@ -75,10 +76,12 @@ type RecipeOutlinesProps = {
  * @returns
  */
 const RecipeOutlines = async (props: RecipeOutlinesProps) => {
-  const { id } = props
+  const { id, loginUserId } = props
   const recipe = await getRecipeData(id)
   const links =
     recipe?.chef?.screenName && (await getChefLinkData(recipe.chef.screenName))
+  const isMyRecipe = await (loginUserId == recipe?.chef.userId)
+  console.log(`loginUserId=${loginUserId} == userId${recipe?.chef.userId}`)
 
   /* レシピが取得できなかった場合 */
   if (!recipe) {
@@ -120,7 +123,7 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
 
           {/* 編集メニュー */}
           <div className="ml-auto flex">
-            {recipe.isMyRecipe ? (
+            {isMyRecipe ? (
               <RecipeEditMenu isPublished={recipe.isPublished} />
             ) : (
               links && <LinkIcons links={links} />
@@ -133,7 +136,7 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
 
         {/* シェフ */}
         <div className="flex flex-row items-center">
-          {recipe.isMyRecipe ? (
+          {isMyRecipe ? (
             <MyRecipePublishStatusLabel isPublished={recipe.isPublished} />
           ) : (
             <RecipeChefAvatorButton
@@ -151,7 +154,7 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
         </div>
 
         {/* お気に入りボタン */}
-        {recipe.isMyRecipe ? (
+        {isMyRecipe ? (
           <div className="mt-2 flex flex-row">
             <div className="mr-2 flex-1">
               <RecipeFavoriteButton
