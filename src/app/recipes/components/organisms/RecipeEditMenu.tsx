@@ -113,7 +113,7 @@ const RecipeEditMenu = (props: RecipeEditMenuProps) => {
       <Toast
         message={toastProp.message}
         type={toastProp.type}
-        showToast={showToast}
+        isShow={showToast}
       />
     </div>
   )

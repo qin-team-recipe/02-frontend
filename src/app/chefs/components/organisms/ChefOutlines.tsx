@@ -8,8 +8,10 @@ import LinkIcons, {
 } from "../../../recipes/commonComponents/organisms/LinkIcons"
 import { dummyChefDataList, dummyLinkDataList } from "../../[screenName]/mock"
 import { ChefOutlineType } from "../../[screenName]/type"
+import ChefAddRecipeFab from "./ChefAddRecipeFab"
 import ChefFollowButton from "./ChefFollowButton"
 import ChefOutlineSkeletons from "./ChefOutlineSkeletons"
+import ChefProfileEditButton from "./ChefProfileEditButton"
 
 const getChefData = async (
   screenName: string
@@ -65,6 +67,7 @@ const getChefLinkData = async (
 
 type ChefOutlinesProps = {
   screenName: string
+  loginUserId?: number
 }
 
 /**
@@ -72,9 +75,10 @@ type ChefOutlinesProps = {
  * @returns
  */
 const ChefOutlines = async (props: ChefOutlinesProps) => {
-  const { screenName } = props
+  const { screenName, loginUserId } = props
   const chef = await getChefData(screenName)
   const links = await getChefLinkData(screenName)
+  const isMe = await (loginUserId == chef?.userId)
 
   if (!chef) {
     return (
@@ -139,12 +143,18 @@ const ChefOutlines = async (props: ChefOutlinesProps) => {
 
         {/* お気に入りボタン */}
         <div className="mt-2">
-          <ChefFollowButton
-            className="w-full"
-            isMyFavorite={chef.isMyFavorite}
-          />
+          {isMe ? (
+            <ChefProfileEditButton className="w-full" />
+          ) : (
+            <ChefFollowButton
+              className="w-full"
+              isMyFavorite={chef.isMyFavorite}
+            />
+          )}
         </div>
       </div>
+      {/* マイレシピ追加 */}
+      {isMe && <ChefAddRecipeFab />}
     </>
   )
 }

@@ -8,7 +8,7 @@ type ChefProfileEditButtonProps = {
 }
 
 /**
- * レシピ編集ボタン
+ * プロフィール編集ボタン
  * @returns
  */
 const ChefProfileEditButton = async (props: ChefProfileEditButtonProps) => {
@@ -21,13 +21,13 @@ const ChefProfileEditButton = async (props: ChefProfileEditButtonProps) => {
 
   const handleChefClick = useCallback(() => {
     //router.push(`/chefs/${screenName}`)
-    alert("レシピ編集画面へ遷移")
+    alert("プロフィール編集画面へ遷移")
   }, [])
 
   return (
     <>
       <button className={buttonClass} onClick={handleChefClick}>
-        レシピを編集する
+        プロフィールを編集
       </button>
     </>
   )

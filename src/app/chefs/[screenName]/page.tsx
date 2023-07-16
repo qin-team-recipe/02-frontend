@@ -10,14 +10,18 @@ import Tabs, {
 import ChefTabPopularRecipes from "../components/organisms/ChefTabPopularRecipes"
 import ChefTabNewRecipes from "../components/organisms/ChefTabNewRecipes"
 
-const Recipes = async ({
+const Chefs = async ({
   params,
   searchParams,
 }: {
   params: { screenName: string }
-  searchParams: { tab: string }
+  searchParams: { tab: string; userid: string }
 }) => {
   const activeIndex = searchParams.tab ? Number(searchParams.tab) : undefined
+  const loginUserId = searchParams.userid
+    ? Number(searchParams.userid)
+    : undefined
+
   const tabComponents: TabComponent[] = [
     {
       title: "新着レシピ",
@@ -42,7 +46,10 @@ const Recipes = async ({
       <main className="flex-1 overflow-hidden sm:border-x">
         {/* シェフ概要 */}
         <Suspense fallback={<ChefOutlineSkeletons />}>
-          <ChefOutlines screenName={params.screenName} />
+          <ChefOutlines
+            screenName={params.screenName}
+            loginUserId={loginUserId}
+          />
         </Suspense>
 
         {/* シェフ情報タブ */}
@@ -53,4 +60,4 @@ const Recipes = async ({
     </>
   )
 }
-export default Recipes
+export default Chefs

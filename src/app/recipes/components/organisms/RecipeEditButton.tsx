@@ -27,7 +27,7 @@ const RecipeEditButton = async (props: RecipeEditButtonProps) => {
   return (
     <>
       <button className={buttonClass} onClick={handleChefClick}>
-        レシピを編集する
+        レシピを編集
       </button>
     </>
   )

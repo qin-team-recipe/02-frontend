@@ -14,6 +14,7 @@ export const dummyChefDataList = [
       isMyFavorite: false,
       isFamousChef: true,
       recipeCount: 123,
+      userId: 100,
     },
   },
   {
@@ -26,6 +27,7 @@ export const dummyChefDataList = [
       isMyFavorite: false,
       isFamousChef: false,
       recipeCount: 246,
+      userId: 101,
     },
   },
   {
@@ -39,6 +41,7 @@ export const dummyChefDataList = [
       isMyFavorite: false,
       isFamousChef: true,
       recipeCount: 568,
+      userId: 102,
     },
   },
 ]

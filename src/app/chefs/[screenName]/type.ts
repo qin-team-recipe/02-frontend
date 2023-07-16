@@ -6,6 +6,7 @@ export type ChefOutlineType = {
   isMyFavorite: boolean
   isFamousChef: boolean
   recipeCount: number
+  userId: number
 }
 
 export type RecipeImage = {
