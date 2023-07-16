@@ -22,6 +22,9 @@ module.exports = {
       colors: {
         "custom-gray": "#EEEDEF",
         "custom-purple": "#1A1523",
+        "custom-thin-gray": "#DCDBDD",
+        "tomato-light-9": "#E54D2E",
+        "tomato-light-7": "#F3B0A2",
       },
     },
   },

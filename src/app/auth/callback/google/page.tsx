@@ -24,7 +24,7 @@ const GoogleAuth = () => {
         .then((response) => response.json())
         .then((data) => {
           setUser(data.data)
-          router.push("/")
+          router.push("/register")
           setIsLoading(false)
         })
     } else {
