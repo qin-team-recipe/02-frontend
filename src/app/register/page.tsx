@@ -1,35 +1,48 @@
 "use client"
 
 import { NextPage } from "next"
-import React, { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import React, { useContext } from "react"
 
+import {
+  GoogleUserContext,
+  UserContext,
+} from "../components/AuthedCheckProvider"
 import Container from "../components/Container"
 import FooterMenu from "../components/FooterMenu"
 import Sidebar from "../components/Sidebar"
 import { SubHeader } from "../components/SubHeader"
 
 const Register: NextPage = () => {
-  const [nickname, setNickname] = useState<string>("")
+  const { googleUser, setGoogleUser } = useContext(GoogleUserContext)
+  const { user, setUser } = useContext(UserContext)
+  const router = useRouter()
 
-  useEffect(() => {}, [])
+  console.log(googleUser)
 
   const handleClick = async () => {
-    // POST requestの例
-    const response = await fetch("http://localhost:8080/api/nickname", {
+    fetch("http://localhost:8083/api/v1/me/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ nickname }),
+      body: JSON.stringify(googleUser),
     })
-
-    // 応答の処理
-    if (response.ok) {
-      const result = await response.json()
-      console.log(result)
-    } else {
-      console.log("Error: ", response.status)
-    }
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error("Error: " + response.status)
+        }
+      })
+      .then((result) => {
+        setUser(result.data.user)
+        router.push("/")
+        console.log(result)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   return (
@@ -47,8 +60,10 @@ const Register: NextPage = () => {
                 className="mx-auto mt-1 h-11 w-full border-b border-t border-custom-thin-gray bg-white px-[16px] py-[12px] placeholder-custom-thin-gray"
                 type="text"
                 placeholder="ニックネームをご入力ください"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
+                value={googleUser?.display_name}
+                onChange={(e) =>
+                  setGoogleUser({ ...googleUser, display_name: e.target.value })
+                }
               />
             </div>
             <div className="mt-5 flex items-center justify-center gap-6">
