@@ -44,9 +44,7 @@ export const AddImages = () => {
 
   return (
     <>
-      <div className="mx-4 mb-2 mt-8 h-[19px] text-[16px] font-bold">
-        画像(任意)
-      </div>
+      <div className="mx-4 mb-2 h-[19px] text-[16px] font-bold">画像(任意)</div>
       <div className="h-[127px]">
         <div className="flex">
           {image ? (

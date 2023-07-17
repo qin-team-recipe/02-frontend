@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-export const AddLinks = () => {
+export const AddProcess = () => {
   const [inputValues, setInputValues] = useState<string[]>([])
   const [showModal, setShowModal] = useState(false)
   const [deleteIndex, setDeleteIndex] = useState<number | null>(null)
@@ -59,9 +59,9 @@ export const AddLinks = () => {
 
   return (
     <>
-      <div className="mb-4 pt-8">
+      <div className="mb-4">
         <div className="mt-3 h-[19px] px-[16px] text-[16px] font-bold">
-          リンク(任意)
+          作り方
         </div>
         <div className="relative h-[42px] w-full border-y-2">
           <input
@@ -162,11 +162,11 @@ export const AddLinks = () => {
             )}
           </div>
         ))}
-        <div className="mb-4 h-[27px]">
+        <div className="h-[27px]">
           <div className="flex px-4 pt-[8px] text-red-400">
             <div className="h-4 w-4">+</div>
             <div className="h-[19px] w-[200px] pl-[4px] text-[16px]">
-              <button onClick={addInputForm}>リンクを追加する</button>
+              <button onClick={addInputForm}>工程を追加する</button>
             </div>
           </div>
         </div>

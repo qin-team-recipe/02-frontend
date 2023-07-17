@@ -1,4 +1,5 @@
 "use client"
+
 import { ChangeEvent, useState } from "react"
 
 interface ModalProps {
@@ -23,15 +24,29 @@ export const DeleteModal: React.FC<ModalProps> = ({ onClose }) => {
   }
 
   return (
-    <div className="modal">
-      <div className="modal-content flex">
-        <input type="text" value={inputValue} onChange={handleInputChange} />
-        {isButtonVisible ? (
-          <button onClick={handleButtonClick}>Delete</button>
-        ) : (
-          <div></div>
-        )}
-        <button onClick={onClose}>Close</button>
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+      <div className="rounded-lg bg-white p-8">
+        <div className="modal">
+          <div className="modal-content">
+            <div>Type [delete]!!</div>
+            <input
+              className="bg-gray-200"
+              type="text"
+              value={inputValue}
+              onChange={handleInputChange}
+            />
+            <div className="flex">
+              {isButtonVisible ? (
+                <button className="mr-3" onClick={handleButtonClick}>
+                  Delete
+                </button>
+              ) : (
+                <div></div>
+              )}
+              <button onClick={onClose}>Close</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
