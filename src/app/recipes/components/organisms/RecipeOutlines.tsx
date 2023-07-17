@@ -1,10 +1,15 @@
+import { dummyLinkDataList } from "@/app/chefs/[screenName]/mock"
+
 import { dummyRecipeDataList } from "../../[id]/mock"
 import { RecipeOutlineType } from "../../[id]/type"
-import FavoriteCounterLabel from "../molecules/FavoriteCounterLabel"
-import ImageWithBlurType from "../molecules/ImageWithBlur"
-import Modal from "./Modal"
-import PageBackButton from "./PageBackButton"
+import CounterLabel from "../../commonComponents/molecules/CounterLabel"
+import ImageWithBlurType from "../../commonComponents/molecules/ImageWithBlur"
+import LinkIcons, { LinkType } from "../../commonComponents/organisms/LinkIcons"
+import Modal from "../../commonComponents/organisms/Modal"
+import PageBackButton from "../../commonComponents/organisms/PageBackButton"
+import MyRecipePublishStatusLabel from "./MyRecipePublishStatusLabel"
 import RecipeChefAvatorButton from "./RecipeChefAvatorButton"
+import RecipeEditButton from "./RecipeEditButton"
 import RecipeEditMenu from "./RecipeEditMenu"
 import RecipeFavoriteButton from "./RecipeFavoriteButton"
 import RecipeOutlineSkeletons from "./RecipeOutlineSkeletons"
@@ -29,7 +34,7 @@ const getRecipeData = async (
   // 疑似遅延
   const _sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms))
-  await _sleep(2000)
+  await _sleep(1000)
 
   console.log(new Date().toLocaleString() + " レシピデータ取得完了")
 
@@ -38,8 +43,32 @@ const getRecipeData = async (
   return dummy?.outline
 }
 
+const getChefLinkData = async (
+  screenName: string
+): Promise<LinkType[] | undefined> => {
+  // const response = await fetch(
+  //   `http://localhost:8080/api/v1/chefs/${screenName}`,
+  //   {
+  //     cache: "no-store",
+  //   }
+  // )
+  // const data = await response.json()
+  // console.log("シェフデータ取得結果 data=" + JSON.stringify(data))
+  // return data
+
+  // 疑似遅延
+  const _sleep = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms))
+  await _sleep(1000)
+
+  // ダミーデータ
+  const dummy = dummyLinkDataList.find((item) => item.screenName === screenName)
+  return dummy?.links
+}
+
 type RecipeOutlinesProps = {
   id: string
+  loginUserId?: number
 }
 
 /**
@@ -47,8 +76,12 @@ type RecipeOutlinesProps = {
  * @returns
  */
 const RecipeOutlines = async (props: RecipeOutlinesProps) => {
-  const { id } = props
+  const { id, loginUserId } = props
   const recipe = await getRecipeData(id)
+  const links =
+    recipe?.chef?.screenName && (await getChefLinkData(recipe.chef.screenName))
+  const isMyRecipe = await (loginUserId == recipe?.chef.userId)
+  console.log(`loginUserId=${loginUserId} == userId${recipe?.chef.userId}`)
 
   /* レシピが取得できなかった場合 */
   if (!recipe) {
@@ -82,16 +115,20 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
         <ImageWithBlurType src={recipe.imageUrl} alt={recipe.title} />
       </div>
       <div className="p-4">
-        <div className="flex flex-row">
+        <div className="mb-1 flex flex-row">
           {/* レシピタイトル */}
-          <div className="mb-2 text-2xl font-bold">{recipe.title}</div>
+          <div className="flex items-center text-2xl font-bold">
+            {recipe.title}
+          </div>
 
-          {/* 編集メニュー（マイレシピのみ表示）*/}
-          {recipe.isMyRecipe && (
-            <div className="ml-auto">
-              <RecipeEditMenu />
-            </div>
-          )}
+          {/* 編集メニュー */}
+          <div className="ml-auto flex">
+            {isMyRecipe ? (
+              <RecipeEditMenu isPublished={recipe.isPublished} />
+            ) : (
+              links && <LinkIcons links={links} />
+            )}
+          </div>
         </div>
 
         {/* レシピ説明 */}
@@ -99,26 +136,44 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
 
         {/* シェフ */}
         <div className="flex flex-row items-center">
-          {/* アバター */}
-          <RecipeChefAvatorButton
-            src={recipe.chef.chefImageUrl}
-            name={recipe.chef.chefName}
-            isMyRecipe={recipe.isMyRecipe}
-          />
-
-          {/* お気に入り件数 */}
-          <FavoriteCounterLabel className="ml-4" count={recipe.favoriteCount} />
-        </div>
-
-        {/* お気に入りボタン（マイレシピ以外表示）*/}
-        <div>
-          {!recipe.isMyRecipe && (
-            <RecipeFavoriteButton
-              className="mt-2"
-              isMyFavorite={recipe.isMyFavorite}
+          {isMyRecipe ? (
+            <MyRecipePublishStatusLabel isPublished={recipe.isPublished} />
+          ) : (
+            <RecipeChefAvatorButton
+              src={recipe.chef.chefImageUrl}
+              name={recipe.chef.chefName}
+              screenName={recipe.chef.screenName}
             />
           )}
+          {/* お気に入り件数 */}
+          <CounterLabel
+            className="ml-4"
+            count={recipe.favoriteCount}
+            label="お気に入り"
+          />
         </div>
+
+        {/* お気に入りボタン */}
+        {isMyRecipe ? (
+          <div className="mt-2 flex flex-row">
+            <div className="mr-2 flex-1">
+              <RecipeFavoriteButton
+                className="w-full"
+                isMyFavorite={recipe.isMyFavorite}
+              />
+            </div>
+            <div className="flex-1">
+              <RecipeEditButton className="w-full" />
+            </div>
+          </div>
+        ) : (
+          <div className="mt-2 flex-1">
+            <RecipeFavoriteButton
+              className="w-full"
+              isMyFavorite={recipe.isMyFavorite}
+            />
+          </div>
+        )}
       </div>
     </>
   )

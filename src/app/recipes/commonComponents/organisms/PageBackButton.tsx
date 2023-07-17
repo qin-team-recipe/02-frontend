@@ -12,7 +12,7 @@ const PageBackButton = (props: PageBackButtonProps) => {
   const router = useRouter()
 
   let buttonElement: ReactElement = (
-    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-2xl text-white">
+    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 bg-opacity-20 text-2xl hover:bg-gray-200">
       <IoArrowBack />
     </div>
   )

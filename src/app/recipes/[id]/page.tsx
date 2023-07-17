@@ -4,21 +4,25 @@ import { Suspense } from "react"
 import RecipeOutlines from "../components/organisms/RecipeOutlines"
 import RecipeTabCookingProcess from "../components/organisms/RecipeTabCookingProcess"
 import RecipeTabIngredients from "../components/organisms/RecipeTabIngredients"
-import RecipeTabs from "../components/organisms/RecipeTabs"
+import Tabs, { TabComponent } from "../commonComponents/organisms/Tabs"
 import RecipeOutlineSkeletons from "../components/organisms/RecipeOutlineSkeletons"
 import RecipeTabCookingProcessSkeletons from "../components/organisms/RecipeTabCookingProcessSkeletons"
 import RecipeTabIngredientSkeletons from "../components/organisms/RecipeTabIngredientSkeletons"
-import { RecipeTabComponent } from "./type"
 
 const Recipes = async ({
   params,
   searchParams,
 }: {
   params: { id: string }
-  searchParams: { tab: string }
+  searchParams: { tab: string; userid: string }
 }) => {
   const activeIndex = searchParams.tab ? Number(searchParams.tab) : undefined
-  const tabComponents: RecipeTabComponent[] = [
+  // TODO 暫定的にログインユーザIDをクエリパラメータで取得
+  const loginUserId = searchParams.userid
+    ? Number(searchParams.userid)
+    : undefined
+
+  const tabComponents: TabComponent[] = [
     {
       title: "作り方",
       contents: (
@@ -42,12 +46,12 @@ const Recipes = async ({
       <main className="flex-1 overflow-hidden sm:border-x">
         {/* レシピ概要 */}
         <Suspense fallback={<RecipeOutlineSkeletons />}>
-          <RecipeOutlines id={params.id} />
+          <RecipeOutlines id={params.id} loginUserId={loginUserId} />
         </Suspense>
 
         {/* レシピ情報タブ */}
         <div>
-          <RecipeTabs activeIndex={activeIndex} tabComponents={tabComponents} />
+          <Tabs activeIndex={activeIndex} tabComponents={tabComponents} />
         </div>
       </main>
     </>

@@ -1,4 +1,4 @@
-import Skeleton from "../atoms/Skeleton"
+import Skeleton from "../../commonComponents/atoms/Skeleton"
 
 /**
  * レシピ概要スケルトン
@@ -23,16 +23,16 @@ const RecipeOutlineSkeletons = () => {
         {/* シェフ */}
         <div className="flex flex-row items-center justify-start">
           {/* アバター */}
-          <Skeleton type="circle" className="mr-2 h-10 w-10"></Skeleton>
-          <Skeleton className="mr-2 h-8 w-24"></Skeleton>
+          <Skeleton type="circle" className="mr-2 h-8 w-8"></Skeleton>
+          <Skeleton className="mr-2 h-6 w-24"></Skeleton>
 
           {/* お気に入り件数 */}
-          <Skeleton className="h-8 w-24"></Skeleton>
+          <Skeleton className="h-6 w-24"></Skeleton>
         </div>
 
         {/* お気に入りボタン（マイレシピ以外表示）*/}
         <div className="pt-2">
-          <Skeleton className="mb-2 h-10 w-32"></Skeleton>
+          <Skeleton className="mb-2 h-8 w-full"></Skeleton>
         </div>
       </div>
     </>

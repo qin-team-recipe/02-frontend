@@ -3,10 +3,12 @@ export const dummyRecipeDataList = [
   {
     recipeId: 1,
     outline: {
-      title: "グラタン",
+      title: "グラタングラタングラタングラタン",
       chef: {
         chefImageUrl: "/takada-images/chefs/chef1.jpg",
         chefName: "山田シェフ",
+        screenName: "hogescreen",
+        userId: 100,
       },
       description:
         "はじめてでも失敗なく作れるような、鶏肉や玉ねぎを具とした基本的なマカロニグラタンのレシピです。\n" +
@@ -14,44 +16,45 @@ export const dummyRecipeDataList = [
       favoriteCount: 768,
       imageUrl: "/takada-images/new-recipes/recipe1.jpg",
       isMyFavorite: false,
-      isMyRecipe: false,
-      serving: "2人前",
+      isPublished: true,
     },
   },
   {
     recipeId: 2,
     outline: {
-      title: "パスタ",
+      title: "ラーメン",
       chef: {
         chefImageUrl: undefined,
         chefName: "",
+        screenName: "hoge",
+        userId: 101,
       },
       description:
-        "おいしい冷製パスタのレシピです。\n" +
+        "おいしいラーメンのレシピです。\n" +
         "夏にぴったりです。ぜひお試しください。",
       favoriteCount: 1768,
-      imageUrl: "/takada-images/my-recipes/recipe1.jpg",
+      imageUrl: "/takada-images/my-recipes/recipe2.jpg",
       isMyFavorite: false,
-      isMyRecipe: true,
-      serving: "2人前",
+      isPublished: true,
     },
   },
   {
     recipeId: 3,
     outline: {
-      title: "らーめん",
+      title: "パスタ",
       chef: {
         chefImageUrl: undefined,
         chefName: "",
+        screenName: "hoge",
+        userId: 102,
       },
       description:
         "おいしい冷製パスタのレシピです。\n" +
         "夏にぴったりです。ぜひお試しください。",
       favoriteCount: 1768,
-      imageUrl: "/takada-images/my-recipes/recipe1.jpg",
+      imageUrl: "/takada-images/my-recipes/recipe3.jpg",
       isMyFavorite: false,
-      isMyRecipe: false,
-      serving: "2人前",
+      isPublished: false,
     },
   },
 ]
