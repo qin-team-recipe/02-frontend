@@ -1,9 +1,12 @@
 "use client"
+
 import { useState } from "react"
 
-import { Counter } from "./Counter"
+export const AddProcess = () => {
+  const [inputValues, setInputValues] = useState<string[]>([])
+  const [showModal, setShowModal] = useState(false)
+  const [deleteIndex, setDeleteIndex] = useState<number | null>(null)
 
-export const AddMaterial = () => {
   const moveUp = (index: number) => {
     if (index > 0) {
       const updatedValues = [...inputValues]
@@ -23,11 +26,6 @@ export const AddMaterial = () => {
       setInputValues(updatedValues)
     }
   }
-
-  //ゴミ箱メソッド
-  const [inputValues, setInputValues] = useState<string[]>([])
-  const [showModal, setShowModal] = useState(false)
-  const [deleteIndex, setDeleteIndex] = useState<number | null>(null)
 
   const handleChange = (index: number, value: string) => {
     const updatedValues = [...inputValues]
@@ -61,12 +59,14 @@ export const AddMaterial = () => {
 
   return (
     <>
-      <div className="min-h-[148px] pt-[32px]">
-        <Counter />
-        <div className="relative h-[42px] border-y-2">
+      <div className="mb-4">
+        <div className="mt-3 h-[19px] px-[16px] text-[16px] font-bold">
+          作り方
+        </div>
+        <div className="relative h-[42px] w-full border-y-2">
           <input
             type="text"
-            className="h-full w-full px-2 pr-10"
+            className="h-full w-full"
             value={inputValues[0] || ""}
             onChange={(e) => handleChange(0, e.target.value)}
           />
@@ -165,8 +165,8 @@ export const AddMaterial = () => {
         <div className="h-[27px]">
           <div className="flex px-4 pt-[8px] text-red-400">
             <div className="h-4 w-4">+</div>
-            <div className="h-[19px] w-[119px] pl-[4px] text-[16px]">
-              <button onClick={addInputForm}>材料を追加する</button>
+            <div className="h-[19px] w-[200px] pl-[4px] text-[16px]">
+              <button onClick={addInputForm}>工程を追加する</button>
             </div>
           </div>
         </div>

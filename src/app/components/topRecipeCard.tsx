@@ -15,7 +15,7 @@ const Card: FC<RecipeCardProps> = (props) => {
     <div>
       <div className="relative">
         <div
-          className="relative w-full h-full"
+          className="relative h-full w-full"
           style={{ paddingTop: "100%" }}
         ></div>
         <Image
@@ -23,15 +23,15 @@ const Card: FC<RecipeCardProps> = (props) => {
           alt=""
           width={160}
           height={160}
-          className="absolute top-0 left-0 w-full h-full rounded-3xl"
+          className="absolute left-0 top-0 h-full w-full rounded-3xl"
         />
-        <div className="absolute top-2 right-2 flex items-center space-x-1 bg-[rgba(4,0,19,0.483)] text-white p-1 rounded-2xl">
+        <div className="absolute right-2 top-2 flex items-center space-x-1 rounded-2xl bg-[rgba(4,0,19,0.483)] p-1 text-white">
           <Image src="/toppage/good.png" alt="" width={14} height={14} />
           <p className="text-[14px] leading-[17px]">{good}</p>
         </div>
       </div>
-      <h2 className="mt-2 text-sm leading-6 line-clamp-2">{title}</h2>
-      <p className="mt-1 text-xs leading-4 line-clamp-1">{text}</p>
+      <h2 className="mt-2 line-clamp-2 text-sm leading-6">{title}</h2>
+      <p className="mt-1 line-clamp-1 text-xs leading-4">{text}</p>
     </div>
   )
 }
