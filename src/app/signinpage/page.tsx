@@ -4,7 +4,7 @@ import { NextPage } from "next"
 import Image from "next/image"
 import React, { useEffect, useState } from "react"
 
-import { SubHeader } from "../../components/SubHeader"
+import { SubHeader } from "../components/SubHeader"
 
 type PageInfoType = {
   title: string

@@ -7,8 +7,8 @@ import React, { useContext } from "react"
 import {
   GoogleUserContext,
   UserContext,
-} from "../../components/AuthedCheckProvider"
-import { SubHeader } from "../../components/SubHeader"
+} from "../components/AuthedCheckProvider"
+import { SubHeader } from "../components/SubHeader"
 
 const Register: NextPage = () => {
   const { googleUser, setGoogleUser } = useContext(GoogleUserContext)

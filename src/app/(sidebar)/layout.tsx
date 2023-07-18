@@ -3,11 +3,6 @@ import "../styles/pages.scss"
 
 import { Inter } from "next/font/google"
 
-import Container from "@/app/components/Container"
-
-import FooterMenu from "../components/FooterMenu"
-import Sidebar from "../components/Sidebar"
-
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
@@ -22,19 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <html lang="en">
-        <body className={inter.className}>
-          <div className="flex w-full justify-center">
-            <Sidebar />
-            <div className=" w-full max-w-[480px]">
-              <Container>
-                {children}
-                <FooterMenu />
-              </Container>
-            </div>
-          </div>
-        </body>
-      </html>
+      {/* <div>Route Groups配下用に任意のレイアウトを作成してください</div> */}
     </>
   )
 }
