@@ -12,10 +12,9 @@ type FavoriteButtonProps = {
 const FavoriteButton = (props: FavoriteButtonProps) => {
   const { className, isActive, onClick } = props
 
-  const buttonClass =
-    "transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full shadow-lg text-white flex items-center justify-center "
-  const activeButtonClass = "bg-red-500 "
-  const inactiveButtonClass = "bg-gray-400"
+  const buttonClass = "px-1 py-1 rounded text-sm "
+  const activeButtonClass = "text-red-500 bg-white border border-red-500 "
+  const inactiveButtonClass = "text-white bg-red-500 "
   return (
     <>
       <div className={className ? className : ""}>
@@ -25,7 +24,7 @@ const FavoriteButton = (props: FavoriteButtonProps) => {
           }
           onClick={onClick}
         >
-          {/* TODO アイコン決定前なので暫定的に文字で表現 */}♡
+          {isActive ? "お気に入りから削除" : "お気に入りに追加"}
         </button>
       </div>
     </>
