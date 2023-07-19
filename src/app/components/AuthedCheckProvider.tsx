@@ -2,76 +2,118 @@
 
 import { useRouter } from "next/navigation"
 import { usePathname } from "next/navigation"
-import {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react"
+import { createContext, FC, ReactNode, useEffect, useState } from "react"
 
 import { PAGE_INFO } from "../pageInfo"
 
 // 認証不要なページリスト(リダイレクトしないページ) GoogleAuthのページものぞく
-const NOT_AUTHED_PAGE_LIST = ["/", "signin", "/draft", "/auth/callback/google"]
+const NOT_AUTHED_PAGE_LIST = [
+  "/",
+  "signinpage",
+  "/draft",
+  "/auth/callback/google",
+]
 
 type PropsType = {
   children: ReactNode
 }
 
+type GoogleUserType = {
+  display_name?: string
+  email?: string
+  service_name?: string
+  service_user_id?: string
+}
+
+type GoogleUserContextType = {
+  googleUser: GoogleUserType | undefined
+  setGoogleUser: React.Dispatch<
+    React.SetStateAction<GoogleUserType | undefined>
+  >
+}
+
+const GoogleUserContext = createContext<GoogleUserContextType>({
+  googleUser: {
+    display_name: "",
+    email: "",
+    service_name: "",
+    service_user_id: "",
+  },
+  setGoogleUser: () => {},
+})
+
 type UserType = {
-  id: number
-  name: string
-  image: string
+  display_name?: string
+  email?: string
+  id?: number
+  screen_name?: string
 }
 
 type UserContextType = {
-  user: UserType
+  user: UserType | undefined
   setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>
 }
 
-const UserContext = createContext<UserContextType | undefined>(undefined)
+const UserContext = createContext<UserContextType>({
+  user: {
+    display_name: "",
+    email: "",
+    id: 0,
+    screen_name: "",
+  },
+  setUser: () => {},
+})
 
 const AuthedCheckProvider: FC<PropsType> = (props) => {
   const { children } = props
   const router = useRouter()
 
-  const [user, setUser] = useState<UserType | undefined>({
-    id: 0,
-    name: "",
-    image: "",
+  const [googleUser, setGoogleUser] = useState<GoogleUserType | undefined>({
+    display_name: "",
+    email: "",
+    service_name: "",
+    service_user_id: "",
   })
+  const [user, setUser] = useState<UserType | undefined>({
+    display_name: "",
+    email: "",
+    id: 0,
+    screen_name: "",
+  })
+
   const pathname = usePathname()
 
   useEffect(() => {
-    // useridが０の場合（初期値）はログインしていないと判断しリダイレクト
     const pageInfo = PAGE_INFO[pathname]
     if (pageInfo) {
       localStorage.setItem("redirectPageInfo", JSON.stringify(pageInfo))
     }
-    if (!user?.id && !NOT_AUTHED_PAGE_LIST.includes(pathname)) {
-      router.push("signin")
+  }, [googleUser, user, pathname])
+
+  // useEffect to handle redirection
+  useEffect(() => {
+    const checkUser = async () => {
+      if (
+        googleUser &&
+        !googleUser.service_user_id &&
+        !NOT_AUTHED_PAGE_LIST.includes(pathname)
+      ) {
+        router.push("signinpage")
+      }
     }
-  }, [router, user, pathname])
+    checkUser()
+  }, [router, googleUser, user, pathname])
+
+  const googleValue = { googleUser: { ...googleUser }, setGoogleUser }
+  const userValue = { user: { ...user }, setUser }
 
   return (
-    <>
-      {user && (
-        <UserContext.Provider value={{ user, setUser }}>
-          {children}
-        </UserContext.Provider>
-      )}
-    </>
+    <UserContext.Provider value={userValue}>
+      <GoogleUserContext.Provider value={googleValue}>
+        {children}
+      </GoogleUserContext.Provider>
+    </UserContext.Provider>
   )
 }
 
-// signinページでログインしたらuser情報をセットする関数
-export function useUser() {
-  const context = useContext(UserContext)
-  if (context === undefined) {
-    throw new Error("useUser must be used within a UserProvider")
-  }
-  return context
-}
-export default AuthedCheckProvider
+export { AuthedCheckProvider, GoogleUserContext, UserContext }

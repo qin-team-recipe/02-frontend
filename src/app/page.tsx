@@ -1,8 +1,10 @@
 // 以下の型定義は、同じディれくりトリにあるtypes.tsに移動しましたので、そこからインポートする
+
+import { NextPage } from "next"
+
 import Container from "./components/Container"
 import FooterMenu from "./components/FooterMenu"
 import SearchBar from "./components/SearchBar"
-import Sidebar from "./components/Sidebar"
 import { SubHeader } from "./components/SubHeader"
 import TopChefCard from "./components/TopChefCard"
 import TopChefPicCard from "./components/TopChefPicCard"
@@ -96,36 +98,32 @@ const recipesDummyData: RecipeCardProps[] = [
     updatedAt: "2021-01-01 00:00:00",
   },
 ]
-
-const Home = () => {
+const Home: NextPage = () => {
   return (
     <>
-      <div className="flex justify-center">
-        <Sidebar />
-        <Container>
-          <SearchBar />
-          <div className="-mx-[18px] border-b-2"></div>
-          <div className="mb-2.5 mt-2.5">
-            <SubHeader title="注目のシェフ" />
-          </div>
-          <TopChefPicCard data={chefDummyData} />
-          <div className="mb-2.5 mt-6">
-            <SubHeader
-              title="話題のレシピ"
-              link={{ href: "/favorites", text: "もっと見る" }}
-            />
-          </div>
-          <TopRecipeCard data={recipesDummyData} />
-          <div className="mb-2.5 mt-6">
-            <SubHeader
-              title="シェフ"
-              link={{ href: "/favorites", text: "もっと見る" }}
-            />
-          </div>
-          <TopChefCard data={chefDummyData} />
-          <FooterMenu />
-        </Container>
-      </div>
+      <Container>
+        <SearchBar />
+        <div className="-mx-[18px] border-b-2"></div>
+        <div className="mb-2.5 mt-2.5">
+          <SubHeader title="注目のシェフ" />
+        </div>
+        <TopChefPicCard data={chefDummyData} />
+        <div className="mb-2.5 mt-6">
+          <SubHeader
+            title="話題のレシピ"
+            link={{ href: "/favorites", text: "もっと見る" }}
+          />
+        </div>
+        <TopRecipeCard data={recipesDummyData} />
+        <div className="mb-2.5 mt-6">
+          <SubHeader
+            title="シェフ"
+            link={{ href: "/favorites", text: "もっと見る" }}
+          />
+        </div>
+        <TopChefCard data={chefDummyData} />
+        <FooterMenu />
+      </Container>
     </>
   )
 }

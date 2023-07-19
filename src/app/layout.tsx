@@ -3,6 +3,8 @@ import "./styles/pages.scss"
 
 import { Inter } from "next/font/google"
 
+import Sidebar from "./components/Sidebar"
+
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
@@ -16,10 +18,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    // <AuthedCheckProvider>
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
-    // </AuthedCheckProvider>
+    <>
+      <html lang="en">
+        <body className={inter.className}>
+          {/* <AuthedCheckProvider> */}
+          <div className="flex w-full justify-center">
+            <Sidebar />
+            <div className=" w-full max-w-[480px]">{children}</div>
+          </div>
+          {/* </AuthedCheckProvider> */}
+        </body>
+      </html>
+    </>
   )
 }

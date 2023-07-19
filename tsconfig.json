@@ -29,6 +29,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/app/components/Container.tsx"
-  ],
+, "cypress/e2e/login.cy.ts"  ],
   "exclude": ["node_modules"]
 }
