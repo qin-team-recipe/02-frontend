@@ -3,6 +3,8 @@ import "../styles/pages.scss"
 
 import { Inter } from "next/font/google"
 
+import FooterMenu from "../components/FooterMenu"
+
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
@@ -17,6 +19,8 @@ export default function RootLayout({
 }) {
   return (
     <>
+      {children}
+      <FooterMenu />
       {/* <div>Route Groups配下用に任意のレイアウトを作成してください</div> */}
     </>
   )
