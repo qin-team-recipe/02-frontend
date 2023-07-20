@@ -24,7 +24,9 @@ export default function RootLayout({
           {/* <AuthedCheckProvider> */}
           <div className="flex w-full justify-center">
             <Sidebar />
-            <div className=" w-full max-w-[480px]">{children}</div>
+            <div className=" w-full max-w-[480px] border-l-2 border-r-2">
+              {children}
+            </div>
           </div>
           {/* </AuthedCheckProvider> */}
         </body>

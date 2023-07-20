@@ -103,7 +103,7 @@ const Home: NextPage = () => {
     <>
       <Container>
         <SearchBar />
-        <div className="-mx-[18px] border-b-2"></div>
+        <div className="-mx-[16px] border-b-2"></div>
         <div className="mb-2.5 mt-2.5">
           <SubHeader title="注目のシェフ" />
         </div>
@@ -122,7 +122,9 @@ const Home: NextPage = () => {
           />
         </div>
         <TopChefCard data={chefDummyData} />
-        <FooterMenu />
+        <div className="w-[476px]: -mx-[16px] overflow-auto border-l-2 border-r-2">
+          <FooterMenu />
+        </div>
       </Container>
     </>
   )
