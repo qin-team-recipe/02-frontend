@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react"
 
-import FooterMenu from "./FooterMenu"
+import FooterMenu from "../app/components/FooterMenu"
 
 const meta: Meta<typeof FooterMenu> = {
   title: "Example/FooterMenu",
