@@ -3,7 +3,8 @@ import "./styles/pages.scss"
 
 import { Inter } from "next/font/google"
 
-import Sidebar from "./components/Sidebar"
+import { AuthedCheckProvider } from "./components/AuthedCheckProvider"
+import Sidebar from "./components/sidebar"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,14 +22,14 @@ export default function RootLayout({
     <>
       <html lang="en">
         <body className={inter.className}>
-          {/* <AuthedCheckProvider> */}
-          <div className="flex w-full justify-center">
-            <Sidebar />
-            <div className=" w-full max-w-[480px] border-l-2 border-r-2">
-              {children}
+          <AuthedCheckProvider>
+            <div className="flex w-full justify-center">
+              <Sidebar />
+              <div className=" w-full max-w-[480px] border-l-2 border-r-2">
+                {children}
+              </div>
             </div>
-          </div>
-          {/* </AuthedCheckProvider> */}
+          </AuthedCheckProvider>
         </body>
       </html>
     </>

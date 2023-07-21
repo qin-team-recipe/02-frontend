@@ -1,6 +1,23 @@
-import Link from "next/link"
+"use client"
+import { useRouter } from "next/navigation"
 
-const logout = () => {
+import {
+  removeLoginUserToLocalStorage,
+  removePathGoAfterLoginFromLocalStorage,
+  removeTokenFromLocalStorage,
+} from "@/app/utils/localStorage"
+
+const Logout = () => {
+  const router = useRouter()
+
+  const handleLogout = () => {
+    console.log("remove token")
+    removeTokenFromLocalStorage()
+    removeLoginUserToLocalStorage()
+    removePathGoAfterLoginFromLocalStorage()
+    router.push("/")
+  }
+
   return (
     <>
       <div className="flex justify-center">
@@ -8,10 +25,10 @@ const logout = () => {
           <div className="border-b-2 px-3 py-[12px]">
             <div className="flex h-[48px]">
               <div className="h-[24px] w-[24px] px-4 py-3">
-                <Link href="../settings">←</Link>
+                <button onClick={handleLogout}>←</button>
               </div>
               <div className="ml-[21px] h-[24px] py-3 text-[16px] font-bold">
-                <Link href="../settings">ログアウト</Link>
+                <button onClick={handleLogout}>ログアウト</button>
               </div>
             </div>
           </div>
@@ -21,4 +38,4 @@ const logout = () => {
     </>
   )
 }
-export default logout
+export default Logout

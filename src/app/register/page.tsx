@@ -5,6 +5,12 @@ import { useRouter } from "next/navigation"
 import React, { useContext } from "react"
 
 import {
+  getPathGoAfterLoginFromLocalStorage,
+  setLoginUserToLocalStorage,
+  setTokenToLocalStorage,
+} from "@/app/utils/localStorage"
+
+import {
   GoogleUserContext,
   UserContext,
 } from "../components/AuthedCheckProvider"
@@ -18,7 +24,8 @@ const Register: NextPage = () => {
   console.log(googleUser)
 
   const handleClick = async () => {
-    fetch("http://localhost:8083/api/v1/me/register", {
+    // 新規登録
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/me/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,9 +40,20 @@ const Register: NextPage = () => {
         }
       })
       .then((result) => {
-        setUser(result.data.user)
-        router.push("/")
-        console.log(result)
+        if (result.message == "success") {
+          // 新規登録成功
+          console.log("register success")
+          setTokenToLocalStorage(result.data.token)
+          setLoginUserToLocalStorage(result.data.user)
+          setUser(result.data.user)
+
+          // 遷移しようとしたページへ遷移
+          const goAfterLogin = getPathGoAfterLoginFromLocalStorage()
+          router.push(goAfterLogin ?? "/")
+        } else {
+          // 新規登録失敗
+          console.error("register error")
+        }
       })
       .catch((error) => {
         console.error(error)

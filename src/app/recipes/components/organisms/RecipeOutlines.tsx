@@ -1,6 +1,6 @@
-import { dummyLinkDataList } from "@/app/chefs/[screenName]/mock"
+// import { dummyLinkDataList } from "@/app/chefs/[screenName]/mock"
+// import { dummyRecipeDataList } from "../../[id]/mock"
 
-import { dummyRecipeDataList } from "../../[id]/mock"
 import { RecipeOutlineType } from "../../[id]/type"
 import CounterLabel from "../../commonComponents/molecules/CounterLabel"
 import ImageWithBlurType from "../../commonComponents/molecules/ImageWithBlur"
@@ -24,46 +24,54 @@ const getRecipeData = async (
 ): Promise<RecipeOutlineType | undefined> => {
   console.log(new Date().toLocaleString() + " レシピデータ取得 id=" + id)
 
-  // const response = await fetch(`http://localhost:8080/api/v1/recipes/${id}`, {
-  //   next: { revalidate: 10 },
-  // })
-  // const data = await response.json()
-  // console.log("レシピデータ取得結果 data=" + JSON.stringify(data))
-  // return data
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/recipes/${id}`,
+    {
+      next: { revalidate: 10 },
+    }
+  )
+  const result = await response.json()
+  console.log("レシピデータ取得結果 result=" + JSON.stringify(result))
+  const dummyData = {
+    ...result.data,
+    isPublished: true,
+    imageUrl: "/takada-images/new-recipes/recipe1.jpg",
+  }
+  return dummyData
 
-  // 疑似遅延
-  const _sleep = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms))
-  await _sleep(1000)
+  // // 疑似遅延
+  // const _sleep = (ms: number) =>
+  //   new Promise((resolve) => setTimeout(resolve, ms))
+  // await _sleep(1000)
 
-  console.log(new Date().toLocaleString() + " レシピデータ取得完了")
+  // console.log(new Date().toLocaleString() + " レシピデータ取得完了")
 
-  // ダミーデータ
-  const dummy = dummyRecipeDataList.find((item) => item.recipeId === Number(id))
-  return dummy?.outline
+  // // ダミーデータ
+  // const dummy = dummyRecipeDataList.find((item) => item.recipeId === Number(id))
+  // return dummy?.outline
 }
 
 const getChefLinkData = async (
   screenName: string
 ): Promise<LinkType[] | undefined> => {
-  // const response = await fetch(
-  //   `http://localhost:8080/api/v1/chefs/${screenName}`,
-  //   {
-  //     cache: "no-store",
-  //   }
-  // )
-  // const data = await response.json()
-  // console.log("シェフデータ取得結果 data=" + JSON.stringify(data))
-  // return data
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/chefs/${screenName}`,
+    {
+      cache: "no-store",
+    }
+  )
+  const result = await response.json()
+  console.log("シェフデータ取得結果 result=" + JSON.stringify(result))
+  return result.data
 
-  // 疑似遅延
-  const _sleep = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms))
-  await _sleep(1000)
+  // // 疑似遅延
+  // const _sleep = (ms: number) =>
+  //   new Promise((resolve) => setTimeout(resolve, ms))
+  // await _sleep(1000)
 
-  // ダミーデータ
-  const dummy = dummyLinkDataList.find((item) => item.screenName === screenName)
-  return dummy?.links
+  // // ダミーデータ
+  // const dummy = dummyLinkDataList.find((item) => item.screenName === screenName)
+  // return dummy?.links
 }
 
 type RecipeOutlinesProps = {
@@ -80,8 +88,8 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
   const recipe = await getRecipeData(id)
   const links =
     recipe?.chef?.screenName && (await getChefLinkData(recipe.chef.screenName))
-  const isMyRecipe = await (loginUserId == recipe?.chef.userId)
-  console.log(`loginUserId=${loginUserId} == userId${recipe?.chef.userId}`)
+  const isMyRecipe = await (loginUserId == recipe?.chef.id)
+  console.log(`loginUserId=${loginUserId} userId=${recipe?.chef.id}`)
 
   /* レシピが取得できなかった場合 */
   if (!recipe) {
@@ -141,14 +149,14 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
           ) : (
             <RecipeChefAvatorButton
               src={recipe.chef.chefImageUrl}
-              name={recipe.chef.chefName}
+              name={recipe.chef.display_name}
               screenName={recipe.chef.screenName}
             />
           )}
           {/* お気に入り件数 */}
           <CounterLabel
             className="ml-4"
-            count={recipe.favoriteCount}
+            count={recipe.favorites_count}
             label="お気に入り"
           />
         </div>
@@ -159,7 +167,8 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
             <div className="mr-2 flex-1">
               <RecipeFavoriteButton
                 className="w-full"
-                isMyFavorite={recipe.isMyFavorite}
+                isMyFavorite={isMyRecipe}
+                recipeId={id}
               />
             </div>
             <div className="flex-1">
@@ -170,7 +179,8 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
           <div className="mt-2 flex-1">
             <RecipeFavoriteButton
               className="w-full"
-              isMyFavorite={recipe.isMyFavorite}
+              isMyFavorite={isMyRecipe}
+              recipeId={id}
             />
           </div>
         )}

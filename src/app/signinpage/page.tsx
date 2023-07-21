@@ -13,7 +13,7 @@ type PageInfoType = {
 
 const handleClick = async () => {
   const response = await fetch(
-    "http://localhost:8083/api/v1/authenticates/google"
+    `${process.env.NEXT_PUBLIC_API_URL}/authenticates/google`
   )
 
   if (!response.ok) {

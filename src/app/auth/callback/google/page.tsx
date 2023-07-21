@@ -2,54 +2,83 @@
 
 import { NextPage } from "next"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect } from "react"
 
 import {
   GoogleUserContext,
   UserContext,
 } from "@/app/components/AuthedCheckProvider"
+import {
+  getPathGoAfterLoginFromLocalStorage,
+  setLoginUserToLocalStorage,
+  setTokenToLocalStorage,
+} from "@/app/utils/localStorage"
+
+const getGoogleUserInfo = async (code: string) => {
+  const response = await fetch(
+    `${
+      process.env.NEXT_PUBLIC_API_URL
+    }/authenticates/google/userinfo?code=${encodeURIComponent(code)}`
+  )
+  const result = await response.json()
+  if (result.message != "success") {
+    return
+  }
+  return result.data
+}
+
+export const tryLogin = async (service_user_id: string) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/login?service_user_id=${service_user_id}`
+  )
+  const result = await response.json()
+  if (result.message != "success") {
+    return
+  }
+  return result.data
+}
 
 const GoogleAuth: NextPage = () => {
   const router = useRouter()
   const pathname = useSearchParams()
   const { googleUser, setGoogleUser } = useContext(GoogleUserContext)
   const { user, setUser } = useContext(UserContext)
-  const [isLoading, setIsLoading] = useState(true)
 
   const code = pathname.get("code")
-  console.log(code)
 
   useEffect(() => {
-    if (code) {
-      fetch(
-        `http://localhost:8083/api/v1/authenticates/google/userinfo?code=${encodeURIComponent(
-          code
-        )}`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setGoogleUser(data.data)
-          // この時点で何らかフラグを判定し、新規登録ページに遷移するか/self/loginにフェッチしてログインするかを判定する
-          //  初回は以下の通りページ遷移する
-          router.push("/register")
-          // 初回ではない場合、ここで/self/loginにフェッチして情報を取得する。その後、setUserにセットする
-          //  fetch(
-          // `http://localhost:8083/api/v1//self/login `)
-          // .then((response) => response.json())
-          // .then((data) => {
-          //   setUser(data.data)
-          //   router.push("/")
-          // })
-          // .catch((error) => {
-          //   console.error(error)
-          // })
+    const checkUser = async () => {
+      if (!code) {
+        return
+      }
 
-          setIsLoading(false)
-        })
-    } else {
-      setIsLoading(false)
+      // Googleユーザ情報取得
+      const googleUserInfo = await getGoogleUserInfo(code)
+      if (!googleUserInfo?.service_user_id) {
+        throw new Error("認証失敗")
+      }
+      setGoogleUser(googleUserInfo)
+
+      // アプリログインを試す
+      const loginResult = await tryLogin(googleUserInfo?.service_user_id)
+      if (loginResult) {
+        // ログイン成功
+        console.log("try login already exists user")
+        setTokenToLocalStorage(loginResult.token)
+        setLoginUserToLocalStorage(loginResult.user)
+        await setUser(loginResult.user)
+
+        // 遷移しようとしたページへ遷移
+        const goAfterLogin = await getPathGoAfterLoginFromLocalStorage()
+        await router.push(goAfterLogin ?? "/")
+      } else {
+        // ログイン失敗（新規登録画面へ遷移）
+        console.log("try login new comer")
+        await router.push("/register")
+      }
     }
-  }, [code, router, setGoogleUser])
+    checkUser()
+  }, [code, router, setGoogleUser, setUser])
 
   console.log(googleUser)
   return <div>Loading...</div>
