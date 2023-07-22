@@ -17,12 +17,12 @@ const GoogleAuth: NextPage = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   const code = pathname.get("code")
-  console.log(code)
+  const LOCALHOST_URL = process.env.NEXT_PUBLIC_LOCALHOST_URL
 
   useEffect(() => {
     if (code) {
       fetch(
-        `http://localhost:8083/api/v1/authenticates/google/userinfo?code=${encodeURIComponent(
+        `${LOCALHOST_URL}/api/v1/authenticates/google/userinfo?code=${encodeURIComponent(
           code
         )}`
       )

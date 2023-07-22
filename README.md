@@ -19,6 +19,11 @@ yarn を使用してください
 - CSS Modules形式で各コンポーネントから呼び出すことを想定します。
 - ファイル設計は未定ですので、必要に応じて今後調整をお願いします。
 
+## フェッチ先LOCALHOSTのURLについて
+バックエンドで設定したLocalhostの番号をNEXT_PUBLIC_LOCALHOST_URLに設定してください。<br/>
+例）NEXT_PUBLIC_LOCALHOST_URL=http://localhost:8080
+
+
 ## Storybookについて
 - Storybookはコンポーネントの確認用に使用します。
 - yarn storybookコマンドでブラウザ上にStorybookが立ち上がります
