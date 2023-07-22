@@ -17,10 +17,10 @@ const Register: NextPage = () => {
   const { user, setUser } = useContext(UserContext)
   const router = useRouter()
 
-  console.log(googleUser)
+  const LOCALHOST_URL = process.env.NEXT_PUBLIC_LOCALHOST_URL
 
   const handleClick = async () => {
-    fetch("http://localhost:8083/api/v1/me/register", {
+    fetch(`${LOCALHOST_URL}/api/v1/me/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
