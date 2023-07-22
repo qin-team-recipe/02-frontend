@@ -11,10 +11,10 @@ type PageInfoType = {
   title: string
   image: string
 }
-const LOCALHOST_URL = process.env.NEXT_PUBLIC_LOCALHOST_URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const handleClick = async () => {
-  const response = await fetch(`${LOCALHOST_URL}/api/v1/authenticates/google`)
+  const response = await fetch(`${API_URL}/authenticates/google`)
 
   if (!response.ok) {
     console.error("フェッチに失敗しました:", response.statusText)
