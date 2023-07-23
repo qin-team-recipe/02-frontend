@@ -5,14 +5,31 @@ import { usePathname } from "next/navigation"
 import { createContext, FC, ReactNode, useEffect, useState } from "react"
 
 import { PAGE_INFO } from "../pageInfo"
+import {
+  getTokenFromLocalStorage,
+  setPathGoAfterLoginToLocalStorage,
+} from "../utils/localStorage"
 
 // 認証不要なページリスト(リダイレクトしないページ) GoogleAuthのページものぞく
 const NOT_AUTHED_PAGE_LIST = [
   "/",
-  "signinpage",
+  "/signinpage",
   "/draft",
   "/auth/callback/google",
+  "/register",
+  "/logout",
+  "/recipes",
+  "/chefs",
 ]
+const checkAuthPage = (pathname: string) => {
+  if (pathname == "/") return pathname
+  const hit = NOT_AUTHED_PAGE_LIST.find((page) => {
+    if (page != "/") {
+      return pathname.indexOf(page) >= 0
+    }
+  })
+  return hit
+}
 
 type PropsType = {
   children: ReactNode
@@ -68,20 +85,16 @@ const AuthedCheckProvider: FC<PropsType> = (props) => {
   const { children } = props
   const router = useRouter()
 
-  const [googleUser, setGoogleUser] = useState<GoogleUserType | undefined>({
-    display_name: "",
-    email: "",
-    service_name: "",
-    service_user_id: "",
-  })
-  const [user, setUser] = useState<UserType | undefined>({
-    display_name: "",
-    email: "",
-    id: 0,
-    screen_name: "",
-  })
+  // Googleユーザ情報
+  const [googleUser, setGoogleUser] = useState<GoogleUserType | undefined>()
+  const googleValue = { googleUser: { ...googleUser }, setGoogleUser }
+
+  // アプリユーザ情報
+  const [user, setUser] = useState<UserType | undefined>()
+  const userValue = { user: { ...user }, setUser }
 
   const pathname = usePathname()
+  const token = getTokenFromLocalStorage()
 
   useEffect(() => {
     const pageInfo = PAGE_INFO[pathname]
@@ -92,25 +105,40 @@ const AuthedCheckProvider: FC<PropsType> = (props) => {
 
   // useEffect to handle redirection
   useEffect(() => {
-    const checkUser = async () => {
-      if (
-        googleUser &&
-        !googleUser.service_user_id &&
-        !NOT_AUTHED_PAGE_LIST.includes(pathname)
-      ) {
-        router.push("signinpage")
+    const checkUser = () => {
+      // サインイン不要は対象外
+      if (checkAuthPage(pathname)) {
+        return
       }
+
+      // トークンを確認
+      if (!token) {
+        console.log("Auth Check no token...")
+
+        // 開こうとしたページパスを保持しながらログインページへ遷移
+        setPathGoAfterLoginToLocalStorage(pathname)
+        router.push("/signinpage")
+        return
+      }
+      console.log("Auth Check has token!")
     }
     checkUser()
-  }, [router, googleUser, user, pathname])
+  }, [router, googleUser, user, pathname, token])
 
-  const googleValue = { googleUser: { ...googleUser }, setGoogleUser }
-  const userValue = { user: { ...user }, setUser }
+  if (checkAuthPage(pathname)) {
+    return (
+      <UserContext.Provider value={userValue}>
+        <GoogleUserContext.Provider value={googleValue}>
+          {children}
+        </GoogleUserContext.Provider>
+      </UserContext.Provider>
+    )
+  }
 
   return (
     <UserContext.Provider value={userValue}>
       <GoogleUserContext.Provider value={googleValue}>
-        {children}
+        {token && children}
       </GoogleUserContext.Provider>
     </UserContext.Provider>
   )

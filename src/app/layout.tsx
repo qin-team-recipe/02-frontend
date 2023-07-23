@@ -4,7 +4,9 @@ import "./styles/pages.scss"
 import { Inter } from "next/font/google"
 
 import { AuthedCheckProvider } from "./components/AuthedCheckProvider"
+
 import Sidebar from "./components/Sidebar"
+
 
 const inter = Inter({ subsets: ["latin"] })
 

@@ -14,7 +14,9 @@ type PageInfoType = {
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const handleClick = async () => {
+
   const response = await fetch(`${API_URL}/authenticates/google`)
+
 
   if (!response.ok) {
     console.error("フェッチに失敗しました:", response.statusText)
