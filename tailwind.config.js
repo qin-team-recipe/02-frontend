@@ -15,6 +15,7 @@ module.exports = {
       },
       minHeight: {
         59: "59px",
+        screen: "100vh",
       },
       minWidth: {
         88: "88px",

@@ -76,6 +76,7 @@ const GoogleAuth: NextPage = () => {
         console.log("try login new comer")
         await router.push("/register")
       }
+
     }
     checkUser()
   }, [code, router, setGoogleUser, setUser])
