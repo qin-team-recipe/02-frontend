@@ -1,6 +1,6 @@
-// import { dummyLinkDataList } from "@/app/chefs/[screenName]/mock"
-// import { dummyRecipeDataList } from "../../[id]/mock"
+import { dummyLinkDataList } from "@/app/chefs/[screenName]/mock"
 
+// import { dummyRecipeDataList } from "../../[id]/mock"
 import { RecipeOutlineType } from "../../[id]/type"
 import CounterLabel from "../../commonComponents/molecules/CounterLabel"
 import ImageWithBlurType from "../../commonComponents/molecules/ImageWithBlur"
@@ -24,20 +24,25 @@ const getRecipeData = async (
 ): Promise<RecipeOutlineType | undefined> => {
   console.log(new Date().toLocaleString() + " レシピデータ取得 id=" + id)
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/recipes/${id}`,
-    {
-      next: { revalidate: 10 },
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/recipes/${id}`,
+      {
+        next: { revalidate: 10 },
+      }
+    )
+    const result = await response.json()
+    console.log("レシピデータ取得結果 result=" + JSON.stringify(result))
+    const dummyData = {
+      ...result.data,
+      isPublished: true,
+      imageUrl: "/takada-images/new-recipes/recipe1.jpg",
     }
-  )
-  const result = await response.json()
-  console.log("レシピデータ取得結果 result=" + JSON.stringify(result))
-  const dummyData = {
-    ...result.data,
-    isPublished: true,
-    imageUrl: "/takada-images/new-recipes/recipe1.jpg",
+    return dummyData
+  } catch (error) {
+    console.error(error)
+    return
   }
-  return dummyData
 
   // // 疑似遅延
   // const _sleep = (ms: number) =>
@@ -54,24 +59,14 @@ const getRecipeData = async (
 const getChefLinkData = async (
   screenName: string
 ): Promise<LinkType[] | undefined> => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/chefs/${screenName}`,
-    {
-      cache: "no-store",
-    }
-  )
-  const result = await response.json()
-  console.log("シェフデータ取得結果 result=" + JSON.stringify(result))
-  return result.data
+  // 疑似遅延
+  const _sleep = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms))
+  await _sleep(1000)
 
-  // // 疑似遅延
-  // const _sleep = (ms: number) =>
-  //   new Promise((resolve) => setTimeout(resolve, ms))
-  // await _sleep(1000)
-
-  // // ダミーデータ
-  // const dummy = dummyLinkDataList.find((item) => item.screenName === screenName)
-  // return dummy?.links
+  // ダミーデータ
+  const dummy = dummyLinkDataList.find((item) => item.screenName === screenName)
+  return dummy?.links
 }
 
 type RecipeOutlinesProps = {

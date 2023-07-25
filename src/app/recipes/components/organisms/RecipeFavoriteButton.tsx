@@ -5,6 +5,7 @@ import { useCallback, useState } from "react"
 import {
   getLoginUserFromLocalStorage,
   getTokenFromLocalStorage,
+  removeTokenFromLocalStorage,
   setPathGoAfterLoginToLocalStorage,
 } from "@/app/utils/localStorage"
 
@@ -17,54 +18,6 @@ type RecipeFavoriteButtonProps = {
   recipeId: string
 }
 
-const addFavorite = async (recipeId: string, userId: number, token: string) => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/recipeFavorites`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: `{
-        "recipe_id": ${recipeId},
-        "user_id": ${userId},
-      }`,
-    }
-  )
-  const result = await response.json()
-  if (result.message != "success") {
-    alert("お気に入り登録失敗")
-  }
-  return
-}
-
-const removeFavorite = async (
-  recipeId: string,
-  userId: number,
-  token: string
-) => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/recipeFavorites`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: `{
-        "recipe_id": ${recipeId},
-        "user_id": ${userId},
-      }`,
-    }
-  )
-  const result = await response.json()
-  if (result.message != "success") {
-    alert("お気に入り解除失敗")
-  }
-  return
-}
-
 /**
  * レシピ概要
  * @returns
@@ -73,9 +26,53 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
   const { className, isMyFavorite, recipeId } = props
   const [isFavorite, setIsFavorite] = useState(isMyFavorite)
   const [isOpenLoginAlert, setIsOpenLoginAlert] = useState(false)
+  const [isOpenAuthErrorAlert, setIsOpenAuthErrorAlert] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
 
+  const updateFavorite = async (
+    type: "add" | "remove",
+    recipeId: string,
+    userId: number,
+    token: string
+  ) => {
+    console.log("お気に入り更新 type=" + type)
+
+    const method = type == "add" ? "POST" : "DELETE"
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/recipeFavorites`,
+        {
+          method: method,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: `{
+          "recipe_id": ${recipeId},
+          "user_id": ${userId}
+        }`,
+        }
+      )
+      if (response.status == 400 || response.status == 401) {
+        console.error("認証エラー")
+        removeTokenFromLocalStorage()
+        setIsOpenAuthErrorAlert(true)
+        return
+      }
+
+      const result = await response.json()
+      console.log(response.status)
+      if (result.message != "success") {
+        console.error("お気に入り更新失敗")
+      } else {
+        console.log("お気に入り更新成功")
+      }
+    } catch (error) {
+      console.error("お気に入り更新失敗 error=" + error)
+    }
+    return
+  }
   /**
    * お気に入りクリック
    */
@@ -84,18 +81,17 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
     const token = getTokenFromLocalStorage()
     console.log(loginUser)
     if (token && loginUser) {
-      // TODO エラーになる
-      // if (isFavorite) {
-      //   removeFavorite(recipeId, loginUser.id, token)
-      // } else {
-      //   addFavorite(recipeId, loginUser.id, token)
-      // }
-
+      updateFavorite(
+        isFavorite ? "remove" : "add",
+        recipeId,
+        loginUser.id,
+        token
+      )
       setIsFavorite((preIsFavorite) => !preIsFavorite)
     } else {
       setIsOpenLoginAlert(true)
     }
-  }, [])
+  }, [isFavorite, recipeId])
 
   const gotoLogin = () => {
     setPathGoAfterLoginToLocalStorage(pathname)
@@ -116,6 +112,21 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
       <Modal isOpen={isOpenLoginAlert}>
         <div className="m-2 flex flex-col items-center justify-center">
           <div className="m-2 text-xl">ログインしてください</div>
+          <div className="mt-2">
+            <div className="rounded bg-blue-400 p-2 text-sm text-white">
+              <button onClick={gotoLogin}>ログイン画面へ</button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal isOpen={isOpenAuthErrorAlert}>
+        <div className="m-2 flex flex-col items-center justify-center">
+          <div className="m-2 text-xl">
+            認証に失敗しました
+            <br />
+            ログインしなおしてください
+          </div>
           <div className="mt-2">
             <div className="rounded bg-blue-400 p-2 text-sm text-white">
               <button onClick={gotoLogin}>ログイン画面へ</button>

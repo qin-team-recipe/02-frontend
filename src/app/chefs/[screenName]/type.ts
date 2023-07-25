@@ -1,12 +1,17 @@
+import { LinkType } from "@/app/recipes/commonComponents/organisms/LinkIcons"
+
 export type ChefOutlineType = {
-  title: string
+  id: number
+  screen_name: string
+  display_name: string
   description: string
-  followerCount?: number
+  chef_links: LinkType[]
+  is_following: boolean
+  follows_count?: number
+  recipes_count: number
   imageUrl?: string
-  isMyFavorite: boolean
-  isFamousChef: boolean
-  recipeCount: number
-  userId: number
+  //isFamousChef: boolean
+  //userId: number
 }
 
 export type RecipeImage = {

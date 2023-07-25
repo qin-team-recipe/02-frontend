@@ -12,10 +12,11 @@ import {
 import Menu, { MenuItemType } from "./Menu"
 
 export type LinkType = {
-  name: string
-  type?: "YouTube" | "Instagram" | "Twitter" | "TikTok" | "Facebook"
-  image?: string
+  id: number
+  service_name: string
   url: string
+  chef_id: number
+  recipe_id: number
 }
 
 type LinkIconsProps = {
@@ -35,31 +36,33 @@ const LinkIcons = (props: LinkIconsProps) => {
   const famousSitesInMenu = [
     {
       icon: <IoLogoFacebook />,
-      title: "Facebook",
+      urlPrefix: "www.facebook.com",
     },
     {
       icon: <IoLogoTiktok />,
-      title: "TikTok",
+      urlPrefix: "www.tiktok.com",
     },
     {
       icon: <IoLogoTwitter />,
-      title: "Twitter",
+      urlPrefix: "www.twitter.com",
     },
   ]
 
   // 表にボタンで表示する有名サイト
-  const youtubeLink = links.find((el) => el.type == "YouTube")
-  const instagramLink = links.find((el) => el.type == "Instagram")
+  const youtubeLink = links.find((el) => el.url.indexOf("www.youtube.com") > 0)
+  const instagramLink = links.find(
+    (el) => el.url.indexOf("www.instagram.com") > 0
+  )
 
   // メニュー内で表示する有名サイト
   const famousSiteInMenuLinks = links.filter(
-    (l) => l.url && famousSitesInMenu.find((f) => f.title == l.type)
+    (l) =>
+      l.url && famousSitesInMenu.find((f) => l.url.indexOf(f.urlPrefix) > 0)
   )
   const famousSiteMenuItems: MenuItemType[] = famousSiteInMenuLinks.map((l) => {
-    const flink = famousSitesInMenu.find((el) => el.title == l.type)
     return {
-      icon: flink?.icon,
-      title: l.type,
+      icon: famousSitesInMenu.find((f) => l.url.indexOf(f.urlPrefix) > 0)?.icon,
+      title: l.service_name,
       action: () => {
         window.open(l.url, "_blank")
       },
@@ -67,11 +70,17 @@ const LinkIcons = (props: LinkIconsProps) => {
   })
 
   // メニュー内で表示するオリジナルサイト
-  const orginalSiteLinks = links.filter((l) => !l.type)
+  const orginalSiteLinks = links.filter(
+    (l) =>
+      l.url &&
+      !famousSitesInMenu.find((f) => l.url.indexOf(f.urlPrefix) > 0) &&
+      !(l.url.indexOf("www.youtube.com") > 0) &&
+      !(l.url.indexOf("www.instagram.com") > 0)
+  )
   const orginalSiteMenuItems: MenuItemType[] = orginalSiteLinks.map((l) => {
     return {
       icon: <IoLink />,
-      title: l.name,
+      title: l.service_name,
       action: () => {
         window.open(l.url, "_blank")
       },

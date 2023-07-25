@@ -21,16 +21,16 @@ export type RecipeOutlineType = {
 }
 
 export type RecipeCookingProcessType = {
+  description: string
+  id: number
+  recipe_id: number
+  step_number: number
   title: string
-  description?: string
-  stepNumber: number
 }
 
 export type RecipeIngredientType = {
-  serving: string
-  ingredientList: {
-    id: number
-    name: string
-    description: string
-  }[]
+  id: number
+  name: string
+  description: string
+  recipe_id: number
 }
