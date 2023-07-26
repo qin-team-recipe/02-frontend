@@ -2,7 +2,7 @@
 import React from "react"
 
 type MyRecipePublishStatusLabelProps = {
-  isPublished: boolean
+  publishedStatus: string
 }
 
 /**
@@ -10,10 +10,10 @@ type MyRecipePublishStatusLabelProps = {
  * @returns
  */
 const MyRecipePublishStatusLabel = (props: MyRecipePublishStatusLabelProps) => {
-  const { isPublished } = props
+  const { publishedStatus } = props
   return (
     <>
-      {isPublished ? (
+      {publishedStatus == "open" ? (
         <div className="rounded border border-red-300 bg-white px-2 text-xs text-red-300">
           公開中
         </div>

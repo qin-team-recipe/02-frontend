@@ -3,10 +3,11 @@ import { IoCartOutline } from "react-icons/io5"
 //import { dummyRecipeIngredientList } from "../../[id]/mock"
 import { RecipeIngredientType } from "../../[id]/type"
 import RecipeAddCartButton from "./RecipeAddCartButton"
+import { getRecipeData } from "./RecipeOutlines"
 import RecipeTabCard from "./RecipeTabCard"
 
 type RecipeTabIngredientsProps = {
-  id: string
+  watchId: string
 }
 
 /**
@@ -33,17 +34,6 @@ const getRecipeIngredientsData = async (
     console.error(error)
     return []
   }
-
-  // // 疑似遅延
-  // const _sleep = (ms: number) =>
-  //   new Promise((resolve) => setTimeout(resolve, ms))
-  // await _sleep(1000)
-
-  // // ダミーデータ
-  // const dummy = dummyRecipeIngredientList.find(
-  //   (item) => item.recipeId === Number(id)
-  // )
-  // return dummy?.ingredient
 }
 
 /**
@@ -52,9 +42,13 @@ const getRecipeIngredientsData = async (
  * @returns
  */
 const RecipeTabIngredients = async (props: RecipeTabIngredientsProps) => {
-  const { id } = props
-  const ingredients = await getRecipeIngredientsData(id)
-  const serving = 2 //TODO
+  const { watchId } = props
+  const recipe = await getRecipeData(watchId)
+  if (!recipe) return <></>
+  const recipeId = String(recipe.id)
+
+  const ingredients = await getRecipeIngredientsData(recipeId)
+  const serving = recipe.servings
 
   if (!ingredients || ingredients.length == 0) {
     return (

@@ -14,11 +14,11 @@ import Toast from "../../commonComponents/molecules/Toast"
 import Menu, { MenuItemType } from "../../commonComponents/organisms/Menu"
 
 type RecipeEditMenuProps = {
-  isPublished: boolean
+  publishedStatus: string
 }
 
 const RecipeEditMenu = (props: RecipeEditMenuProps) => {
-  const { isPublished } = props
+  const { publishedStatus } = props
 
   const [showToast, setShowToast] = useState(false)
   const [toastProp, setToastProp] = useState<{
@@ -81,26 +81,27 @@ const RecipeEditMenu = (props: RecipeEditMenuProps) => {
     },
   }
 
-  const menuItems = isPublished
-    ? // 公開中
-      [
-        MENU_ITME_EDIT,
-        MENU_ITME_COPY,
-        MENU_ITME_UNPUBLISH,
-        {
-          hr: true,
-        },
-        MENU_ITME_DELETE,
-      ]
-    : // 非公開
-      [
-        MENU_ITME_EDIT,
-        MENU_ITME_PUBLISH,
-        {
-          hr: true,
-        },
-        MENU_ITME_DELETE,
-      ]
+  const menuItems =
+    publishedStatus == "open"
+      ? // 公開中
+        [
+          MENU_ITME_EDIT,
+          MENU_ITME_COPY,
+          MENU_ITME_UNPUBLISH,
+          {
+            hr: true,
+          },
+          MENU_ITME_DELETE,
+        ]
+      : // 非公開
+        [
+          MENU_ITME_EDIT,
+          MENU_ITME_PUBLISH,
+          {
+            hr: true,
+          },
+          MENU_ITME_DELETE,
+        ]
 
   return (
     <div>

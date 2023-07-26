@@ -4,12 +4,12 @@ export type RecipeOutlineType = {
   description: string
   servings: number
   is_draft: boolean
-  isPublished: boolean // TODO
+  published_status: string
   favorites_count: number
   imageUrl?: string // TODO
-  chef: {
+  chef?: {
     id: number
-    screenName: string
+    screen_name: string
     display_name: string
     description: string
     recipes_count: number
@@ -17,6 +17,12 @@ export type RecipeOutlineType = {
     is_following: boolean
     chefImageUrl?: string
     chef_links?: []
+  }
+  user?: {
+    id: number
+    screen_name: string
+    display_name: string
+    email: string
   }
 }
 

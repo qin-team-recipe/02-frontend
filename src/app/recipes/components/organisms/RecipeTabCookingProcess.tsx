@@ -1,14 +1,15 @@
 //import { dummyRecipeProcessList } from "../../[id]/mock"
 import { RecipeCookingProcessType } from "../../[id]/type"
+import { getRecipeData } from "./RecipeOutlines"
 import RecipeTabCard from "./RecipeTabCard"
 
 type RecipeTabProcessProps = {
-  id: string
+  watchId: string
 }
 
 /**
  * レシピ工程データ取得
- * @param id
+ * @param watchId
  * @returns
  */
 const getRecipeProcessData = async (
@@ -30,17 +31,6 @@ const getRecipeProcessData = async (
     console.error(error)
     return []
   }
-
-  // 疑似遅延
-  // const _sleep = (ms: number) =>
-  //   new Promise((resolve) => setTimeout(resolve, ms))
-  // await _sleep(1000)
-
-  // // ダミーデータ
-  // const dummy = dummyRecipeProcessList.find(
-  //   (item) => item.recipeId === Number(id)
-  // )
-  // return dummy?.process
 }
 
 /**
@@ -49,8 +39,12 @@ const getRecipeProcessData = async (
  * @returns
  */
 const RecipeTabCookingProcess = async (props: RecipeTabProcessProps) => {
-  const { id } = props
-  const process = await getRecipeProcessData(id)
+  const { watchId } = props
+  const recipe = await getRecipeData(watchId)
+  if (!recipe) return <></>
+  const recipeId = String(recipe.id)
+
+  const process = await getRecipeProcessData(recipeId)
 
   if (!process || process.length == 0) {
     return (

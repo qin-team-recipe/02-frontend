@@ -26,9 +26,7 @@ const Register: NextPage = () => {
   const API_URL = process.env.NEXT_PUBLIC_API_URL
 
   const handleClick = async () => {
-
-    fetch(`${API_URL}/me/register`, {
-
+    fetch(`${API_URL}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
