@@ -1,6 +1,6 @@
 "use client"
 import { usePathname, useRouter } from "next/navigation"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 import {
   getLoginUserFromLocalStorage,
@@ -23,12 +23,46 @@ type RecipeFavoriteButtonProps = {
  * @returns
  */
 const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
-  const { className, isMyFavorite, recipeId } = props
-  const [isFavorite, setIsFavorite] = useState(isMyFavorite)
+  const { className, recipeId } = props
+  const [isFavorite, setIsFavorite] = useState(false)
   const [isOpenLoginAlert, setIsOpenLoginAlert] = useState(false)
   const [isOpenAuthErrorAlert, setIsOpenAuthErrorAlert] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
+  const loginUser = getLoginUserFromLocalStorage()
+  const token = getTokenFromLocalStorage()
+
+  useEffect(() => {
+    const getRecipeFavoritesData = async (userId: number, recipeId: number) => {
+      try {
+        console.log("お気に入り判定")
+        if (!token) return
+
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/recipeFavorites?user_id=${userId}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        )
+        const result = await response.json()
+        const favorites = result.data
+
+        const isMyFavorite =
+          favorites.find(
+            (el: { recipe_id: number }) => el.recipe_id == recipeId
+          ) != undefined
+        console.log("お気に入り判定 isMyFavorite=" + isMyFavorite)
+        setIsFavorite(isMyFavorite)
+      } catch (error) {
+        // TODO エラー判定が必要
+        console.log(error)
+        return
+      }
+    }
+    getRecipeFavoritesData(loginUser.id, Number(recipeId))
+  }, [loginUser.id, recipeId, token])
 
   const updateFavorite = async (
     type: "add" | "remove",
@@ -49,9 +83,9 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
             Authorization: token,
           },
           body: `{
-          "recipe_id": ${recipeId},
-          "user_id": ${userId}
-        }`,
+            "recipe_id": ${recipeId},
+            "user_id": ${userId}
+          }`,
         }
       )
       if (response.status == 400 || response.status == 401) {
@@ -77,9 +111,6 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
    * お気に入りクリック
    */
   const handleFavoriteClick = useCallback(() => {
-    const loginUser = getLoginUserFromLocalStorage()
-    const token = getTokenFromLocalStorage()
-    console.log(loginUser)
     if (token && loginUser) {
       updateFavorite(
         isFavorite ? "remove" : "add",
@@ -91,7 +122,7 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
     } else {
       setIsOpenLoginAlert(true)
     }
-  }, [isFavorite, recipeId])
+  }, [isFavorite, loginUser, recipeId, token])
 
   const gotoLogin = () => {
     setPathGoAfterLoginToLocalStorage(pathname)

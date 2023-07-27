@@ -1,6 +1,8 @@
 "use client"
-import { useState } from "react"
+import { useEffect } from "react"
+import { useRecoilState } from "recoil"
 
+import { recipeState } from "@/app/store/recipeState"
 import {
   getLoginUserFromLocalStorage,
   getTokenFromLocalStorage,
@@ -25,10 +27,13 @@ const RecipeOutlineSubInfomations = (
   props: RecipeOutlineSubInfomationsProps
 ) => {
   const { watchId, recipe } = props
-  const [isMyFavorite, setMyFavorite] = useState(false) // TODO 自分がお気に入り追加しているかを確認して設定が必要
+  const [storedRecipe, setStoredRecipe] = useRecoilState(recipeState)
 
   const loginUser = getLoginUserFromLocalStorage()
   const token = getTokenFromLocalStorage()
+
+  // 描画完了してからレシピ情報をrecoilに保管
+  useEffect(() => recipe && setStoredRecipe(recipe), [recipe, setStoredRecipe])
 
   if (!recipe) return <></>
   const recipeId = String(recipe.id)
@@ -40,9 +45,7 @@ const RecipeOutlineSubInfomations = (
     <>
       <div className="flex flex-row items-center">
         {isMyRecipe ? (
-          <MyRecipePublishStatusLabel
-            publishedStatus={recipe.published_status}
-          />
+          <MyRecipePublishStatusLabel />
         ) : (
           <RecipeChefAvatorButton
             src={recipe.chef?.chefImageUrl}
@@ -61,11 +64,7 @@ const RecipeOutlineSubInfomations = (
       {isMyRecipe ? (
         <div className="mt-2 flex flex-row">
           <div className="mr-2 flex-1">
-            <RecipeFavoriteButton
-              className="w-full"
-              isMyFavorite={isMyFavorite}
-              recipeId={recipeId}
-            />
+            <RecipeFavoriteButton className="w-full" recipeId={recipeId} />
           </div>
           <div className="flex-1">
             <RecipeEditButton className="w-full" />
@@ -73,11 +72,7 @@ const RecipeOutlineSubInfomations = (
         </div>
       ) : (
         <div className="mt-2 flex-1">
-          <RecipeFavoriteButton
-            className="w-full"
-            isMyFavorite={isMyFavorite}
-            recipeId={recipeId}
-          />
+          <RecipeFavoriteButton className="w-full" recipeId={recipeId} />
         </div>
       )}
     </>

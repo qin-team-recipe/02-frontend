@@ -9,6 +9,7 @@ import LinkIcons, { LinkType } from "../../commonComponents/organisms/LinkIcons"
 import RecipeEditMenu from "./RecipeEditMenu"
 
 type RecipeOutlineMenusProps = {
+  watchId: string
   recipe?: RecipeOutlineType
   links?: LinkType[]
 }
@@ -17,7 +18,7 @@ type RecipeOutlineMenusProps = {
  * @returns
  */
 const RecipeOutlineMenus = (props: RecipeOutlineMenusProps) => {
-  const { recipe, links } = props
+  const { watchId, recipe, links } = props
 
   const loginUser = getLoginUserFromLocalStorage()
   const token = getTokenFromLocalStorage()
@@ -30,7 +31,11 @@ const RecipeOutlineMenus = (props: RecipeOutlineMenusProps) => {
   return (
     <>
       {isMyRecipe ? (
-        <RecipeEditMenu publishedStatus={recipe.published_status} />
+        <RecipeEditMenu
+          watchId={watchId}
+          recipeId={recipe.id}
+          publishedStatus={recipe.published_status}
+        />
       ) : (
         links && <LinkIcons links={links} />
       )}

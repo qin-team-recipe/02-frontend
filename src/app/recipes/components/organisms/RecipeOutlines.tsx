@@ -28,9 +28,9 @@ export const getRecipeData = async (
     )
     const result = await response.json()
     console.log("レシピデータ取得結果 result=" + JSON.stringify(result))
+
     const dummyData = {
       ...result.data,
-      isPublished: true,
       imageUrl: "/takada-images/new-recipes/recipe1.jpg",
     }
     return dummyData
@@ -41,10 +41,10 @@ export const getRecipeData = async (
 }
 
 const getRecipeLinkData = async (): Promise<LinkType[] | undefined> => {
-  // 疑似遅延
-  const _sleep = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms))
-  await _sleep(1000)
+  // // 疑似遅延
+  // const _sleep = (ms: number) =>
+  //   new Promise((resolve) => setTimeout(resolve, ms))
+  // await _sleep(1000)
 
   // ダミーデータ
   const dummy: LinkType[] = [
@@ -142,7 +142,11 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
 
           {/* 編集メニュー */}
           <div className="ml-auto flex">
-            <RecipeOutlineMenus recipe={recipe} links={links} />
+            <RecipeOutlineMenus
+              watchId={watchId}
+              recipe={recipe}
+              links={links}
+            />
           </div>
         </div>
 
