@@ -17,50 +17,35 @@ import {
 import Container from "../components/Container"
 import FooterMenu from "../components/FooterMenu"
 import { SubHeader } from "../components/SubHeader"
+import { fetchData } from "../utils/fetchMethod"
 
 const Register: NextPage = () => {
   const { googleUser, setGoogleUser } = useContext(GoogleUserContext)
   const { user, setUser } = useContext(UserContext)
   const router = useRouter()
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL
-
   const handleClick = async () => {
-
-    fetch(`${API_URL}/me/register`, {
-
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(googleUser),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          throw new Error("Error: " + response.status)
-        }
+    try {
+      const result = await fetchData({
+        url: "/register",
+        method: "POST",
+        body: googleUser,
       })
-      .then((result) => {
-        if (result.message == "success") {
-          // 新規登録成功
-          console.log("register success")
-          setTokenToLocalStorage(result.data.token)
-          setLoginUserToLocalStorage(result.data.user)
-          setUser(result.data.user)
 
-          // 遷移しようとしたページへ遷移
-          const goAfterLogin = getPathGoAfterLoginFromLocalStorage()
-          router.push(goAfterLogin ?? "/")
-        } else {
-          // 新規登録失敗
-          console.error("register error")
-        }
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+      if (result.message === "success") {
+        console.log("register success")
+        setTokenToLocalStorage(result.data.token)
+        setLoginUserToLocalStorage(result.data.user)
+        setUser(result.data.user)
+
+        const goAfterLogin = getPathGoAfterLoginFromLocalStorage()
+        router.push(goAfterLogin ?? "/")
+      } else {
+        console.error("register error")
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
