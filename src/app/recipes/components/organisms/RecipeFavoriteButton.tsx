@@ -14,7 +14,6 @@ import Modal from "../../commonComponents/organisms/Modal"
 
 type RecipeFavoriteButtonProps = {
   className?: string
-  isMyFavorite: boolean
   recipeId: string
 }
 
