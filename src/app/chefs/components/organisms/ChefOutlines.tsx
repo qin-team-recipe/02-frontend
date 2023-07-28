@@ -1,15 +1,11 @@
 import AvatorButton from "@/app/recipes/commonComponents/molecules/AvatorButton"
-import CounterLabel from "@/app/recipes/commonComponents/molecules/CounterLabel"
 import LinkIcons from "@/app/recipes/commonComponents/organisms/LinkIcons"
 import Modal from "@/app/recipes/commonComponents/organisms/Modal"
 import PageBackButton from "@/app/recipes/commonComponents/organisms/PageBackButton"
 
-//import { dummyChefDataList, dummyLinkDataList } from "../../[screenName]/mock"
 import { ChefOutlineType } from "../../[screenName]/type"
-import ChefAddRecipeFab from "./ChefAddRecipeFab"
-import ChefFollowButton from "./ChefFollowButton"
 import ChefOutlineSkeletons from "./ChefOutlineSkeletons"
-import ChefProfileEditButton from "./ChefProfileEditButton"
+import ChefOutlineSubInformations from "./ChefOutlineSubInformations"
 
 const getChefData = async (
   screenName: string
@@ -38,17 +34,6 @@ const getChefData = async (
     console.error(error)
     return
   }
-
-  // // 疑似遅延
-  // const _sleep = (ms: number) =>
-  //   new Promise((resolve) => setTimeout(resolve, ms))
-  // await _sleep(1000)
-
-  // console.log(new Date().toLocaleString() + " シェフデータ取得完了")
-
-  // // ダミーデータ
-  // const dummy = dummyChefDataList.find((item) => item.screenName === screenName)
-  // return dummy?.outline
 }
 
 type ChefOutlinesProps = {
@@ -88,8 +73,6 @@ const ChefOutlines = async (props: ChefOutlinesProps) => {
     )
   }
 
-  const isMe = await (loginUserId == chef?.id)
-
   return (
     <>
       <div className="right-2 mt-2 flex justify-end">
@@ -111,36 +94,9 @@ const ChefOutlines = async (props: ChefOutlinesProps) => {
         {/* シェフ説明 */}
         <div className="mb-4 h-full">{chef.description}</div>
 
-        {/* シェフ */}
-        <div className="flex flex-row items-center">
-          {/* レシピ件数 */}
-          <CounterLabel
-            className="ml-1"
-            count={chef.recipes_count}
-            label="レシピ"
-          />
-          {/* フォロー件数 */}
-          <CounterLabel
-            className="ml-4"
-            count={chef.follows_count}
-            label="フォロー"
-          />
-        </div>
-
-        {/* お気に入りボタン */}
-        <div className="mt-2">
-          {isMe ? (
-            <ChefProfileEditButton className="w-full" />
-          ) : (
-            <ChefFollowButton
-              className="w-full"
-              isMyFavorite={chef.is_following}
-            />
-          )}
-        </div>
+        {/* シェフサブ情報 */}
+        <ChefOutlineSubInformations screenName={screenName} chef={chef} />
       </div>
-      {/* マイレシピ追加 */}
-      {isMe && <ChefAddRecipeFab />}
     </>
   )
 }
