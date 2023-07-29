@@ -15,12 +15,10 @@ const Chefs = async ({
   searchParams,
 }: {
   params: { screenName: string }
-  searchParams: { tab: string; userid: string }
+  searchParams: { tab: string; type: string }
 }) => {
   const activeIndex = searchParams.tab ? Number(searchParams.tab) : undefined
-  const loginUserId = searchParams.userid
-    ? Number(searchParams.userid)
-    : undefined
+  const type = searchParams.type
 
   const tabComponents: TabComponent[] = [
     {
@@ -46,10 +44,7 @@ const Chefs = async ({
       <main className="flex-1 overflow-hidden sm:border-x">
         {/* シェフ概要 */}
         <Suspense fallback={<ChefOutlineSkeletons />}>
-          <ChefOutlines
-            screenName={params.screenName}
-            loginUserId={loginUserId}
-          />
+          <ChefOutlines screenName={params.screenName} type={type} />
         </Suspense>
 
         {/* シェフ情報タブ */}

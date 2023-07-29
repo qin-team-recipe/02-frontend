@@ -39,9 +39,32 @@ const getChefData = async (
   }
 }
 
+const getUserData = async (
+  screenName: string
+): Promise<ChefOutlineType | undefined> => {
+  console.log(
+    new Date().toLocaleString() + " ユーザデータ取得 screenName=" + screenName
+  )
+
+  const dummyData: ChefOutlineType = {
+    id: 1,
+    screen_name: screenName,
+    display_name: "山田シェフ",
+    description:
+      "初の絵本出版！『まねっこシェフ』・ふわふわ！スクランブルエッグ・にぎにぎ！おにぎり主婦の友社より３月３日、２冊同時発売！絶賛発売中！",
+    chef_links: [],
+    is_following: false,
+    follows_count: 768,
+    recipes_count: 123,
+    imageUrl: "/takada-images/chefs/chef2.jpg",
+  }
+
+  return dummyData
+}
+
 type ChefOutlinesProps = {
   screenName: string
-  loginUserId?: number
+  type?: string
 }
 
 /**
@@ -49,8 +72,15 @@ type ChefOutlinesProps = {
  * @returns
  */
 const ChefOutlines = async (props: ChefOutlinesProps) => {
-  const { screenName, loginUserId } = props
-  const chef = await getChefData(screenName)
+  const { screenName, type } = props
+
+  // TODO 暫定
+  let chef = undefined
+  if (type == "user") {
+    chef = await getUserData(screenName)
+  } else {
+    chef = await getChefData(screenName)
+  }
 
   if (!chef) {
     return (
@@ -78,9 +108,9 @@ const ChefOutlines = async (props: ChefOutlinesProps) => {
 
   return (
     <>
-      <div className="right-2 mt-2 flex justify-end">
+      <div className="right-2 mt-2 flex h-8 justify-end">
         {/* リンク */}
-        {chef?.chef_links && <LinkIcons links={chef?.chef_links ?? []} />}
+        <LinkIcons links={chef.chef_links ?? []} />
       </div>
       <div className="pl-4 pr-4">
         <div className="mb-2 flex flex-row">
