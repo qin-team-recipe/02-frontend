@@ -4,28 +4,29 @@ import { NextPage } from "next"
 import Image from "next/image"
 import React, { useEffect, useState } from "react"
 
+import { fetchData } from "@/app/utils/fetchMethod"
+
 import Container from "../components/Container"
 import FooterMenu from "../components/FooterMenu"
 import { SubHeader } from "../components/SubHeader"
+
 type PageInfoType = {
   title: string
   image: string
 }
-const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const handleClick = async () => {
+  try {
+    const data = await fetchData({
+      url: "/authenticates/google",
+      method: "GET",
+    })
 
-  const response = await fetch(`${API_URL}/authenticates/google`)
-
-
-  if (!response.ok) {
-    console.error("フェッチに失敗しました:", response.statusText)
-    return
+    window.location.href = data.data.login_url
+    console.log(data)
+  } catch (error: any) {
+    console.error("フェッチに失敗しました:", error.message)
   }
-
-  const data = await response.json()
-  window.location.href = data.data.login_url
-  console.log(data)
 }
 
 const Signin: NextPage = () => {
