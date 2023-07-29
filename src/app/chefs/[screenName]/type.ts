@@ -1,3 +1,4 @@
+import { RecipeOutlineType } from "@/app/recipes/[id]/type"
 import { LinkType } from "@/app/recipes/commonComponents/organisms/LinkIcons"
 
 export type ChefOutlineType = {
@@ -10,14 +11,12 @@ export type ChefOutlineType = {
   follows_count?: number
   recipes_count: number
   imageUrl?: string
-  //isFamousChef: boolean
-  //userId: number
 }
 
-export type RecipeImage = {
+export type ChefRecipe = {
   id: number
-  name: string
-  description: string
-  path: string
-  favoriteCount: number
+  chef_id: number
+  recipe_id: number
+  recipe: RecipeOutlineType
+  imageSrc: string //TODO 暫定
 }

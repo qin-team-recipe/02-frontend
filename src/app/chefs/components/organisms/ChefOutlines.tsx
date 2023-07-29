@@ -15,14 +15,17 @@ const getChefData = async (
   )
 
   try {
+    // シェフを検索
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/chefs/${screenName}`,
       {
         next: { revalidate: 10 },
       }
     )
-
     const result = await response.json()
+
+    if (!result.data) return
+
     console.log("シェフデータ取得結果 data=" + JSON.stringify(result))
     // TODO 一部ダミーを設定
     const dummyData = {

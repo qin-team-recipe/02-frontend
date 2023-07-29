@@ -1,5 +1,6 @@
 export type RecipeOutlineType = {
   id: number
+  watch_id: string
   title: string
   description: string
   servings: number

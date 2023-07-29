@@ -1,7 +1,6 @@
 import React from "react"
 
-import { newRecipeImages } from "../../[screenName]/mock"
-import { RecipeImage } from "../../[screenName]/type"
+import { ChefRecipe } from "../../[screenName]/type"
 import ChefRecipesGallery from "./ChefRecipesGallery"
 
 type ChefTabNewRecipesProps = {
@@ -13,29 +12,28 @@ type ChefTabNewRecipesProps = {
  * @param screenName
  * @returns
  */
-const getRecipeData = async (
+export const getRecipeData = async (
   screenName: string
-): Promise<RecipeImage[] | undefined> => {
+): Promise<ChefRecipe[] | undefined> => {
   console.log("シェフレシピデータ取得 screenName=" + screenName)
 
-  // const response = await fetch(
-  //   `http://localhost:3000/api/recipes/${id}/process`,
-  //   {
-  //     //next: { revalidate: 10 },
-  //     cache: "no-store",
-  //   }
-  // );
-  // const data = await response.json();
-  // console.log("シェフレシピデータ取得結果 data=" + JSON.stringify(data));
-  // return data;
+  // TODO API作成前のため仮で全レシピ取得を実行
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/chefRecipes`,
+    {
+      next: { revalidate: 10 },
+    }
+  )
 
-  // 疑似遅延
-  const _sleep = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms))
-  await _sleep(3000)
+  const result = await response.json()
+  //console.log("シェフレシピデータ取得 data=" + JSON.stringify(result))
+  // TODO 画像はダミー
+  const dummyData = result.data.map((chefRecipe: ChefRecipe) => ({
+    ...chefRecipe,
+    imageSrc: "/takada-images/my-recipes/recipe1.jpg",
+  }))
 
-  // ダミーデータ（暫定的にお気に入りで用意しているダミーデータを参照）
-  return newRecipeImages
+  return dummyData
 }
 
 /**
@@ -63,7 +61,7 @@ const ChefTabNewRecipes = async (props: ChefTabNewRecipesProps) => {
     <>
       {/* レシピリスト */}
       <div className="p-2">
-        <ChefRecipesGallery recipeImages={recipes} />
+        <ChefRecipesGallery chefRecipes={recipes} />
       </div>
     </>
   )

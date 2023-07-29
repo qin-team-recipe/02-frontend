@@ -3,22 +3,32 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { IoHeartOutline } from "react-icons/io5"
 
-import { RecipeImage } from "../../[screenName]/type"
-
 type ChefRecipeCardProps = {
   recipeId: number
-  recipeImage: RecipeImage
+  watchId: string
+  title: string
+  description: string
+  imageSrc: string
   imageSize: number
   favoriteCount: number
 }
 
 const ChefRecipeCard = async (props: ChefRecipeCardProps) => {
-  const { recipeId, recipeImage, imageSize, favoriteCount } = props
+  const {
+    recipeId,
+    watchId,
+    title,
+    description,
+    imageSrc,
+    imageSize,
+    favoriteCount,
+  } = props
   const router = useRouter()
 
   const handleClick = () => {
-    router.push(`/recipes/${recipeId}`)
+    router.push(`/recipes/${watchId}`)
   }
+  if (!imageSrc) return <></>
 
   return (
     <button onClick={handleClick}>
@@ -26,8 +36,8 @@ const ChefRecipeCard = async (props: ChefRecipeCardProps) => {
         {/* 画像 */}
         <div className="relative">
           <Image
-            src={recipeImage.path}
-            alt={`${recipeImage.name}のアイコン`}
+            src={imageSrc}
+            alt={`${title}のアイコン`}
             width={imageSize}
             height={imageSize}
             className="rounded-2xl"
@@ -41,13 +51,9 @@ const ChefRecipeCard = async (props: ChefRecipeCardProps) => {
         </div>
         <div style={{ width: imageSize }}>
           {/* レシピタイトル */}
-          <p className="mb-1 truncate text-xs font-semibold">
-            {recipeImage.name}
-          </p>
+          <p className="mb-1 truncate text-xs font-semibold">{title}</p>
           {/* TODO レシピ説明かシェフ名か要確認 */}
-          <p className="truncate text-xs text-gray-500">
-            {recipeImage.description}
-          </p>
+          <p className="truncate text-xs text-gray-500">{description}</p>
         </div>
       </div>
     </button>

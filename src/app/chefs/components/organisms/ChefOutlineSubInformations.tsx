@@ -54,10 +54,7 @@ const ChefOutlineSubInformations = async (
         {isMe ? (
           <ChefProfileEditButton className="w-full" />
         ) : (
-          <ChefFollowButton
-            className="w-full"
-            isMyFavorite={chef.is_following}
-          />
+          <ChefFollowButton className="w-full" chefId={chef.id} />
         )}
       </div>
 
