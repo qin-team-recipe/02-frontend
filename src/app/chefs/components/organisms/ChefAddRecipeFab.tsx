@@ -1,4 +1,5 @@
 "use client"
+import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 import React from "react"
 
@@ -16,6 +17,7 @@ const ChefAddRecipeFab = (props: ChefAddRecipeFabProps) => {
   const { className } = props
   const [isVisible, setIsVisible] = useState(true)
   const [lastY, setLastY] = useState(0)
+  const router = useRouter()
 
   useEffect(() => {
     // スクロールダウンで非表示、スクロールアップした際に再表示
@@ -32,8 +34,8 @@ const ChefAddRecipeFab = (props: ChefAddRecipeFabProps) => {
   }, [lastY])
 
   const handleClick = useCallback(() => {
-    alert("マイレシピ追加")
-  }, [])
+    router.push("/draft")
+  }, [router])
 
   return (
     <>

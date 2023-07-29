@@ -1,23 +1,26 @@
-import { RecipeImage } from "../../[screenName]/type"
+import { ChefRecipe } from "../../[screenName]/type"
 import ChefRecipeCard from "./ChefRecipeCard"
 
 type ChefRecipesGalleryProps = {
-  recipeImages: RecipeImage[]
+  chefRecipes: ChefRecipe[]
 }
 
 const ChefRecipesGallery = async (props: ChefRecipesGalleryProps) => {
-  const { recipeImages } = props
+  const { chefRecipes } = props
 
   return (
     <>
       <div className="grid grid-cols-2 gap-2">
-        {recipeImages.map((recipeImage) => (
+        {chefRecipes.map((chefRecipe) => (
           <ChefRecipeCard
-            key={recipeImage.id}
-            recipeId={recipeImage.id}
-            recipeImage={recipeImage}
+            key={chefRecipe.id}
+            recipeId={chefRecipe.recipe_id}
+            watchId={chefRecipe.recipe.watch_id}
+            title={chefRecipe.recipe.title}
+            description={chefRecipe.recipe.description}
+            imageSrc={chefRecipe.imageSrc}
             imageSize={170}
-            favoriteCount={recipeImage.favoriteCount}
+            favoriteCount={chefRecipe.recipe.favorites_count}
           />
         ))}
       </div>

@@ -25,6 +25,7 @@ const Register: NextPage = () => {
   const router = useRouter()
 
   const handleClick = async () => {
+
     try {
       const result = await fetchData({
         url: "/register",

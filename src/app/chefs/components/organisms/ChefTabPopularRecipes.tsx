@@ -1,41 +1,10 @@
 import React from "react"
 
-import { popularRecipeImages } from "../../[screenName]/mock"
-import { RecipeImage } from "../../[screenName]/type"
 import ChefRecipesGallery from "./ChefRecipesGallery"
+import { getRecipeData } from "./ChefTabNewRecipes"
 
 type ChefTabPopularRecipesProps = {
   screenName: string
-}
-
-/**
- * シェフレシピデータ取得
- * @param screenName
- * @returns
- */
-const getRecipeData = async (
-  screenName: string
-): Promise<RecipeImage[] | undefined> => {
-  console.log("シェフレシピデータ取得 screenName=" + screenName)
-
-  // const response = await fetch(
-  //   `http://localhost:3000/api/recipes/${id}/process`,
-  //   {
-  //     //next: { revalidate: 10 },
-  //     cache: "no-store",
-  //   }
-  // );
-  // const data = await response.json();
-  // console.log("シェフレシピデータ取得結果 data=" + JSON.stringify(data));
-  // return data;
-
-  // 疑似遅延
-  const _sleep = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms))
-  await _sleep(3000)
-
-  // ダミーデータ（暫定的にお気に入りで用意しているダミーデータを参照）
-  return popularRecipeImages
 }
 
 /**
@@ -45,6 +14,7 @@ const getRecipeData = async (
  */
 const ChefTabPopularRecipes = async (props: ChefTabPopularRecipesProps) => {
   const { screenName } = props
+  // TODO 仮
   const recipes = await getRecipeData(screenName)
 
   if (!recipes) {
@@ -63,7 +33,7 @@ const ChefTabPopularRecipes = async (props: ChefTabPopularRecipesProps) => {
     <>
       {/* レシピリスト */}
       <div className="p-2">
-        <ChefRecipesGallery recipeImages={recipes} />
+        <ChefRecipesGallery chefRecipes={recipes} />
       </div>
     </>
   )

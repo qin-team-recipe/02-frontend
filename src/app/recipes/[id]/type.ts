@@ -1,15 +1,16 @@
 export type RecipeOutlineType = {
   id: number
+  watch_id: string
   title: string
   description: string
   servings: number
   is_draft: boolean
-  isPublished: boolean // TODO
+  published_status: string
   favorites_count: number
   imageUrl?: string // TODO
-  chef: {
+  chef?: {
     id: number
-    screenName: string
+    screen_name: string
     display_name: string
     description: string
     recipes_count: number
@@ -18,19 +19,25 @@ export type RecipeOutlineType = {
     chefImageUrl?: string
     chef_links?: []
   }
+  user?: {
+    id: number
+    screen_name: string
+    display_name: string
+    email: string
+  }
 }
 
 export type RecipeCookingProcessType = {
+  description: string
+  id: number
+  recipe_id: number
+  step_number: number
   title: string
-  description?: string
-  stepNumber: number
 }
 
 export type RecipeIngredientType = {
-  serving: string
-  ingredientList: {
-    id: number
-    name: string
-    description: string
-  }[]
+  id: number
+  name: string
+  description: string
+  recipe_id: number
 }

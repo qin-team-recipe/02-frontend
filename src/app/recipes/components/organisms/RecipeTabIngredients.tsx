@@ -1,44 +1,39 @@
 import { IoCartOutline } from "react-icons/io5"
 
-import { dummyRecipeIngredientList } from "../../[id]/mock"
+//import { dummyRecipeIngredientList } from "../../[id]/mock"
 import { RecipeIngredientType } from "../../[id]/type"
 import RecipeAddCartButton from "./RecipeAddCartButton"
+import { getRecipeData } from "./RecipeOutlines"
 import RecipeTabCard from "./RecipeTabCard"
 
 type RecipeTabIngredientsProps = {
-  id: string
+  watchId: string
 }
 
 /**
- * シピ材料データ取得
+ * レシピ材料データ取得
  * @param id
  * @returns
  */
 const getRecipeIngredientsData = async (
   id: string
-): Promise<RecipeIngredientType | undefined> => {
+): Promise<RecipeIngredientType[] | undefined> => {
   console.log("レシピ材料データ取得 id=" + id)
 
-  // const response = await fetch(
-  //   `http://localhost:3000/api/recipes/${id}/ingredients`,
-  //   {
-  //     next: { revalidate: 10 },
-  //   }
-  // );
-  // const data = await response.json();
-  // console.log("レシピ材料データ取得結果 data=" + JSON.stringify(data));
-  // return data;
-
-  // 疑似遅延
-  const _sleep = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms))
-  await _sleep(1000)
-
-  // ダミーデータ
-  const dummy = dummyRecipeIngredientList.find(
-    (item) => item.recipeId === Number(id)
-  )
-  return dummy?.ingredient
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/recipeIngredients?recipe_id=${id}`,
+      {
+        next: { revalidate: 10 },
+      }
+    )
+    const result = await response.json()
+    console.log("レシピ材料データ取得結果 data=" + JSON.stringify(result))
+    return result.data
+  } catch (error) {
+    console.error(error)
+    return []
+  }
 }
 
 /**
@@ -47,10 +42,15 @@ const getRecipeIngredientsData = async (
  * @returns
  */
 const RecipeTabIngredients = async (props: RecipeTabIngredientsProps) => {
-  const { id } = props
-  const ingredient = await getRecipeIngredientsData(id)
+  const { watchId } = props
+  const recipe = await getRecipeData(watchId)
+  if (!recipe) return <></>
+  const recipeId = String(recipe.id)
 
-  if (!ingredient) {
+  const ingredients = await getRecipeIngredientsData(recipeId)
+  const serving = recipe.servings
+
+  if (!ingredients || ingredients.length == 0) {
     return (
       <>
         <div className="w-full p-4">
@@ -67,11 +67,11 @@ const RecipeTabIngredients = async (props: RecipeTabIngredientsProps) => {
       <div className="flex w-full flex-col ">
         <div className="mt-4 flex h-8 flex-row">
           {/* 材料分量 */}
-          <p className="ml-4 text-xl font-bold">{ingredient.serving}</p>
+          <p className="ml-4 text-xl font-bold">{serving}人前</p>
 
           {/* まとめてお買い物に追加 */}
           <span className="ml-auto mr-4">
-            <RecipeAddCartButton ingredientList={ingredient.ingredientList}>
+            <RecipeAddCartButton ingredientList={ingredients}>
               <div className="text-md text-gray flex flex-row items-center">
                 <IoCartOutline />
                 まとめてお買い物に追加
@@ -81,7 +81,7 @@ const RecipeTabIngredients = async (props: RecipeTabIngredientsProps) => {
         </div>
 
         {/* 材料リスト */}
-        {ingredient.ingredientList.map((item, i) => (
+        {ingredients.map((item, i) => (
           <RecipeTabCard
             key={i}
             mainMessage={item.name}

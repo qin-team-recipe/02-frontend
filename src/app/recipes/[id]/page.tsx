@@ -17,17 +17,12 @@ const Recipes = async ({
   searchParams: { tab: string; userid: string }
 }) => {
   const activeIndex = searchParams.tab ? Number(searchParams.tab) : undefined
-  // TODO 暫定的にログインユーザIDをクエリパラメータで取得
-  const loginUserId = searchParams.userid
-    ? Number(searchParams.userid)
-    : undefined
-
   const tabComponents: TabComponent[] = [
     {
       title: "作り方",
       contents: (
         <Suspense fallback={<RecipeTabCookingProcessSkeletons />}>
-          <RecipeTabCookingProcess id={params.id} />
+          <RecipeTabCookingProcess watchId={params.id} />
         </Suspense>
       ),
     },
@@ -35,7 +30,7 @@ const Recipes = async ({
       title: "材料",
       contents: (
         <Suspense fallback={<RecipeTabIngredientSkeletons />}>
-          <RecipeTabIngredients id={params.id} />
+          <RecipeTabIngredients watchId={params.id} />
         </Suspense>
       ),
     },
@@ -46,7 +41,7 @@ const Recipes = async ({
       <main className="flex-1 overflow-hidden sm:border-x">
         {/* レシピ概要 */}
         <Suspense fallback={<RecipeOutlineSkeletons />}>
-          <RecipeOutlines id={params.id} loginUserId={loginUserId} />
+          <RecipeOutlines watchId={params.id} />
         </Suspense>
 
         {/* レシピ情報タブ */}

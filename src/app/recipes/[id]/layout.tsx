@@ -1,3 +1,6 @@
+"use client"
+import { RecoilRoot } from "recoil"
+
 import PageBackButton from "../commonComponents/organisms/PageBackButton"
 
 export const metadata = {
@@ -8,13 +11,15 @@ export const metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      {/* TODO 全体レイアウト決定前のため暫定的にここでレスポンシブ対応 */}
-      <div className="mx-auto flex min-h-screen sm:max-w-2xl">
-        <div className="absolute left-4 top-4 z-10 text-white">
-          <PageBackButton />
+      {/* 一旦recipeだけで使用 */}
+      <RecoilRoot>
+        <div className="relative">
+          <div className="absolute left-4 top-4 z-10 text-white">
+            <PageBackButton />
+          </div>
+          {children}
         </div>
-        {children}
-      </div>
+      </RecoilRoot>
     </>
   )
 }

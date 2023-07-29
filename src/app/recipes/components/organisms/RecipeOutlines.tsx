@@ -1,82 +1,94 @@
-// import { dummyLinkDataList } from "@/app/chefs/[screenName]/mock"
-// import { dummyRecipeDataList } from "../../[id]/mock"
-
 import { RecipeOutlineType } from "../../[id]/type"
-import CounterLabel from "../../commonComponents/molecules/CounterLabel"
 import ImageWithBlurType from "../../commonComponents/molecules/ImageWithBlur"
-import LinkIcons, { LinkType } from "../../commonComponents/organisms/LinkIcons"
+import { LinkType } from "../../commonComponents/organisms/LinkIcons"
 import Modal from "../../commonComponents/organisms/Modal"
 import PageBackButton from "../../commonComponents/organisms/PageBackButton"
-import MyRecipePublishStatusLabel from "./MyRecipePublishStatusLabel"
-import RecipeChefAvatorButton from "./RecipeChefAvatorButton"
-import RecipeEditButton from "./RecipeEditButton"
-import RecipeEditMenu from "./RecipeEditMenu"
-import RecipeFavoriteButton from "./RecipeFavoriteButton"
+import RecipeOutlineMenus from "./RecipeOutlineMenus"
 import RecipeOutlineSkeletons from "./RecipeOutlineSkeletons"
+import RecipeOutlineSubInfomations from "./RecipeOutlineSubInfomations"
 
 /**
  * レシピデータ取得
- * @param id
+ * @param watchId
  * @returns
  */
-const getRecipeData = async (
-  id: string
+export const getRecipeData = async (
+  watchId: string
 ): Promise<RecipeOutlineType | undefined> => {
-  console.log(new Date().toLocaleString() + " レシピデータ取得 id=" + id)
-
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/recipes/${id}`,
-    {
-      next: { revalidate: 10 },
-    }
+  console.log(
+    new Date().toLocaleString() + " レシピデータ取得 watchId=" + watchId
   )
-  const result = await response.json()
-  console.log("レシピデータ取得結果 result=" + JSON.stringify(result))
-  const dummyData = {
-    ...result.data,
-    isPublished: true,
-    imageUrl: "/takada-images/new-recipes/recipe1.jpg",
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/recipes/${watchId}`,
+      {
+        next: { revalidate: 10 },
+      }
+    )
+    const result = await response.json()
+    console.log("レシピデータ取得結果 result=" + JSON.stringify(result))
+
+    const dummyData = {
+      ...result.data,
+      imageUrl: "/takada-images/new-recipes/recipe1.jpg",
+    }
+    return dummyData
+  } catch (error) {
+    console.error(error)
+    return
   }
-  return dummyData
-
-  // // 疑似遅延
-  // const _sleep = (ms: number) =>
-  //   new Promise((resolve) => setTimeout(resolve, ms))
-  // await _sleep(1000)
-
-  // console.log(new Date().toLocaleString() + " レシピデータ取得完了")
-
-  // // ダミーデータ
-  // const dummy = dummyRecipeDataList.find((item) => item.recipeId === Number(id))
-  // return dummy?.outline
 }
 
-const getChefLinkData = async (
-  screenName: string
-): Promise<LinkType[] | undefined> => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/chefs/${screenName}`,
-    {
-      cache: "no-store",
-    }
-  )
-  const result = await response.json()
-  console.log("シェフデータ取得結果 result=" + JSON.stringify(result))
-  return result.data
-
+const getRecipeLinkData = async (): Promise<LinkType[] | undefined> => {
   // // 疑似遅延
   // const _sleep = (ms: number) =>
   //   new Promise((resolve) => setTimeout(resolve, ms))
   // await _sleep(1000)
 
-  // // ダミーデータ
-  // const dummy = dummyLinkDataList.find((item) => item.screenName === screenName)
-  // return dummy?.links
+  // ダミーデータ
+  const dummy: LinkType[] = [
+    {
+      id: 1,
+      service_name: "YouTube",
+      url: "http://www.youtube.com/",
+      chef_id: 0,
+      recipe_id: 0,
+    },
+    {
+      id: 2,
+      service_name: "Twitter",
+      url: "http://www.twitter.com/",
+      chef_id: 0,
+      recipe_id: 0,
+    },
+    {
+      id: 3,
+      service_name: "Instagram",
+      url: "http://www.instagram.com/",
+      chef_id: 0,
+      recipe_id: 0,
+    },
+    {
+      id: 4,
+      service_name: "Facebook",
+      url: "http://www.facebook.com/",
+      chef_id: 0,
+      recipe_id: 0,
+    },
+    {
+      id: 5,
+      service_name: "ほげほげ.com",
+      url: "http://www.hogehoge.com/",
+      chef_id: 0,
+      recipe_id: 0,
+    },
+  ]
+  return dummy
 }
 
 type RecipeOutlinesProps = {
-  id: string
-  loginUserId?: number
+  watchId: string
 }
 
 /**
@@ -84,12 +96,8 @@ type RecipeOutlinesProps = {
  * @returns
  */
 const RecipeOutlines = async (props: RecipeOutlinesProps) => {
-  const { id, loginUserId } = props
-  const recipe = await getRecipeData(id)
-  const links =
-    recipe?.chef?.screenName && (await getChefLinkData(recipe.chef.screenName))
-  const isMyRecipe = await (loginUserId == recipe?.chef.id)
-  console.log(`loginUserId=${loginUserId} userId=${recipe?.chef.id}`)
+  const { watchId } = props
+  const recipe = await getRecipeData(watchId)
 
   /* レシピが取得できなかった場合 */
   if (!recipe) {
@@ -116,6 +124,9 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
     )
   }
 
+  // TODO レシピのリンクはダミー
+  const links = await getRecipeLinkData()
+
   return (
     <>
       <div className="w-full">
@@ -131,59 +142,19 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
 
           {/* 編集メニュー */}
           <div className="ml-auto flex">
-            {isMyRecipe ? (
-              <RecipeEditMenu isPublished={recipe.isPublished} />
-            ) : (
-              links && <LinkIcons links={links} />
-            )}
+            <RecipeOutlineMenus
+              watchId={watchId}
+              recipe={recipe}
+              links={links}
+            />
           </div>
         </div>
 
         {/* レシピ説明 */}
         <div className="mb-4 h-full">{recipe.description}</div>
 
-        {/* シェフ */}
-        <div className="flex flex-row items-center">
-          {isMyRecipe ? (
-            <MyRecipePublishStatusLabel isPublished={recipe.isPublished} />
-          ) : (
-            <RecipeChefAvatorButton
-              src={recipe.chef.chefImageUrl}
-              name={recipe.chef.display_name}
-              screenName={recipe.chef.screenName}
-            />
-          )}
-          {/* お気に入り件数 */}
-          <CounterLabel
-            className="ml-4"
-            count={recipe.favorites_count}
-            label="お気に入り"
-          />
-        </div>
-
-        {/* お気に入りボタン */}
-        {isMyRecipe ? (
-          <div className="mt-2 flex flex-row">
-            <div className="mr-2 flex-1">
-              <RecipeFavoriteButton
-                className="w-full"
-                isMyFavorite={isMyRecipe}
-                recipeId={id}
-              />
-            </div>
-            <div className="flex-1">
-              <RecipeEditButton className="w-full" />
-            </div>
-          </div>
-        ) : (
-          <div className="mt-2 flex-1">
-            <RecipeFavoriteButton
-              className="w-full"
-              isMyFavorite={isMyRecipe}
-              recipeId={id}
-            />
-          </div>
-        )}
+        {/* レシピサブ情報 */}
+        <RecipeOutlineSubInfomations watchId={watchId} recipe={recipe} />
       </div>
     </>
   )
