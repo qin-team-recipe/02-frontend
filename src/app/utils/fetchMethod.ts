@@ -1,4 +1,4 @@
-"use client"
+// "use client"
 import { getTokenFromLocalStorage } from "./localStorage"
 
 type FetchOptions = {
