@@ -4,11 +4,10 @@ import { NextPage } from "next"
 import Image from "next/image"
 import React, { useEffect, useState } from "react"
 
-import { fetchData } from "@/app/utils/fetchMethod"
-
 import Container from "../components/Container"
 import FooterMenu from "../components/FooterMenu"
 import { SubHeader } from "../components/SubHeader"
+import { fetchGetData } from "../utils/fetchMethod"
 
 type PageInfoType = {
   title: string
@@ -17,11 +16,7 @@ type PageInfoType = {
 
 const handleClick = async () => {
   try {
-    const data = await fetchData({
-      url: "/authenticates/google",
-      method: "GET",
-    })
-
+    const data = await fetchGetData({ url: "/authenticates/google" })
     window.location.href = data.data.login_url
     console.log(data)
   } catch (error: any) {
