@@ -17,7 +17,7 @@ import {
 import Container from "../components/Container"
 import FooterMenu from "../components/FooterMenu"
 import { SubHeader } from "../components/SubHeader"
-import { fetchData } from "../utils/fetchMethod"
+import { fetchPostData } from "../utils/fetchMethod"
 
 const Register: NextPage = () => {
   const { googleUser, setGoogleUser } = useContext(GoogleUserContext)
@@ -25,11 +25,9 @@ const Register: NextPage = () => {
   const router = useRouter()
 
   const handleClick = async () => {
-
     try {
-      const result = await fetchData({
+      const result = await fetchPostData({
         url: "/register",
-        method: "POST",
         body: googleUser,
       })
 

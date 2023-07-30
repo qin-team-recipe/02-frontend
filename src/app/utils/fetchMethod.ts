@@ -1,56 +1,59 @@
-import { getTokenFromLocalStorage } from "./localStorage"
-
 type FetchOptions = {
   url: string
-  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH"
+  cache?: "no-cache" | "reload" | "force-cache" | "only-if-cached" | "no-store"
+  contentType?: string
+  next?: object
   body?: any
 }
 
-export const fetchData = async ({ url, method, body }: FetchOptions) => {
+export const fetchPostData = async ({
+  url,
+  next,
+  contentType = "application/json",
+  body,
+}: FetchOptions) => {
+  if (!body) {
+    throw new Error("Body must be provided for POST request")
+  }
   const API_URL = process.env.NEXT_PUBLIC_API_URL
   const options: any = {
-    method,
+    method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": contentType,
     },
+    body: JSON.stringify(body),
   }
-
-  if (body) {
-    options.body = JSON.stringify(body)
+  if (next) {
+    options.next = next
   }
 
   const response = await fetch(`${API_URL}${url}`, options)
 
-  if (response.ok) {
-    const data = await response.json()
-    return data
-  } else {
-    throw new Error("Error: " + response.status)
+  if (!response.ok) {
+    console.error("Fetch failed:", response.statusText)
+    throw new Error("Fetch failed")
   }
+  return await response.json()
 }
 
-export const fetchAuthData = async ({ url, method, body }: FetchOptions) => {
+export const fetchGetData = async ({ url, cache, next }: FetchOptions) => {
   const API_URL = process.env.NEXT_PUBLIC_API_URL
-  const token = getTokenFromLocalStorage() // get token here
   const options: any = {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      // Bearerが必要かは要確認
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
+    method: "GET",
+  }
+  if (cache) {
+    options.cache = cache
   }
 
-  if (body) {
-    options.body = JSON.stringify(body)
+  if (next) {
+    options.next = next
   }
 
   const response = await fetch(`${API_URL}${url}`, options)
 
-  if (response.ok) {
-    const data = await response.json()
-    return data
-  } else {
-    throw new Error("Error: " + response.status)
+  if (!response.ok) {
+    console.error("Fetch failed:", response.statusText)
+    throw new Error("Fetch failed")
   }
+  return await response.json()
 }
