@@ -22,6 +22,10 @@ const settings = () => {
   const handleModalClose = () => {
     setIsModalOpen(false)
   }
+  const goBack = () => {
+    window.history.back()
+  }
+
   return (
     <>
       <div className="flex justify-center">
@@ -29,7 +33,7 @@ const settings = () => {
           <div className="border-b-2 px-3 py-[12px]">
             <div className="flex h-[48px]">
               <div className="h-[24px] w-[24px] px-4 py-3">
-                <Link href="../favorites">←</Link>
+                <button onClick={goBack}>←</button>
               </div>
               <div className="ml-[21px] h-[24px] w-[48px] py-3 text-[16px] font-bold">
                 <Link href="../favorites">設定</Link>
