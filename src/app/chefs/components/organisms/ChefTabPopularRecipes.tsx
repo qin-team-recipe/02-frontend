@@ -1,7 +1,7 @@
 import React from "react"
 
 import ChefRecipesGallery from "./ChefRecipesGallery"
-import { getRecipeData } from "./ChefTabNewRecipes"
+import { getChefRecipeData } from "./ChefTabNewRecipes"
 
 type ChefTabPopularRecipesProps = {
   screenName: string
@@ -15,7 +15,7 @@ type ChefTabPopularRecipesProps = {
 const ChefTabPopularRecipes = async (props: ChefTabPopularRecipesProps) => {
   const { screenName } = props
   // TODO 仮
-  const recipes = await getRecipeData(screenName)
+  const recipes = await getChefRecipeData(screenName)
 
   if (!recipes) {
     return (

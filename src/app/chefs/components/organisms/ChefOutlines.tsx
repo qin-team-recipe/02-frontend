@@ -46,10 +46,11 @@ const getUserData = async (
     new Date().toLocaleString() + " ユーザデータ取得 screenName=" + screenName
   )
 
+  // TODO ダミーを設定
   const dummyData: ChefOutlineType = {
     id: 1,
     screen_name: screenName,
-    display_name: "山田シェフ",
+    display_name: "岡本太郎",
     description:
       "初の絵本出版！『まねっこシェフ』・ふわふわ！スクランブルエッグ・にぎにぎ！おにぎり主婦の友社より３月３日、２冊同時発売！絶賛発売中！",
     chef_links: [],
@@ -73,7 +74,6 @@ type ChefOutlinesProps = {
  */
 const ChefOutlines = async (props: ChefOutlinesProps) => {
   const { screenName, type } = props
-
   // TODO 暫定
   let chef = undefined
   if (type == "user") {
@@ -128,7 +128,7 @@ const ChefOutlines = async (props: ChefOutlinesProps) => {
         <div className="mb-4 h-full">{chef.description}</div>
 
         {/* シェフサブ情報 */}
-        <ChefOutlineSubInformations screenName={screenName} chef={chef} />
+        <ChefOutlineSubInformations chef={chef} />
       </div>
     </>
   )

@@ -1,11 +1,12 @@
 "use client"
 import { usePathname, useRouter } from "next/navigation"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
+import useFetchWithAuth from "@/app/hooks/useFetchWithAuth"
+import usePost from "@/app/hooks/usePost"
 import {
   getLoginUserFromLocalStorage,
   getTokenFromLocalStorage,
-  removeTokenFromLocalStorage,
   setPathGoAfterLoginToLocalStorage,
 } from "@/app/utils/localStorage"
 
@@ -31,97 +32,73 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
   const loginUser = getLoginUserFromLocalStorage()
   const token = getTokenFromLocalStorage()
 
+  const {
+    data: dataFetch,
+    isLoading: isLoadingFetch,
+    error: errorFetch,
+    isAuthError: isAuthErrorFetch,
+  } = useFetchWithAuth(`/recipeFavorites?user_id=${loginUser.id}`)
+  const {
+    doPost: addFavoritePost,
+    isLoading: isLoadingAddFavorite,
+    error: errorAddFavorite,
+    isAuthError: isAuthErrorAddFavorite,
+  } = usePost(
+    "POST",
+    "/recipeFavorites",
+    `{
+      "recipe_id": ${recipeId},
+      "user_id": ${loginUser.id}
+    }`
+  )
+  const {
+    doPost: removeFavoritePost,
+    isLoading: isLoadingRemoveFavorite,
+    error: errorRemoveFavorite,
+    isAuthError: isAuthErrorRemoveFavorite,
+  } = usePost(
+    "DELETE",
+    "/recipeFavorites",
+    `{
+      "recipe_id": ${recipeId},
+      "user_id": ${loginUser.id}
+    }`
+  )
+
   useEffect(() => {
-    const getRecipeFavoritesData = async (userId: number, recipeId: number) => {
-      try {
-        console.log("お気に入り判定")
-        if (!token) return
-
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/recipeFavorites?user_id=${userId}`,
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        )
-        const result = await response.json()
-        const favorites = result.data
-
-        const isMyFavorite =
-          favorites.find(
-            (el: { recipe_id: number }) => el.recipe_id == recipeId
-          ) != undefined
-        console.log("お気に入り判定 isMyFavorite=" + isMyFavorite)
-        setIsFavorite(isMyFavorite)
-      } catch (error) {
-        // TODO エラー判定が必要
-        console.log(error)
-        return
-      }
+    const checkFavorites = async () => {
+      if (!dataFetch) return
+      const favorites: { recipe_id: number }[] = dataFetch
+      const isMyFavorite =
+        favorites.find(
+          (el: { recipe_id: number }) => el.recipe_id == Number(recipeId)
+        ) != undefined
+      setIsFavorite(isMyFavorite)
     }
-    getRecipeFavoritesData(loginUser.id, Number(recipeId))
-  }, [loginUser.id, recipeId, token])
+    checkFavorites()
+  }, [recipeId, dataFetch])
 
-  const updateFavorite = async (
-    type: "add" | "remove",
-    recipeId: string,
-    userId: number,
-    token: string
-  ) => {
-    console.log("お気に入り更新 type=" + type)
+  useEffect(() => {
+    if (isAuthErrorFetch || isAuthErrorAddFavorite || isAuthErrorRemoveFavorite)
+      setIsOpenAuthErrorAlert(true)
+  }, [isAuthErrorFetch, isAuthErrorAddFavorite, isAuthErrorRemoveFavorite])
 
-    const method = type == "add" ? "POST" : "DELETE"
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/recipeFavorites`,
-        {
-          method: method,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-          body: `{
-            "recipe_id": ${recipeId},
-            "user_id": ${userId}
-          }`,
-        }
-      )
-      if (response.status == 400 || response.status == 401) {
-        console.error("認証エラー")
-        removeTokenFromLocalStorage()
-        setIsOpenAuthErrorAlert(true)
-        return
-      }
-
-      const result = await response.json()
-      console.log(response.status)
-      if (result.message != "success") {
-        console.error("お気に入り更新失敗")
-      } else {
-        console.log("お気に入り更新成功")
-      }
-    } catch (error) {
-      console.error("お気に入り更新失敗 error=" + error)
-    }
-    return
-  }
   /**
    * お気に入りクリック
    */
-  const handleFavoriteClick = useCallback(() => {
+  const handleFavoriteClick = () => {
     if (token && loginUser) {
-      updateFavorite(
-        isFavorite ? "remove" : "add",
-        recipeId,
-        loginUser.id,
-        token
-      )
+      if (isFavorite) {
+        removeFavoritePost()
+      } else {
+        addFavoritePost()
+      }
+
       setIsFavorite((preIsFavorite) => !preIsFavorite)
     } else {
       setIsOpenLoginAlert(true)
     }
-  }, [isFavorite, loginUser, recipeId, token])
+  }
 
   const gotoLogin = () => {
     setPathGoAfterLoginToLocalStorage(pathname)

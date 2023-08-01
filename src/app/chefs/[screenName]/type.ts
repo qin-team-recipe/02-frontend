@@ -16,6 +16,7 @@ export type ChefOutlineType = {
 export type ChefRecipe = {
   id: number
   chef_id: number
+  user_id: number
   recipe_id: number
   recipe: RecipeOutlineType
   imageSrc: string //TODO 暫定

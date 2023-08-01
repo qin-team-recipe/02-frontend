@@ -1,9 +1,10 @@
 "use client"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { useCallback } from "react"
 import { IoHeartOutline } from "react-icons/io5"
 
-type ChefRecipeCardProps = {
+type RecipeCardProps = {
   recipeId: number
   watchId: string
   title: string
@@ -13,7 +14,7 @@ type ChefRecipeCardProps = {
   favoriteCount: number
 }
 
-const ChefRecipeCard = async (props: ChefRecipeCardProps) => {
+const RecipeCard = (props: RecipeCardProps) => {
   const {
     recipeId,
     watchId,
@@ -25,9 +26,10 @@ const ChefRecipeCard = async (props: ChefRecipeCardProps) => {
   } = props
   const router = useRouter()
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     router.push(`/recipes/${watchId}`)
-  }
+  }, [router, watchId])
+
   if (!imageSrc) return <></>
 
   return (
@@ -59,4 +61,4 @@ const ChefRecipeCard = async (props: ChefRecipeCardProps) => {
     </button>
   )
 }
-export default ChefRecipeCard
+export default RecipeCard
