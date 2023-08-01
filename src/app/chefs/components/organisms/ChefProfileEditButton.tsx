@@ -4,6 +4,7 @@ import React from "react"
 import { useCallback } from "react"
 
 type ChefProfileEditButtonProps = {
+  screenName: string
   className?: string
 }
 
@@ -12,7 +13,7 @@ type ChefProfileEditButtonProps = {
  * @returns
  */
 const ChefProfileEditButton = async (props: ChefProfileEditButtonProps) => {
-  const { className } = props
+  const { screenName, className } = props
   const router = useRouter()
 
   const buttonClass =
@@ -20,9 +21,8 @@ const ChefProfileEditButton = async (props: ChefProfileEditButtonProps) => {
     className
 
   const handleChefClick = useCallback(() => {
-    //router.push(`/chefs/${screenName}`)
-    alert("プロフィール編集画面へ遷移")
-  }, [])
+    router.push(`/users/${screenName}/profiles`)
+  }, [router, screenName])
 
   return (
     <>

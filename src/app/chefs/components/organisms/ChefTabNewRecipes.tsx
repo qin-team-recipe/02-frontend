@@ -12,7 +12,7 @@ type ChefTabNewRecipesProps = {
  * @param screenName
  * @returns
  */
-export const getRecipeData = async (
+export const getChefRecipeData = async (
   screenName: string
 ): Promise<ChefRecipe[] | undefined> => {
   console.log("シェフレシピデータ取得 screenName=" + screenName)
@@ -43,7 +43,7 @@ export const getRecipeData = async (
  */
 const ChefTabNewRecipes = async (props: ChefTabNewRecipesProps) => {
   const { screenName } = props
-  const recipes = await getRecipeData(screenName)
+  const recipes = await getChefRecipeData(screenName)
 
   if (!recipes) {
     return (

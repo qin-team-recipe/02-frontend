@@ -11,7 +11,6 @@ import ChefFollowButton from "./ChefFollowButton"
 import ChefProfileEditButton from "./ChefProfileEditButton"
 
 type ChefOutlineSubInformationsProps = {
-  screenName: string
   chef?: ChefOutlineType
 }
 
@@ -22,14 +21,14 @@ type ChefOutlineSubInformationsProps = {
 const ChefOutlineSubInformations = async (
   props: ChefOutlineSubInformationsProps
 ) => {
-  const { screenName, chef } = props
+  const { chef } = props
 
   if (!chef) return <></>
 
   // ログインユーザとページのシェフが同じ場合はマイページ
   const loginUser = getLoginUserFromLocalStorage()
   const token = getTokenFromLocalStorage()
-  const isMe = token && loginUser?.screenName == chef?.screen_name
+  const isMe = token && loginUser?.screen_name == chef?.screen_name
 
   return (
     <>
@@ -52,7 +51,10 @@ const ChefOutlineSubInformations = async (
       {/* お気に入りボタン */}
       <div className="mt-2">
         {isMe ? (
-          <ChefProfileEditButton className="w-full" />
+          <ChefProfileEditButton
+            screenName={chef.screen_name}
+            className="w-full"
+          />
         ) : (
           <ChefFollowButton className="w-full" chefId={chef.id} />
         )}

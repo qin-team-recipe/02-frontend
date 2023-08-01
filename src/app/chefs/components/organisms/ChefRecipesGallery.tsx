@@ -1,5 +1,5 @@
+import RecipeCard from "../../../recipes/commonComponents/organisms/RecipeCard"
 import { ChefRecipe } from "../../[screenName]/type"
-import ChefRecipeCard from "./ChefRecipeCard"
 
 type ChefRecipesGalleryProps = {
   chefRecipes: ChefRecipe[]
@@ -12,7 +12,7 @@ const ChefRecipesGallery = async (props: ChefRecipesGalleryProps) => {
     <>
       <div className="grid grid-cols-2 gap-2">
         {chefRecipes.map((chefRecipe) => (
-          <ChefRecipeCard
+          <RecipeCard
             key={chefRecipe.id}
             recipeId={chefRecipe.recipe_id}
             watchId={chefRecipe.recipe.watch_id}

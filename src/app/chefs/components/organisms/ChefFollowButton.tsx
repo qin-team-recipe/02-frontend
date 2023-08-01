@@ -1,13 +1,14 @@
 "use client"
 import { usePathname, useRouter } from "next/navigation"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
+import useFetchWithAuth from "@/app/hooks/useFetchWithAuth"
+import usePost from "@/app/hooks/usePost"
 import FavoriteButton from "@/app/recipes/commonComponents/molecules/FavoriteButton"
 import Modal from "@/app/recipes/commonComponents/organisms/Modal"
 import {
   getLoginUserFromLocalStorage,
   getTokenFromLocalStorage,
-  removeTokenFromLocalStorage,
   setPathGoAfterLoginToLocalStorage,
 } from "@/app/utils/localStorage"
 
@@ -17,7 +18,7 @@ type ChefFollowButtonProps = {
 }
 
 /**
- * レシピ概要
+ * シェフフォローボタン
  * @returns
  */
 const ChefFollowButton = (props: ChefFollowButtonProps) => {
@@ -30,92 +31,72 @@ const ChefFollowButton = (props: ChefFollowButtonProps) => {
   const loginUser = getLoginUserFromLocalStorage()
   const token = getTokenFromLocalStorage()
 
+  const {
+    data: fetchData,
+    isLoading,
+    error,
+  } = useFetchWithAuth(`/chefFollows?user_id=${loginUser.id}`)
+  const {
+    doPost: addFollowPost,
+    isLoading: isLoadingAddFollow,
+    error: errorAddFollow,
+    isAuthError: isAuthErrorAddFollow,
+  } = usePost(
+    "POST",
+    "/chefFollows",
+    `
+  {
+    "chef_id": ${chefId},
+    "user_id": ${loginUser.id}
+  }`
+  )
+  const {
+    doPost: removeFollowPost,
+    isLoading: isLoadingRemoveFollow,
+    error: errorRemoveFollow,
+    isAuthError: isAuthErrorRemoveFollow,
+  } = usePost(
+    "DELETE",
+    "/chefFollows",
+    `
+  {
+    "chef_id": ${chefId},
+    "user_id": ${loginUser.id}
+  }`
+  )
   useEffect(() => {
-    const getChefFollowsData = async (userId: number, chefId: number) => {
-      try {
-        console.log("フォロー判定")
-        if (!token) return
-
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/chefFollows?user_id=${userId}`,
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        )
-        const result = await response.json()
-        const favorites = result.data
-
-        const isMyFavorite =
-          favorites.find((el: { chef_id: number }) => el.chef_id == chefId) !=
-          undefined
-        console.log("フォロー判定 isMyFavorite=" + isMyFavorite)
-        setIsFavorite(isMyFavorite)
-      } catch (error) {
-        // TODO エラー判定が必要
-        console.log(error)
-        return
-      }
+    const checkFavorites = async () => {
+      if (!fetchData) return
+      const favorites: { chef_id: number }[] = fetchData
+      const isMyFavorite =
+        favorites.find((el: { chef_id: number }) => el.chef_id == chefId) !=
+        undefined
+      setIsFavorite(isMyFavorite)
     }
-    getChefFollowsData(loginUser.id, chefId)
-  }, [loginUser.id, chefId, token])
+    checkFavorites()
+  }, [chefId, fetchData])
 
-  const updateFavorite = async (
-    type: "add" | "remove",
-    chefId: number,
-    userId: number,
-    token: string
-  ) => {
-    console.log("お気に入り更新 type=" + type)
+  useEffect(() => {
+    if (isAuthErrorAddFollow || isAuthErrorRemoveFollow)
+      setIsOpenAuthErrorAlert(true)
+  }, [isAuthErrorAddFollow, isAuthErrorRemoveFollow])
 
-    const method = type == "add" ? "POST" : "DELETE"
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/chefFollows`,
-        {
-          method: method,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-          body: `
-          {
-            "chef_id": ${chefId},
-            "user_id": ${userId}
-          }`,
-        }
-      )
-      if (response.status == 400 || response.status == 401) {
-        console.error("認証エラー")
-        removeTokenFromLocalStorage()
-        setIsOpenAuthErrorAlert(true)
-        return
-      }
-
-      const result = await response.json()
-      console.log(response.status)
-      if (result.message != "success") {
-        console.error("お気に入り更新失敗")
-      } else {
-        console.log("お気に入り更新成功")
-      }
-    } catch (error) {
-      console.error("お気に入り更新失敗 error=" + error)
-    }
-    return
-  }
   /**
    * お気に入りクリック
    */
-  const handleFavoriteClick = useCallback(() => {
+  const handleFavoriteClick = () => {
     if (token && loginUser) {
-      updateFavorite(isFavorite ? "remove" : "add", chefId, loginUser.id, token)
+      if (isFavorite) {
+        removeFollowPost()
+      } else {
+        addFollowPost()
+      }
+
       setIsFavorite((preIsFavorite) => !preIsFavorite)
     } else {
       setIsOpenLoginAlert(true)
     }
-  }, [chefId, isFavorite, loginUser, token])
+  }
 
   const gotoLogin = () => {
     setPathGoAfterLoginToLocalStorage(pathname)

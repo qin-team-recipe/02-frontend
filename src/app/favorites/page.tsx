@@ -1,50 +1,62 @@
 import Link from "next/link"
+import { Suspense } from "react"
 
-import { ChefAvatarsCarousel } from "./components/ChefAvatarsCarousel"
-import { NewRecipesCarousel } from "./components/NewRecipesCarousel"
-import { RecipesGallery } from "./components/RecipesGallery"
-import { SettingIcon } from "./components/SettingIcon"
-import { SubHeader } from "./components/SubHeader"
-import { chefImages, myRecipeImages, newRecipeImages } from "./mock"
+import { SubHeader } from "../recipes/commonComponents/molecules/SubHeader"
+import FavoriteChefAvatarsCarousel from "./components/organisms/FavoriteChefAvatarsCarousel"
+import FavoriteChefAvatarsCarouselSkeletons from "./components/organisms/FavoriteChefAvatarsCarouselSkeletons"
+import FavoriteChefNewRecipesCarousel from "./components/organisms/FavoriteChefNewRecipesCarousel"
+import FavoriteChefNewRecipesCarouselSkeletons from "./components/organisms/FavoriteChefNewRecipesCarouselSkeletons"
+import FavoriteHeader from "./components/organisms/FavoriteHeader"
+import FavoriteRecipesGallery from "./components/organisms/FavoriteRecipesGallery"
+import FavoriteRecipesGallerySkeletons from "./components/organisms/FavoriteRecipesGallerySkeletons"
 
-const Page = () => (
-  <>
-    <div className="flex items-center justify-between border-b-2 px-2 py-3">
-      {/* お気に入りの文字を中央にするため、先頭に空のdivを置く */}
-      <div />
-      <p className="font-bold">お気に入り</p>
-      <div className="cursor-pointer">
-        <Link href="/settings">
-          <SettingIcon />
-        </Link>
+const Favorites = ({
+  params,
+  searchParams,
+}: {
+  params: { id: string }
+  searchParams: { tab: string; userid: string }
+}) => {
+  const linkItem = (
+    <Link
+      href="/favorites/newly"
+      className="font-bold text-gray-500 hover:underline"
+    >
+      もっと見る
+    </Link>
+  )
+
+  return (
+    <>
+      <FavoriteHeader />
+      <div className="px-4">
+        <div className="py-4">
+          <SubHeader title="シェフ" textSize="text-xl" />
+          <Suspense fallback={<FavoriteChefAvatarsCarouselSkeletons />}>
+            <FavoriteChefAvatarsCarousel />
+          </Suspense>
+        </div>
+
+        <div className="mt-6 py-4">
+          <SubHeader
+            title="新着レシピ"
+            textSize="text-xl"
+            rightItem={linkItem}
+          />
+          <Suspense fallback={<FavoriteChefNewRecipesCarouselSkeletons />}>
+            <FavoriteChefNewRecipesCarousel />
+          </Suspense>
+        </div>
+
+        <div className="mt-6 py-4">
+          <SubHeader title="お気に入りレシピ" textSize="text-xl" />
+          <Suspense fallback={<FavoriteRecipesGallerySkeletons />}>
+            <FavoriteRecipesGallery />
+          </Suspense>
+        </div>
       </div>
-    </div>
+    </>
+  )
+}
 
-    <div className="px-4">
-      <div className="py-4">
-        <SubHeader title="シェフ" />
-        <ChefAvatarsCarousel chefImages={chefImages} />
-      </div>
-
-      <div className="mt-6 py-4">
-        {/* TODO: 遷移先の修正。一旦、同じページへの遷移とする */}
-        <SubHeader
-          title="新着レシピ"
-          link={{ href: "/favorites", text: "もっと見る" }}
-        />
-        <NewRecipesCarousel newRecipeImages={newRecipeImages} />
-      </div>
-
-      <div className="mt-6 py-4">
-        {/* TODO: 遷移先の修正。一旦、同じページへの遷移とする */}
-        <SubHeader
-          title="マイレシピを見る"
-          link={{ href: "/favorites", text: "マイレシピを見る" }}
-        />
-        <RecipesGallery recipeImages={myRecipeImages} />
-      </div>
-    </div>
-  </>
-)
-
-export default Page
+export default Favorites
