@@ -89,14 +89,14 @@ const Home: NextPage = async () => {
         <div className="mb-2.5 mt-6">
           <SubHeader
             title="話題のレシピ"
-            link={{ href: "/favorites", text: "もっと見る" }}
+            link={{ href: "/search?tab=recipe", text: "もっと見る" }}
           />
         </div>
         <TopRecipeCard data={recipesDummyData} />
         <div className="mb-2.5 mt-6">
           <SubHeader
             title="シェフ"
-            link={{ href: "/favorites", text: "もっと見る" }}
+            link={{ href: "search/?tab=chef", text: "もっと見る" }}
           />
         </div>
         <TopChefCard data={chefs} />

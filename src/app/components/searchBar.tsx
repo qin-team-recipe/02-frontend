@@ -1,47 +1,103 @@
 "use client"
 
+import { useDebouncedValue } from "@mantine/hooks"
 import Image from "next/image"
-import React, { useEffect, useState } from "react"
+import { usePathname, useRouter } from "next/navigation"
+import { FC, useEffect, useState } from "react"
+import { HiX } from "react-icons/hi"
 
-const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState<string>("")
-  const [chefData, setChefData] = useState(["item1", "item2", "item3", "item4"]) // 取得したシェフデータのdummy data
-  const [recipesData, setRecipesData] = useState([
-    "item1",
-    "item2",
-    "item3",
-    "item4",
-  ]) // 取得したレシピデータのdummy data
-  const [filteredData, setFilteredData] = useState<string[]>([]) //検索後のデータ。親階層はサーバーサイドでstate管理不可なのでグローバルステート管理が必要？
+import { fetchGetData } from "../utils/fetchMethod"
+import PageBackButton from "./organisms/PageBackButton"
 
-  // useEffectの代替案を検討中
+type SearchResult = {
+  any: any // 検索結果はレシピ型かシェフ型のいずれか
+}
+
+const SearchBar: FC = () => {
+  const [query, setQuery] = useState<string>("")
+  const [loading, setLoading] = useState<boolean>(false)
+  const [results, setResults] = useState<SearchResult[]>([])
+  const [debounced] = useDebouncedValue(query, 1500, { leading: true })
+  const router = useRouter()
+  const pathname = usePathname()
+
   useEffect(() => {
-    const filteredChefs = chefData.filter((item) =>
-      item.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    const filteredRecipes = recipesData.filter((item) =>
-      item.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    const handleSearch = async () => {
+      setLoading(true)
+      try {
+        const data = await fetchGetData({
+          url: "/chefs",
+        })
+        setResults(data.data.lists)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-    setFilteredData([...filteredChefs, ...filteredRecipes])
-  }, [searchTerm, chefData, recipesData])
+    if (debounced) {
+      handleSearch()
+    }
+  }, [debounced])
+  const handleClearQuery = () => {
+    setQuery("")
+  }
+
+  const handleBack = () => {
+    router.push("/") // トップページに戻る
+  }
 
   return (
-    <div className=" py-2 ">
-      <div className="flex items-center border rounded-3xl  text-grey-darker py-2 px-4 bg-custom-gray">
-        <Image
-          src="/searchIcon.png"
-          alt="検索アイコン"
-          width={20}
-          height={20}
-          className=""
-        />
-        <input
-          className="ml-2 bg-transparent outline-none placeholder-gray-500"
-          placeholder="シェフやレシピを検索"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+    <div className="relative py-2">
+      <div className=" flex">
+        {query && pathname !== "/" && (
+          <button onClick={handleBack} className="mr-2">
+            <PageBackButton />
+          </button>
+        )}
+        <div className="text-grey-darker flex w-full items-center rounded-3xl  border bg-custom-gray px-4 py-2">
+          <Image
+            src="/searchIcon.png"
+            alt="検索アイコン"
+            width={20}
+            height={20}
+            className=""
+          />
+          <input
+            className="ml-2 bg-transparent placeholder-gray-500 outline-none"
+            placeholder="シェフやレシピを検索"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          {query && loading === false && (
+            <button
+              onClick={handleClearQuery}
+              className="absolute inset-y-0 right-0 flex items-center pr-3"
+            >
+              <HiX />
+            </button>
+          )}
+          {loading && (
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+              <div className="loader h-5 w-5 rounded-full border-4 border-t-4 border-gray-200 ease-linear"></div>
+            </div>
+          )}
+        </div>
+        <style jsx>{`
+          .loader {
+            border-left-color: #3498db;
+            animation: spin 1s linear infinite;
+          }
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        `}</style>
       </div>
     </div>
   )
