@@ -2,6 +2,7 @@
 
 import "swiper/swiper.min.css"
 
+import { usePathname } from "next/navigation"
 import { ReactElement, useEffect, useState } from "react"
 import SwiperCore, { Navigation } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
@@ -26,6 +27,9 @@ const Tabs = (props: TabsProps) => {
   const { tabComponents, activeIndex } = props
   const [tabIndex, setTabIndex] = useState(activeIndex ? activeIndex : 0)
   const [swiper, setSwiper] = useState<SwiperCore | null>()
+  const pathname = usePathname()
+  // タイトルの選択
+  const title = tabIndex === 0 ? "レシピ一覧" : "シェフ一覧"
 
   useEffect(() => {
     if (swiper) {
@@ -43,6 +47,8 @@ const Tabs = (props: TabsProps) => {
 
   return (
     <>
+      {/* タイトルはsearchページだけで使用 */}
+      {pathname == "/search" && <h2 className="text-xl font-bold">{title}</h2>}
       {/* ヘッダー */}
       <ul className="mt-2 flex border-b border-gray-200 text-center text-sm font-medium">
         {tabComponents.map((item, i) => {
@@ -57,7 +63,6 @@ const Tabs = (props: TabsProps) => {
           )
         })}
       </ul>
-
       {/* コンテンツ */}
       <Swiper
         onSwiper={(swiper) => {
