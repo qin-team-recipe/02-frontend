@@ -27,11 +27,18 @@ export type TabsProps = {
  */
 const Tabs = (props: TabsProps) => {
   const { tabComponents, activeIndex } = props
+  // タブの選択
   const [tabIndex, setTabIndex] = useState(activeIndex ? activeIndex : 0)
+  //検索ワード
+  const [query, setQuery] = useState<string>("")
   const [swiper, setSwiper] = useState<SwiperCore | null>()
   const pathname = usePathname()
   // タイトルの選択
-  const title = tabIndex === 0 ? "レシピ一覧" : "シェフ一覧"
+  const title = query
+    ? `「${query}」を検索`
+    : tabIndex === 0
+    ? "話題のレシピ"
+    : "シェフ一覧"
 
   useEffect(() => {
     if (swiper) {
@@ -50,7 +57,9 @@ const Tabs = (props: TabsProps) => {
   return (
     <>
       {/* 検索ボックスはsearchページだけで使用 */}
-      {pathname == "/search" && <SearchBar tabIndex={tabIndex} />}
+      {pathname == "/search" && (
+        <SearchBar tabIndex={tabIndex} query={query} setQuery={setQuery} />
+      )}
       {/* タイトルはsearchページだけで使用 */}
       {pathname == "/search" && <h2 className="text-xl font-bold">{title}</h2>}
       {/* ヘッダー */}

@@ -1,21 +1,22 @@
 // eslint-disable-next-line simple-import-sort/imports
 import { Suspense } from "react"
 
-import RecipeTabCookingProcess from "./components/organisms/RecipeTabCookingProcess"
-import RecipeTabIngredients from "./components/organisms/RecipeTabIngredients"
 import Tabs, {
   TabComponent,
 } from "@/app/recipes/commonComponents/organisms/Tabs"
-import RecipeTabCookingProcessSkeletons from "./components/organisms/RecipeTabCookingProcessSkeletons"
 import RecipeTabIngredientSkeletons from "./components/organisms/RecipeTabIngredientSkeletons"
 import Container from "@/app/components/Container"
 import FooterMenu from "../components/FooterMenu"
+import { fetchGetData } from "../utils/fetchMethod"
+import TopChefCard from "../components/TopChefCard"
+import ChefTabNewRecipes from "../chefs/components/organisms/ChefTabNewRecipes"
+import ChefTabRecipeSkeletons from "../chefs/components/organisms/ChefTabRecipeSkeletons"
 
 const Recipes = async ({
   params,
   searchParams,
 }: {
-  params: { id: string }
+  params: { screenName: string }
   searchParams: { tab: string; userid: string }
 }) => {
   const activeIndex =
@@ -24,13 +25,20 @@ const Recipes = async ({
       : searchParams.tab === "chef"
       ? 1
       : undefined
-
+  const getChefs = async () => {
+    const response = await fetchGetData({
+      url: "/chefs",
+    })
+    console.log("シェフデータ一覧結果=" + JSON.stringify(response))
+    return response.data.lists
+  }
+  const chefs = await getChefs()
   const tabComponents: TabComponent[] = [
     {
       title: "レシピ",
       contents: (
-        <Suspense fallback={<RecipeTabCookingProcessSkeletons />}>
-          <RecipeTabCookingProcess watchId={params.id} />
+        <Suspense fallback={<ChefTabRecipeSkeletons />}>
+          <ChefTabNewRecipes screenName={params.screenName} />
         </Suspense>
       ),
     },
@@ -38,7 +46,7 @@ const Recipes = async ({
       title: "シェフ",
       contents: (
         <Suspense fallback={<RecipeTabIngredientSkeletons />}>
-          <RecipeTabIngredients watchId={params.id} />
+          <TopChefCard data={chefs} />
         </Suspense>
       ),
     },

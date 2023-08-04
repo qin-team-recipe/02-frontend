@@ -14,15 +14,27 @@ type SearchResult = {
 }
 type SearchBarProps = {
   tabIndex?: number
+  query?: string
+  setQuery?: (query: string) => void
 }
 
-const SearchBar: FC<SearchBarProps> = ({ tabIndex }) => {
-  const [query, setQuery] = useState<string>("")
+const SearchBar: FC<SearchBarProps> = ({
+  tabIndex,
+  query: propQuery,
+  setQuery: propSetQuery,
+}) => {
+  // トップページ用の状態管理
+  const [localQuery, setLocalQuery] = useState<string>("")
+  // 以下の２文、でトップページと検索ページの状態管理を切り替える
+  const query = propQuery ?? localQuery
+  const setQuery = propSetQuery ?? setLocalQuery
+
   const [loading, setLoading] = useState<boolean>(false)
   const [results, setResults] = useState<SearchResult[]>([])
   const [debounced] = useDebouncedValue(query, 1500, { leading: true })
   const router = useRouter()
   const pathname = usePathname()
+  console.log("query=" + query)
 
   useEffect(() => {
     const handleSearch = async () => {
