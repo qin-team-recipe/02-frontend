@@ -7,6 +7,8 @@ import { ReactElement, useEffect, useState } from "react"
 import SwiperCore, { Navigation } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
 
+import SearchBar from "@/app/components/SearchBar"
+
 SwiperCore.use([Navigation])
 
 export type TabComponent = {
@@ -47,6 +49,8 @@ const Tabs = (props: TabsProps) => {
 
   return (
     <>
+      {/* 検索ボックスはsearchページだけで使用 */}
+      {pathname == "/search" && <SearchBar tabIndex={tabIndex} />}
       {/* タイトルはsearchページだけで使用 */}
       {pathname == "/search" && <h2 className="text-xl font-bold">{title}</h2>}
       {/* ヘッダー */}

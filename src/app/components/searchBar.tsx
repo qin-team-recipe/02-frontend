@@ -12,8 +12,11 @@ import PageBackButton from "./organisms/PageBackButton"
 type SearchResult = {
   any: any // 検索結果はレシピ型かシェフ型のいずれか
 }
+type SearchBarProps = {
+  tabIndex?: number
+}
 
-const SearchBar: FC = () => {
+const SearchBar: FC<SearchBarProps> = ({ tabIndex }) => {
   const [query, setQuery] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
   const [results, setResults] = useState<SearchResult[]>([])
@@ -64,12 +67,22 @@ const SearchBar: FC = () => {
             height={20}
             className=""
           />
-          <input
-            className="ml-2 bg-transparent placeholder-gray-500 outline-none"
-            placeholder="シェフやレシピを検索"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
+          {pathname == "/search" && (
+            <input
+              className="ml-2 bg-transparent placeholder-gray-500 outline-none"
+              placeholder={tabIndex === 0 ? "レシピを検索" : "シェフを検索"}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          )}
+          {pathname !== "/search" && (
+            <input
+              className="ml-2 bg-transparent placeholder-gray-500 outline-none"
+              placeholder="シェフやレシピを検索"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          )}
           {query && loading === false && (
             <button
               onClick={handleClearQuery}

@@ -10,7 +10,6 @@ import RecipeTabCookingProcessSkeletons from "./components/organisms/RecipeTabCo
 import RecipeTabIngredientSkeletons from "./components/organisms/RecipeTabIngredientSkeletons"
 import Container from "@/app/components/Container"
 import FooterMenu from "../components/FooterMenu"
-import SearchBar from "../components/SearchBar"
 
 const Recipes = async ({
   params,
@@ -48,8 +47,6 @@ const Recipes = async ({
   return (
     <>
       <Container>
-        <SearchBar />
-
         {/* レシピ情報タブ */}
         <div>
           <Tabs activeIndex={activeIndex} tabComponents={tabComponents} />
