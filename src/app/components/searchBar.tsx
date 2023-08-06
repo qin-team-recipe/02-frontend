@@ -5,11 +5,11 @@ import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 import { FC, useEffect, useState } from "react"
 import { HiX } from "react-icons/hi"
+import { IoArrowBack } from "react-icons/io5"
 import { useRecoilState } from "recoil"
 
 import { searchQueryState } from "../store/searchQueryState"
 import { fetchGetData } from "../utils/fetchMethod"
-import PageBackButton from "./organisms/PageBackButton"
 
 type SearchResult = {
   any: any // 検索結果はレシピ型かシェフ型のいずれか
@@ -29,6 +29,11 @@ const SearchBar: FC<SearchBarProps> = ({ tabIndex }) => {
   const router = useRouter()
   const pathname = usePathname()
   console.log("query=" + query)
+  const buttonElement = (
+    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 bg-opacity-20 text-2xl hover:bg-gray-200">
+      <IoArrowBack />
+    </div>
+  )
 
   useEffect(() => {
     const handleSearch = async () => {
@@ -71,7 +76,7 @@ const SearchBar: FC<SearchBarProps> = ({ tabIndex }) => {
       <div className=" flex">
         {query && pathname !== "/" && (
           <button onClick={handleBack} className="mr-2">
-            <PageBackButton />
+            {buttonElement}
           </button>
         )}
         <div className="text-grey-darker flex w-full items-center rounded-3xl  border bg-custom-gray px-4 py-2">
