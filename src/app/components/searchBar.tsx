@@ -5,7 +5,9 @@ import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 import { FC, useEffect, useState } from "react"
 import { HiX } from "react-icons/hi"
+import { useRecoilState } from "recoil"
 
+import { searchQueryState } from "../store/searchQueryState"
 import { fetchGetData } from "../utils/fetchMethod"
 import PageBackButton from "./organisms/PageBackButton"
 
@@ -18,20 +20,12 @@ type SearchBarProps = {
   setQuery?: (query: string) => void
 }
 
-const SearchBar: FC<SearchBarProps> = ({
-  tabIndex,
-  query: propQuery,
-  setQuery: propSetQuery,
-}) => {
-  // トップページ用の状態管理
-  const [localQuery, setLocalQuery] = useState<string>("")
-  // 以下の２文、でトップページと検索ページの状態管理を切り替える
-  const query = propQuery ?? localQuery
-  const setQuery = propSetQuery ?? setLocalQuery
+const SearchBar: FC<SearchBarProps> = ({ tabIndex }) => {
+  const [query, setQuery] = useRecoilState(searchQueryState)
 
   const [loading, setLoading] = useState<boolean>(false)
   const [results, setResults] = useState<SearchResult[]>([])
-  const [debounced] = useDebouncedValue(query, 1500, { leading: true })
+  const [debounced] = useDebouncedValue(query, 3000, { leading: true })
   const router = useRouter()
   const pathname = usePathname()
   console.log("query=" + query)
@@ -39,6 +33,7 @@ const SearchBar: FC<SearchBarProps> = ({
   useEffect(() => {
     const handleSearch = async () => {
       setLoading(true)
+      // tabIndexによって、どちらの検索を行うかを判定。トップページはレシピのみ検索
       try {
         const data = await fetchGetData({
           url: "/chefs",
@@ -54,13 +49,21 @@ const SearchBar: FC<SearchBarProps> = ({
     if (debounced) {
       handleSearch()
     }
+    // トップページからの遷移時に検索ページに遷移する時間調整
+    if (debounced && pathname === "/") {
+      setTimeout(() => {
+        router.push("/search")
+      }, 3000)
+    }
   }, [debounced])
+
   const handleClearQuery = () => {
     setQuery("")
   }
 
   const handleBack = () => {
-    router.push("/") // トップページに戻る
+    setQuery("")
+    router.push("/")
   }
 
   return (
@@ -81,7 +84,7 @@ const SearchBar: FC<SearchBarProps> = ({
           />
           {pathname == "/search" && (
             <input
-              className="ml-2 bg-transparent placeholder-gray-500 outline-none"
+              className="ml-2 w-10/12 bg-transparent placeholder-gray-500 outline-none"
               placeholder={tabIndex === 0 ? "レシピを検索" : "シェフを検索"}
               value={query}
               onChange={(e) => setQuery(e.target.value)}

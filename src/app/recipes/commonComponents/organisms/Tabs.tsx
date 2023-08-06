@@ -4,10 +4,12 @@ import "swiper/swiper.min.css"
 
 import { usePathname } from "next/navigation"
 import { ReactElement, useEffect, useState } from "react"
+import { useRecoilState } from "recoil"
 import SwiperCore, { Navigation } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
 
 import SearchBar from "@/app/components/SearchBar"
+import { searchQueryState } from "@/app/store/searchQueryState"
 
 SwiperCore.use([Navigation])
 
@@ -30,7 +32,7 @@ const Tabs = (props: TabsProps) => {
   // タブの選択
   const [tabIndex, setTabIndex] = useState(activeIndex ? activeIndex : 0)
   //検索ワード
-  const [query, setQuery] = useState<string>("")
+  const [query, setQuery] = useRecoilState(searchQueryState)
   const [swiper, setSwiper] = useState<SwiperCore | null>()
   const pathname = usePathname()
   // タイトルの選択
@@ -58,10 +60,13 @@ const Tabs = (props: TabsProps) => {
     <>
       {/* 検索ボックスはsearchページだけで使用 */}
       {pathname == "/search" && (
-        <SearchBar tabIndex={tabIndex} query={query} setQuery={setQuery} />
+        // <SearchBar tabIndex={tabIndex} query={query} setQuery={setQuery} />
+        <SearchBar tabIndex={tabIndex} />
       )}
       {/* タイトルはsearchページだけで使用 */}
-      {pathname == "/search" && <h2 className="text-xl font-bold">{title}</h2>}
+      {pathname == "/search" && (
+        <h2 className="break-all text-xl font-bold">{title}</h2>
+      )}
       {/* ヘッダー */}
       <ul className="mt-2 flex border-b border-gray-200 text-center text-sm font-medium">
         {tabComponents.map((item, i) => {
