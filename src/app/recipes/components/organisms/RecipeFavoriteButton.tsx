@@ -79,9 +79,9 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
   }, [recipeId, dataFetch])
 
   useEffect(() => {
-    if (isAuthErrorFetch || isAuthErrorAddFavorite || isAuthErrorRemoveFavorite)
+    if (isAuthErrorAddFavorite || isAuthErrorRemoveFavorite)
       setIsOpenAuthErrorAlert(true)
-  }, [isAuthErrorFetch, isAuthErrorAddFavorite, isAuthErrorRemoveFavorite])
+  }, [isAuthErrorAddFavorite, isAuthErrorRemoveFavorite])
 
   /**
    * お気に入りクリック
