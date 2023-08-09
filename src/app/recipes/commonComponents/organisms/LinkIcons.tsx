@@ -17,10 +17,24 @@ export type LinkType = {
   url: string
   chef_id: number
   recipe_id: number
+  priority?: number
+  icon?: JSX.Element
 }
 
 type LinkIconsProps = {
   links: LinkType[]
+}
+
+const convertToMenuItems = (links: LinkType[]): MenuItemType[] => {
+  return links.map((l) => {
+    return {
+      icon: l.icon,
+      title: l.service_name,
+      action: () => {
+        window.open(l.url, "_blank")
+      },
+    }
+  })
 }
 
 /**
@@ -33,59 +47,64 @@ const LinkIcons = (props: LinkIconsProps) => {
   if (links.length == 0) return <></>
 
   const MENU_WIDTH = 220
-  const famousSitesInMenu = [
+  const FAMOUS_SITES = [
     {
-      icon: <IoLogoFacebook />,
-      urlPrefix: "www.facebook.com",
+      icon: <IoLogoYoutube />,
+      urlPrefix: "www.youtube.com",
+      priority: 1,
+    },
+    {
+      icon: <IoLogoInstagram />,
+      urlPrefix: "www.instagram.com",
+      priority: 2,
     },
     {
       icon: <IoLogoTiktok />,
       urlPrefix: "www.tiktok.com",
+      priority: 3,
     },
     {
       icon: <IoLogoTwitter />,
       urlPrefix: "www.twitter.com",
+      priority: 4,
+    },
+    {
+      icon: <IoLogoFacebook />,
+      urlPrefix: "www.facebook.com",
+      priority: 5,
     },
   ]
+  const MAX_COUNT_OUT_MENU = 2
 
-  // 表にボタンで表示する有名サイト
-  const youtubeLink = links.find((el) => el.url.indexOf("www.youtube.com") > 0)
-  const instagramLink = links.find(
-    (el) => el.url.indexOf("www.instagram.com") > 0
-  )
+  // 表示順に並び替え
+  const sortedLinks = links
+    .map((link) => {
+      const matchingSite = FAMOUS_SITES.find((site) =>
+        link.url.includes(site.urlPrefix)
+      )
+      const priority = matchingSite ? matchingSite.priority : Infinity
+      const icon = matchingSite ? matchingSite.icon : <IoLink />
+      return { ...link, priority, icon }
+    })
+    .sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0))
 
-  // メニュー内で表示する有名サイト
-  const famousSiteInMenuLinks = links.filter(
-    (l) =>
-      l.url && famousSitesInMenu.find((f) => l.url.indexOf(f.urlPrefix) > 0)
+  // 有名サイト
+  const famousSiteLinks = sortedLinks.filter(
+    (menu) => menu.priority != Infinity
   )
-  const famousSiteMenuItems: MenuItemType[] = famousSiteInMenuLinks.map((l) => {
-    return {
-      icon: famousSitesInMenu.find((f) => l.url.indexOf(f.urlPrefix) > 0)?.icon,
-      title: l.service_name,
-      action: () => {
-        window.open(l.url, "_blank")
-      },
-    }
-  })
+  // 有名サイトで優先度の高い(値の低い)2つをアイコン表示、その他をはメニュー
+  const iconLinks: LinkType[] = famousSiteLinks.slice(0, MAX_COUNT_OUT_MENU)
+  const famousSiteMenuLinks: LinkType[] =
+    famousSiteLinks.slice(MAX_COUNT_OUT_MENU)
+  const famousSiteMenuItems: MenuItemType[] =
+    convertToMenuItems(famousSiteMenuLinks)
 
-  // メニュー内で表示するオリジナルサイト
-  const orginalSiteLinks = links.filter(
-    (l) =>
-      l.url &&
-      !famousSitesInMenu.find((f) => l.url.indexOf(f.urlPrefix) > 0) &&
-      !(l.url.indexOf("www.youtube.com") > 0) &&
-      !(l.url.indexOf("www.instagram.com") > 0)
+  // オリジナルサイト
+  const orginalSiteLinks = sortedLinks.filter(
+    (menu) => menu.priority == Infinity
   )
-  const orginalSiteMenuItems: MenuItemType[] = orginalSiteLinks.map((l) => {
-    return {
-      icon: <IoLink />,
-      title: l.service_name,
-      action: () => {
-        window.open(l.url, "_blank")
-      },
-    }
-  })
+  const orginalSiteMenuItems: MenuItemType[] =
+    convertToMenuItems(orginalSiteLinks)
 
   // メニュー要素
   const menuItems = [
@@ -101,31 +120,19 @@ const LinkIcons = (props: LinkIconsProps) => {
   return (
     <>
       <div className="m-1 flex flex-row items-center justify-center">
-        {/* YouTube */}
-        {youtubeLink && (
-          <div className="flex-0.3 mr-2">
+        {/* 外メニュー */}
+        {iconLinks.map((link) => (
+          <div className="flex-0.3 mr-2" key={link.id}>
             <button
               className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-200"
-              onClick={() => handleLinkClick(youtubeLink)}
+              onClick={() => handleLinkClick(link)}
             >
-              <IoLogoYoutube className="text-xl" />
+              <div className="text-xl">{link.icon}</div>
             </button>
           </div>
-        )}
+        ))}
 
-        {/* Instagram */}
-        {instagramLink && (
-          <div className="flex-0.3 mr-2">
-            <button
-              className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-200"
-              onClick={() => handleLinkClick(instagramLink)}
-            >
-              <IoLogoInstagram className="text-xl" />
-            </button>
-          </div>
-        )}
-
-        {/* メニュー */}
+        {/* 内メニュー */}
         {menuItems && (
           <div className="flex-0.3 mr-2 mt-1">
             <Menu menuWidth={MENU_WIDTH} menuItems={menuItems}>
