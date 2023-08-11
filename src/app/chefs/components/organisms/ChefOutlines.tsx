@@ -1,10 +1,11 @@
+"use client"
 import AvatorButton from "@/app/recipes/commonComponents/molecules/AvatorButton"
-import LinkIcons from "@/app/recipes/commonComponents/organisms/LinkIcons"
 import Modal from "@/app/recipes/commonComponents/organisms/Modal"
 import PageBackButton from "@/app/recipes/commonComponents/organisms/PageBackButton"
 
 import { ChefOutlineType } from "../../[screenName]/type"
 import ChefOutlineSkeletons from "./ChefOutlineSkeletons"
+import ChefOutlinesMenus from "./ChefOutlinesMenus"
 import ChefOutlineSubInformations from "./ChefOutlineSubInformations"
 
 const getChefData = async (
@@ -110,7 +111,7 @@ const ChefOutlines = async (props: ChefOutlinesProps) => {
     <>
       <div className="right-2 mt-2 flex h-8 justify-end">
         {/* リンク */}
-        <LinkIcons links={chef.chef_links ?? []} />
+        <ChefOutlinesMenus chef={chef} />
       </div>
       <div className="pl-4 pr-4">
         <div className="mb-2 flex flex-row">
