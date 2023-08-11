@@ -36,15 +36,15 @@ const RecipeCard = (props: RecipeCardProps) => {
     <button onClick={handleClick}>
       <div className="mt-3 flex flex-col items-center gap-1">
         {/* 画像 */}
-        <div className="relative">
+        <div className="group relative">
           <Image
             src={imageSrc}
             alt={`${title}のアイコン`}
             width={imageSize}
             height={imageSize}
-            className="rounded-2xl"
+            className="rounded-2xl transition-opacity group-hover:opacity-70"
           />
-          <div className="absolute right-2 top-2 flex rounded-xl bg-gray-600 opacity-70">
+          <div className="absolute right-2 top-2 flex rounded-xl bg-gray-600 opacity-70 transition-opacity group-hover:opacity-40">
             <div className="flex flex-row items-center justify-end p-1 text-sm text-white">
               <IoHeartOutline />
               {favoriteCount}
