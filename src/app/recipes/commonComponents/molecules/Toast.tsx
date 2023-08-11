@@ -1,41 +1,41 @@
 export type ToastProps = {
   message: string
-  type: "success" | "error"
+  type?: "success" | "error" //未使用
   isShow: boolean
 }
 
 const Toast = (props: ToastProps) => {
   const { message, type, isShow } = props
 
-  let typeColorClass = ""
-  if (type === "success") {
-    typeColorClass = "bg-white"
-  } else if (type === "error") {
-    typeColorClass = "bg-red-400"
-  }
-
   return (
     <>
-      {/* 画面右下から左にスライドして表示 */}
-      {/* <div
-        className={`transform transition-transform duration-300 ${
-          isShow ? "translate-x-0" : "translate-x-full"
-        } rounded-l-xs fixed bottom-8 right-0 flex flex-row items-center justify-center border border-gray-300 bg-gray-600 p-4 text-xs text-white shadow-lg`}
-      >
-        <div className={`mr-2 h-2 w-2 rounded-full ${typeColorClass}`}></div>
-        {message}
-      </div> */}
-
-      {isShow && (
-        <div className="fixed inset-x-0 bottom-8 z-50 flex items-center justify-center">
+      <div className="md:flex">
+        {/* デスクトップ　画面右下から左にスライドして表示 */}
+        <div className="hidden md:block">
           <div
-            className="flex w-48 transform items-center justify-center rounded-3xl bg-gray-600 p-4 text-xs text-white opacity-0 shadow-lg transition-opacity duration-300"
-            style={{ opacity: isShow ? 1 : 0 }}
+            className={`transform transition-transform duration-300 ${
+              isShow ? "translate-x-0" : "translate-x-full"
+            } rounded-l-xs fixed bottom-8 right-0 z-50 flex flex-row items-center justify-center bg-gray-600 p-4 text-sm text-white shadow-lg`}
           >
             {message}
           </div>
         </div>
-      )}
+      </div>
+
+      {/* モバイル　画面中央下に表示 */}
+      <div className="block md:hidden">
+        <div className="fixed inset-x-0 bottom-8 z-50 flex items-center justify-center">
+          <div
+            className="flex w-48 transform items-center justify-center rounded-3xl bg-gray-600 p-4 text-sm text-white opacity-0 transition-opacity duration-300"
+            style={{
+              opacity: isShow ? 1 : 0,
+              boxShadow: "4px 4px 4px rgba(0, 0, 0, 0.5)", // なぜかshadowクラスが効かないのでstyleで直接指定
+            }}
+          >
+            {message}
+          </div>
+        </div>
+      </div>
     </>
   )
 }

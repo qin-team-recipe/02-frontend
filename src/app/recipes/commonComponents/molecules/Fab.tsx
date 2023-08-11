@@ -7,7 +7,7 @@ export type FabsProps = {
 const Fab = (props: FabsProps) => {
   const { onClick, message, isShow } = props
   return (
-    <div className="fixed inset-x-0 bottom-8 z-50 flex items-center justify-center">
+    <div className="fixed inset-x-0 bottom-8 z-30 flex items-center justify-center">
       <button
         className="flex w-48 transform items-center justify-center rounded-3xl bg-red-500 p-4 text-sm text-white opacity-0 transition-opacity duration-300"
         style={{
