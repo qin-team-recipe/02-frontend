@@ -1,7 +1,7 @@
 "use client"
 
-import { useRouter } from "next/navigation"
-import React, { useState } from "react"
+import { usePathname, useRouter } from "next/navigation"
+import React, { useEffect, useState } from "react"
 import {
   IoCopyOutline,
   IoEllipsisVerticalCircle,
@@ -12,10 +12,11 @@ import {
 } from "react-icons/io5"
 import { useRecoilState } from "recoil"
 
+import usePost from "@/app/hooks/usePost"
 import { recipeState } from "@/app/store/recipeState"
 import {
   getTokenFromLocalStorage,
-  removeTokenFromLocalStorage,
+  setPathGoAfterLoginToLocalStorage,
 } from "@/app/utils/localStorage"
 
 import ModalButton from "../../commonComponents/molecules/ModalButton"
@@ -44,8 +45,56 @@ const RecipeEditMenu = (props: RecipeEditMenuProps) => {
   const [isOpenDeleteCompleteInformation, setIsOpenDeleteCompleteInformation] =
     useState(false)
   const [storedRecipe, setStoredRecipe] = useRecoilState(recipeState)
+  const [isOpenLoginAlert, setIsOpenLoginAlert] = useState(false)
+  const [isOpenAuthErrorAlert, setIsOpenAuthErrorAlert] = useState(false)
+
+  const {
+    doPost: doPublishPost,
+    isLoading: isLoadingPublish,
+    error: errorPublish,
+    isAuthError: isAuthErrorPublish,
+  } = usePost(
+    "PATCH",
+    "/publishStatuses",
+    `{
+      "recipe_id": ${recipeId},
+      "status": "public"
+    }`
+  )
+  const {
+    doPost: doLimitedPublishPost,
+    isLoading: isLoadingLimitedPublish,
+    error: errorLimitedPublish,
+    isAuthError: isAuthErrorLimitedPublish,
+  } = usePost(
+    "PATCH",
+    "/publishStatuses",
+    `{
+      "recipe_id": ${recipeId},
+      "status": "limited"
+    }`
+  )
+  const {
+    doPost: doPrivatePost,
+    isLoading: isLoadingPrivate,
+    error: errorPrivate,
+    isAuthError: isAuthErrorPrivate,
+  } = usePost(
+    "PATCH",
+    "/publishStatuses",
+    `{
+      "recipe_id": ${recipeId},
+      "status": "private"
+    }`
+  )
+
+  useEffect(() => {
+    if (isAuthErrorPublish || isAuthErrorLimitedPublish || isAuthErrorPrivate)
+      setIsOpenAuthErrorAlert(true)
+  }, [isAuthErrorPublish, isAuthErrorLimitedPublish, isAuthErrorPrivate])
 
   const router = useRouter()
+  const pathname = usePathname()
   const token = getTokenFromLocalStorage()
 
   const MENU_WIDTH = 260
@@ -56,22 +105,29 @@ const RecipeEditMenu = (props: RecipeEditMenuProps) => {
       router.push("/draft")
     },
   }
-  const MENU_ITME_UNPUBLISH: MenuItemType = {
+  const MENU_ITME_PUBLISH: MenuItemType = {
+    icon: <IoLockOpenOutline />,
+    title: "レシピを公開する",
+    action: (item?: MenuItemType) => {
+      updatePublishStatus("public")
+    },
+  }
+  const MENU_ITME_LIMITED: MenuItemType = {
+    icon: <IoLockOpenOutline />,
+    title: "レシピを限定公開する",
+    comment: "urlを知っているユーザのみ閲覧可能",
+    action: (item?: MenuItemType) => {
+      updatePublishStatus("limited")
+    },
+  }
+  const MENU_ITME_PRIVATE: MenuItemType = {
     icon: <IoLockClosedOutline />,
     title: "公開を停止する",
     action: (item?: MenuItemType) => {
       updatePublishStatus("private")
     },
   }
-  const MENU_ITME_PUBLISH: MenuItemType = {
-    icon: <IoLockOpenOutline />,
-    title: "レシピを限定公開する",
-    comment: "urlを知っているユーザのみ閲覧可能",
-    action: (item?: MenuItemType) => {
-      updatePublishStatus("public")
-    },
-  }
-  const MENU_ITME_COPY: MenuItemType = {
+  const MENU_ITME_URL_COPY: MenuItemType = {
     icon: <IoCopyOutline />,
     title: "URLをコピー",
     action: (item?: MenuItemType) => {
@@ -94,8 +150,21 @@ const RecipeEditMenu = (props: RecipeEditMenuProps) => {
       ? // 公開中
         [
           MENU_ITME_EDIT,
-          MENU_ITME_COPY,
-          MENU_ITME_UNPUBLISH,
+          MENU_ITME_URL_COPY,
+          MENU_ITME_LIMITED,
+          MENU_ITME_PRIVATE,
+          {
+            hr: true,
+          },
+          MENU_ITME_DELETE,
+        ]
+      : storedRecipe?.published_status == "limited"
+      ? // 限定公開中
+        [
+          MENU_ITME_EDIT,
+          MENU_ITME_URL_COPY,
+          MENU_ITME_PUBLISH,
+          MENU_ITME_PRIVATE,
           {
             hr: true,
           },
@@ -105,6 +174,7 @@ const RecipeEditMenu = (props: RecipeEditMenuProps) => {
         [
           MENU_ITME_EDIT,
           MENU_ITME_PUBLISH,
+          MENU_ITME_LIMITED,
           {
             hr: true,
           },
@@ -123,45 +193,28 @@ const RecipeEditMenu = (props: RecipeEditMenuProps) => {
   }
 
   const updatePublishStatus = async (
-    status: "public" | "limited" | "private"
+    publishedStatus: "public" | "limited" | "private"
   ) => {
-    if (!token) return
-    console.log("レシピ公開 type=" + status)
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/publishStatuses`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-          body: `{
-            "recipe_id": ${recipeId},
-            "status": "${status}"
-          }`,
-        }
-      )
-      if (response.status == 400 || response.status == 401) {
-        console.error("認証エラー")
-        removeTokenFromLocalStorage()
-        router.push("/favorites")
-        return
-      }
-
-      console.log("レシピ公開成功")
-      const message =
-        status == "public"
-          ? "レシピを公開しました"
-          : "レシピの公開を停止しました"
-      showSuccessToast(message)
-      setStoredRecipe((pre) => ({ ...pre, published_status: status }))
-    } catch (error) {
-      console.error("レシピ公開失敗 error=" + error)
+    if (!token) {
+      setIsOpenLoginAlert(true)
+      return
     }
-    return
+    console.log("updatePublishStatus publishedStatus" + publishedStatus)
+    if (publishedStatus == "public") {
+      doPublishPost()
+    } else if (publishedStatus == "limited") {
+      doLimitedPublishPost()
+    } else if (publishedStatus == "private") {
+      doPrivatePost()
+    }
+
+    setStoredRecipe((pre) => ({ ...pre, published_status: publishedStatus }))
   }
 
+  const gotoLogin = () => {
+    setPathGoAfterLoginToLocalStorage(pathname)
+    router.push("/signinpage")
+  }
   const handleDeleteConfirmOK = async () => {
     setIsOpenDeleteConfirm(false)
     if (!token) return
@@ -229,6 +282,36 @@ const RecipeEditMenu = (props: RecipeEditMenuProps) => {
               </div>
             </>
           )}
+        </div>
+      </Modal>
+
+      <Modal isOpen={isOpenLoginAlert}>
+        <div className="m-2 flex flex-col items-center justify-center">
+          <div className="m-2 text-xl">ログインしてください</div>
+          <div className="mt-2">
+            <ModalButton
+              title="ログイン画面へ"
+              onClick={gotoLogin}
+              size={140}
+            />
+          </div>
+        </div>
+      </Modal>
+
+      <Modal isOpen={isOpenAuthErrorAlert}>
+        <div className="m-2 flex flex-col items-center justify-center">
+          <div className="m-2 text-xl">
+            認証に失敗しました
+            <br />
+            ログインしなおしてください
+          </div>
+          <div className="mt-2">
+            <ModalButton
+              title="ログイン画面へ"
+              onClick={gotoLogin}
+              size={140}
+            />
+          </div>
         </div>
       </Modal>
 
