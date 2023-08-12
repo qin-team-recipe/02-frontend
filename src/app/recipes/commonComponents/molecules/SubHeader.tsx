@@ -12,7 +12,7 @@ export const SubHeader: FC<SubHeaderProps> = ({
   rightItem,
 }) => {
   return (
-    <div className="flex justify-between">
+    <div className="ml-2 flex justify-between">
       <p className={`${textSize} font-bold`}>{title}</p>
       {rightItem}
     </div>

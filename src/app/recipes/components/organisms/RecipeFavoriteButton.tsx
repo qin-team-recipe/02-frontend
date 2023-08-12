@@ -11,6 +11,7 @@ import {
 } from "@/app/utils/localStorage"
 
 import FavoriteButton from "../../commonComponents/molecules/FavoriteButton"
+import ModalButton from "../../commonComponents/molecules/ModalButton"
 import Modal from "../../commonComponents/organisms/Modal"
 
 type RecipeFavoriteButtonProps = {
@@ -120,9 +121,11 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
         <div className="m-2 flex flex-col items-center justify-center">
           <div className="m-2 text-xl">ログインしてください</div>
           <div className="mt-2">
-            <div className="rounded bg-blue-400 p-2 text-sm text-white">
-              <button onClick={gotoLogin}>ログイン画面へ</button>
-            </div>
+            <ModalButton
+              title="ログイン画面へ"
+              onClick={gotoLogin}
+              size={140}
+            />
           </div>
         </div>
       </Modal>
@@ -135,9 +138,11 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
             ログインしなおしてください
           </div>
           <div className="mt-2">
-            <div className="rounded bg-blue-400 p-2 text-sm text-white">
-              <button onClick={gotoLogin}>ログイン画面へ</button>
-            </div>
+            <ModalButton
+              title="ログイン画面へ"
+              onClick={gotoLogin}
+              size={140}
+            />
           </div>
         </div>
       </Modal>

@@ -40,7 +40,7 @@ const FavoriteHeader = () => {
         <div className="flex-0.3">
           {loginUser && (
             <Link href={`/users/${loginUser.screen_name}?type=user`}>
-              <IoPersonCircleOutline className="text-xl" />
+              <IoPersonCircleOutline className="text-2xl" />
             </Link>
           )}
         </div>
