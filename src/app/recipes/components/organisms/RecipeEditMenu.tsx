@@ -18,6 +18,7 @@ import {
   removeTokenFromLocalStorage,
 } from "@/app/utils/localStorage"
 
+import ModalButton from "../../commonComponents/molecules/ModalButton"
 import Toast from "../../commonComponents/molecules/Toast"
 import Menu, { MenuItemType } from "../../commonComponents/organisms/Menu"
 import Modal from "../../commonComponents/organisms/Modal"
@@ -211,13 +212,12 @@ const RecipeEditMenu = (props: RecipeEditMenuProps) => {
             <>
               <div className="m-2 text-xl">レシピを削除しますか？</div>
               <div className="mt-2 flex flex-row">
-                <div className="mr-2 w-20 rounded bg-blue-400 p-2 text-center text-sm text-white">
-                  <button onClick={handleDeleteConfirmOK}>はい</button>
-                </div>
-
-                <div className="w-20 rounded bg-blue-400 p-2 text-center text-sm text-white">
-                  <button onClick={handleDeleteConfirmCancel}>いいえ</button>
-                </div>
+                <ModalButton title="はい" onClick={handleDeleteConfirmOK} />
+                <div className="m-1"></div>
+                <ModalButton
+                  title="いいえ"
+                  onClick={handleDeleteConfirmCancel}
+                />
               </div>
             </>
           )}
@@ -225,9 +225,7 @@ const RecipeEditMenu = (props: RecipeEditMenuProps) => {
             <>
               <div className="m-2 text-xl">レシピを削除しました</div>
               <div className="mt-2 flex flex-row">
-                <div className="w-20 rounded bg-blue-400 p-2 text-center text-sm text-white">
-                  <button onClick={handleDeleteComplete}>OK</button>
-                </div>
+                <ModalButton title="OK" onClick={handleDeleteComplete} />
               </div>
             </>
           )}

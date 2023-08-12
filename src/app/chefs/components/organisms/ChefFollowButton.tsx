@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import useFetchWithAuth from "@/app/hooks/useFetchWithAuth"
 import usePost from "@/app/hooks/usePost"
 import FavoriteButton from "@/app/recipes/commonComponents/molecules/FavoriteButton"
+import ModalButton from "@/app/recipes/commonComponents/molecules/ModalButton"
 import Modal from "@/app/recipes/commonComponents/organisms/Modal"
 import {
   getLoginUserFromLocalStorage,
@@ -118,9 +119,11 @@ const ChefFollowButton = (props: ChefFollowButtonProps) => {
         <div className="m-2 flex flex-col items-center justify-center">
           <div className="m-2 text-xl">ログインしてください</div>
           <div className="mt-2">
-            <div className="rounded bg-blue-400 p-2 text-sm text-white">
-              <button onClick={gotoLogin}>ログイン画面へ</button>
-            </div>
+            <ModalButton
+              title="ログイン画面へ"
+              onClick={gotoLogin}
+              size={140}
+            />
           </div>
         </div>
       </Modal>
@@ -133,9 +136,11 @@ const ChefFollowButton = (props: ChefFollowButtonProps) => {
             ログインしなおしてください
           </div>
           <div className="mt-2">
-            <div className="rounded bg-blue-400 p-2 text-sm text-white">
-              <button onClick={gotoLogin}>ログイン画面へ</button>
-            </div>
+            <ModalButton
+              title="ログイン画面へ"
+              onClick={gotoLogin}
+              size={140}
+            />
           </div>
         </div>
       </Modal>
