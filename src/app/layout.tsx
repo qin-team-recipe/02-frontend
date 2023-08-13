@@ -3,10 +3,10 @@ import "./styles/pages.scss"
 
 import { Inter } from "next/font/google"
 
+import RecoilState from "@/app/components/RecoilState"
+
 import { AuthedCheckProvider } from "./components/AuthedCheckProvider"
-
 import Sidebar from "./components/Sidebar"
-
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -25,12 +25,15 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <AuthedCheckProvider>
-            <div className="flex w-full justify-center">
-              <Sidebar />
-              <div className=" w-full max-w-[480px] border-l-2 border-r-2">
-                {children}
+            {/* 全コンポーネントにRecoilを適用させる */}
+            <RecoilState>
+              <div className="flex w-full justify-center">
+                <Sidebar />
+                <div className=" w-full max-w-[480px] border-l-2 border-r-2">
+                  {children}
+                </div>
               </div>
-            </div>
+            </RecoilState>
           </AuthedCheckProvider>
         </body>
       </html>

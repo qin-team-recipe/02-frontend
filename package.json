@@ -23,10 +23,15 @@
     ]
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/server": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mantine/core": "^6.0.17",
+    "@mantine/hooks": "^6.0.17",
+    "@mantine/next": "^6.0.17",
     "@types/node": "20.2.5",
     "@types/react": "^18.2.8",
     "@types/react-dom": "18.2.4",
@@ -56,7 +61,7 @@
     "eslint-plugin-storybook": "^0.6.12",
     "eslint-plugin-unused-imports": "^2.0.0",
     "husky": "^8.0.0",
-    "lint-staged": "^13.2.2",
+    "lint-staged": "^13.2.3",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.3.0",
     "sass": "^1.62.1",
@@ -64,6 +69,6 @@
     "storybook": "^7.0.27"
   },
   "volta": {
-    "node": "18.16.0"
+    "node": "18.17.0"
   }
 }
