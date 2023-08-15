@@ -8,8 +8,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { RecipeCardProps } from "../types"
 
 const Card: FC<RecipeCardProps> = (props) => {
-  const { image, title, text, chef, good, comment, createdAt, updatedAt } =
-    props
+  const { title, description, chef, favorites_count } = props
 
   return (
     <div>
@@ -19,7 +18,8 @@ const Card: FC<RecipeCardProps> = (props) => {
           style={{ paddingTop: "100%" }}
         ></div>
         <Image
-          src={image}
+          // 画像がない場合はPublicのtopchef1.jpgを表示とする予定でが、ひとまずは仮置き
+          src={"/toppage/topRecipe1.jpg"}
           alt=""
           width={160}
           height={160}
@@ -27,11 +27,11 @@ const Card: FC<RecipeCardProps> = (props) => {
         />
         <div className="absolute right-2 top-2 flex items-center space-x-1 rounded-2xl bg-[rgba(4,0,19,0.483)] p-1 text-white">
           <Image src="/toppage/good.png" alt="" width={14} height={14} />
-          <p className="text-[14px] leading-[17px]">{good}</p>
+          <p className="text-[14px] leading-[17px]">{favorites_count}</p>
         </div>
       </div>
       <h2 className="mt-2 line-clamp-2 text-sm leading-6">{title}</h2>
-      <p className="mt-1 line-clamp-1 text-xs leading-4">{text}</p>
+      <p className="mt-1 line-clamp-1 text-xs leading-4">{description}</p>
     </div>
   )
 }
