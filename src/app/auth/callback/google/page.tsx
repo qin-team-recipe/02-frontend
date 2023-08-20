@@ -27,7 +27,7 @@ const getGoogleUserInfo = async (code: string) => {
   return result.data
 }
 
-export const tryLogin = async (service_user_id: string) => {
+const tryLogin = async (service_user_id: string) => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/login?service_user_id=${service_user_id}`
   )
@@ -76,7 +76,6 @@ const GoogleAuth: NextPage = () => {
         console.log("try login new comer")
         await router.push("/register")
       }
-
     }
     checkUser()
   }, [code, router, setGoogleUser, setUser])
