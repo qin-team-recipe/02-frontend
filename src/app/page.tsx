@@ -11,7 +11,7 @@ import TopChefPicCard from "./components/TopChefPicCard"
 import TopRecipeCard from "./components/TopRecipeCard"
 import { fetchGetData } from "./utils/fetchMethod"
 
-const getChefs = async (url: string) => {
+const getData = async (url: string) => {
   const response = await fetchGetData({
     url: url,
   })
@@ -29,9 +29,9 @@ const getChefs = async (url: string) => {
 }
 
 const Home: NextPage = async () => {
-  const chefs = await getChefs("/chefs")
-  const recomendsChefs = await getChefs("/recommends/chefs")
-  const recomendsRecipes = await getChefs("/recommends/recipes")
+  const chefs = await getData("/chefs")
+  const recomendsChefs = await getData("/recommends/chefs")
+  const recomendsRecipes = await getData("/recommends/recipes")
 
   return (
     <>
