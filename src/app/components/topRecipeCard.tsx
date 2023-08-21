@@ -2,16 +2,22 @@
 import "swiper/swiper.min.css"
 
 import Image from "next/image"
-import { FC } from "react"
+import { useRouter } from "next/navigation"
+import { FC, useCallback } from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 
 import { RecipeCardProps } from "../types"
 
 const Card: FC<RecipeCardProps> = (props) => {
-  const { title, description, chef, favorites_count } = props
+  const { title, description, chef, favorites_count, watch_id } = props
+  const router = useRouter()
+
+  const handleClick = useCallback(() => {
+    router.push(`/recipes/${watch_id}`)
+  }, [router, watch_id])
 
   return (
-    <div>
+    <button onClick={handleClick}>
       <div className="relative">
         <div
           className="relative h-full w-full"
@@ -32,7 +38,7 @@ const Card: FC<RecipeCardProps> = (props) => {
       </div>
       <h2 className="mt-2 line-clamp-2 text-sm leading-6">{title}</h2>
       <p className="mt-1 line-clamp-1 text-xs leading-4">{description}</p>
-    </div>
+    </button>
   )
 }
 
