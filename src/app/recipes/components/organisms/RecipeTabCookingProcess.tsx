@@ -1,5 +1,5 @@
-//import { dummyRecipeProcessList } from "../../[id]/mock"
 import { RecipeCookingProcessType } from "../../[id]/type"
+import ClipBoradCopyButton from "../../commonComponents/organisms/ClipBoradCopyButton"
 import { getRecipeData } from "./RecipeOutlines"
 import RecipeTabCard from "./RecipeTabCard"
 
@@ -58,6 +58,13 @@ const RecipeTabCookingProcess = async (props: RecipeTabProcessProps) => {
     )
   }
 
+  // TODO 暫定 クリップボードコピー文字列
+  const processInfo = process.map(
+    (item) => `(${item.step_number}) ${item.title} ${item.description}`
+  )
+  const processInfoText = processInfo.join("\r\n")
+  const copyContents = `【レシピ名】${recipe.title}\r\n【作り方】\r\n${processInfoText}`
+
   return (
     <>
       {/* 工程リスト */}
@@ -69,6 +76,12 @@ const RecipeTabCookingProcess = async (props: RecipeTabProcessProps) => {
           subMessage={item.description}
         />
       ))}
+      <div className="m-2 flex justify-end">
+        <ClipBoradCopyButton
+          contents={copyContents}
+          message="作り方をコピーしました"
+        />
+      </div>
     </>
   )
 }

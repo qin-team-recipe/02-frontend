@@ -1,7 +1,7 @@
 import { IoCartOutline } from "react-icons/io5"
 
-//import { dummyRecipeIngredientList } from "../../[id]/mock"
 import { RecipeIngredientType } from "../../[id]/type"
+import ClipBoradCopyButton from "../../commonComponents/organisms/ClipBoradCopyButton"
 import RecipeAddCartButton from "./RecipeAddCartButton"
 import { getRecipeData } from "./RecipeOutlines"
 import RecipeTabCard from "./RecipeTabCard"
@@ -62,6 +62,13 @@ const RecipeTabIngredients = async (props: RecipeTabIngredientsProps) => {
     )
   }
 
+  // TODO 暫定 クリップボードコピー文字列
+  const ingredientInfo = ingredients.map(
+    (item) => `${item.name} ${item.description}`
+  )
+  const ingredientInfoInfoText = ingredientInfo.join("\r\n")
+  const copyContents = `【レシピ名】${recipe.title}\r\n【材料】(${serving}人前)\r\n${ingredientInfoInfoText}`
+
   return (
     <>
       <div className="flex w-full flex-col ">
@@ -93,6 +100,12 @@ const RecipeTabIngredients = async (props: RecipeTabIngredientsProps) => {
             }
           />
         ))}
+      </div>
+      <div className="m-2 flex justify-end">
+        <ClipBoradCopyButton
+          contents={copyContents}
+          message="材料をコピーしました"
+        />
       </div>
     </>
   )
