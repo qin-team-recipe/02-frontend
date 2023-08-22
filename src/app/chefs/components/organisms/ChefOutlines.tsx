@@ -1,4 +1,3 @@
-"use client"
 import AvatorButton from "@/app/recipes/commonComponents/molecules/AvatorButton"
 import Modal from "@/app/recipes/commonComponents/organisms/Modal"
 import PageBackButton from "@/app/recipes/commonComponents/organisms/PageBackButton"
@@ -8,7 +7,7 @@ import ChefOutlineSkeletons from "./ChefOutlineSkeletons"
 import ChefOutlinesMenus from "./ChefOutlinesMenus"
 import ChefOutlineSubInformations from "./ChefOutlineSubInformations"
 
-const getChefData = async (
+export const getChefData = async (
   screenName: string
 ): Promise<ChefOutlineType | undefined> => {
   console.log(

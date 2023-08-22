@@ -1,3 +1,5 @@
+import { PageInfoType } from "@/app/chefs/[screenName]/type"
+
 export type RecipeOutlineType = {
   id: number
   watch_id: string
@@ -40,4 +42,14 @@ export type RecipeIngredientType = {
   name: string
   description: string
   recipe_id: number
+}
+
+export type RecipeFavoritesDataType = {
+  lists: {
+    id: number
+    user_id: number
+    recipe_id: number
+    recipe: RecipeOutlineType
+  }[]
+  page_info: PageInfoType
 }

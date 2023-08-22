@@ -10,6 +10,7 @@ import {
   setPathGoAfterLoginToLocalStorage,
 } from "@/app/utils/localStorage"
 
+import { RecipeFavoritesDataType } from "../../[id]/type"
 import FavoriteButton from "../../commonComponents/molecules/FavoriteButton"
 import ModalButton from "../../commonComponents/molecules/ModalButton"
 import Modal from "../../commonComponents/organisms/Modal"
@@ -69,9 +70,9 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
   useEffect(() => {
     const checkFavorites = async () => {
       if (!dataFetch) return
-      const favorites: { recipe_id: number }[] = dataFetch
+      const data: RecipeFavoritesDataType = dataFetch
       const isMyFavorite =
-        favorites.find(
+        data.lists.find(
           (el: { recipe_id: number }) => el.recipe_id == Number(recipeId)
         ) != undefined
       setIsFavorite(isMyFavorite)

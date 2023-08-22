@@ -2,21 +2,13 @@
 import { useRouter } from "next/navigation"
 import { useCallback } from "react"
 
-import { ChefOutlineType } from "@/app/chefs/[screenName]/type"
 import useFetchWithAuth from "@/app/hooks/useFetchWithAuth"
 import AvatorButton from "@/app/recipes/commonComponents/molecules/AvatorButton"
 import { getLoginUserFromLocalStorage } from "@/app/utils/localStorage"
 
 import { Carousel } from "../../../recipes/commonComponents/molecules/Carousel"
+import { ChefFollowDataType, FavoriteChef } from "../../type"
 import FavoriteChefAvatarsCarouselSkeletons from "./FavoriteChefAvatarsCarouselSkeletons"
-
-export type FavoriteChef = {
-  id: number
-  user_id: number
-  chef_id: number
-  chef: ChefOutlineType
-  imageSrc: string
-}
 
 const FavoriteChefAvatarsCarousel = () => {
   const loginUser = getLoginUserFromLocalStorage()
@@ -37,8 +29,12 @@ const FavoriteChefAvatarsCarousel = () => {
   if (isLoading) {
     return <FavoriteChefAvatarsCarouselSkeletons />
   }
+  if (error || !data) {
+    return <>データ取得に失敗しました</>
+  }
+  const responseData: ChefFollowDataType = data
 
-  const favoriteChefs: FavoriteChef[] = data ?? []
+  const favoriteChefs: FavoriteChef[] = responseData.lists ?? []
   if (favoriteChefs.length == 0) {
     return (
       <>
