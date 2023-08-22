@@ -1,7 +1,42 @@
-import React from "react"
-
+import { ChefRecipe, ChefRecipeDataType } from "../../[screenName]/type"
+import { getChefData } from "./ChefOutlines"
 import ChefRecipesGallery from "./ChefRecipesGallery"
-import { getChefRecipeData } from "./ChefTabNewRecipes"
+
+/**
+ * シェフレシピデータ取得
+ * @param screenName
+ * @returns
+ */
+export const getChefPopularNewRecipeData = async (
+  screenName: string
+): Promise<ChefRecipe[] | undefined> => {
+  console.log("シェフレシピデータ取得 screenName=" + screenName)
+
+  const chef = await getChefData(screenName)
+  if (!chef?.id) {
+    return
+  }
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/chefRecipes?type=favorites&chef_id=${chef?.id}`,
+    {
+      next: { revalidate: 10 },
+    }
+  )
+
+  const result = await response.json()
+  if (!result?.data) {
+    return
+  }
+  const responseData: ChefRecipeDataType = result.data
+
+  // TODO 画像はダミー
+  const dummyData = await responseData.lists.map((chefRecipe: ChefRecipe) => ({
+    ...chefRecipe,
+    imageSrc: "/takada-images/my-recipes/recipe1.jpg",
+  }))
+  return dummyData
+}
 
 type ChefTabPopularRecipesProps = {
   screenName: string
@@ -15,7 +50,7 @@ type ChefTabPopularRecipesProps = {
 const ChefTabPopularRecipes = async (props: ChefTabPopularRecipesProps) => {
   const { screenName } = props
   // TODO 仮
-  const recipes = await getChefRecipeData(screenName)
+  const recipes = await getChefPopularNewRecipeData(screenName)
 
   if (!recipes) {
     return (

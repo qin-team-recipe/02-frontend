@@ -1,5 +1,5 @@
 "use client"
-import { ChefRecipe } from "@/app/chefs/[screenName]/type"
+import { ChefRecipe, ChefRecipeDataType } from "@/app/chefs/[screenName]/type"
 import useFetchWithAuth from "@/app/hooks/useFetchWithAuth"
 import { Carousel } from "@/app/recipes/commonComponents/molecules/Carousel"
 import RecipeCard from "@/app/recipes/commonComponents/organisms/RecipeCard"
@@ -17,7 +17,9 @@ const FavoriteChefNewRecipesCarousel = () => {
   if (!data || error) {
     return <>データ取得に失敗しました</>
   }
-  const chefRecipes: ChefRecipe[] = data
+  const responseData: ChefRecipeDataType = data
+
+  const chefRecipes: ChefRecipe[] = responseData.lists ?? []
   if (chefRecipes.length == 0) {
     return (
       <>

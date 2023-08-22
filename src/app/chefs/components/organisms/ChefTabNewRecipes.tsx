@@ -1,41 +1,48 @@
 import React from "react"
 
-import { ChefRecipe } from "../../[screenName]/type"
+import { ChefRecipe, ChefRecipeDataType } from "../../[screenName]/type"
+import { getChefData } from "./ChefOutlines"
 import ChefRecipesGallery from "./ChefRecipesGallery"
-
-type ChefTabNewRecipesProps = {
-  screenName: string
-}
 
 /**
  * シェフレシピデータ取得
  * @param screenName
  * @returns
  */
-export const getChefRecipeData = async (
+export const getChefNewRecipeData = async (
   screenName: string
 ): Promise<ChefRecipe[] | undefined> => {
   console.log("シェフレシピデータ取得 screenName=" + screenName)
 
-  // TODO API作成前のため仮で全レシピ取得を実行
+  const chef = await getChefData(screenName)
+  if (!chef?.id) {
+    return
+  }
+
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/chefRecipes`,
+    `${process.env.NEXT_PUBLIC_API_URL}/chefRecipes?type=latest&chef_id=${chef?.id}`,
     {
       next: { revalidate: 10 },
     }
   )
 
   const result = await response.json()
-  //console.log("シェフレシピデータ取得 data=" + JSON.stringify(result))
+  if (!result?.data) {
+    return
+  }
+  const responseData: ChefRecipeDataType = result.data
+
   // TODO 画像はダミー
-  const dummyData = result.data.map((chefRecipe: ChefRecipe) => ({
+  const dummyData = await responseData.lists.map((chefRecipe: ChefRecipe) => ({
     ...chefRecipe,
     imageSrc: "/takada-images/my-recipes/recipe1.jpg",
   }))
-
   return dummyData
 }
 
+type ChefTabNewRecipesProps = {
+  screenName: string
+}
 /**
  * 新着レシピタブコンテンツ
  * @param props
@@ -43,7 +50,7 @@ export const getChefRecipeData = async (
  */
 const ChefTabNewRecipes = async (props: ChefTabNewRecipesProps) => {
   const { screenName } = props
-  const recipes = await getChefRecipeData(screenName)
+  const recipes = await getChefNewRecipeData(screenName)
 
   if (!recipes) {
     return (

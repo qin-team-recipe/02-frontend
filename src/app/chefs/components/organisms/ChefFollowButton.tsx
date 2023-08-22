@@ -13,6 +13,8 @@ import {
   setPathGoAfterLoginToLocalStorage,
 } from "@/app/utils/localStorage"
 
+import { ChefRecipeDataType } from "../../[screenName]/type"
+
 type ChefFollowButtonProps = {
   className?: string
   chefId: number
@@ -68,7 +70,8 @@ const ChefFollowButton = (props: ChefFollowButtonProps) => {
   useEffect(() => {
     const checkFavorites = async () => {
       if (!fetchData) return
-      const favorites: { chef_id: number }[] = fetchData
+      const data: ChefRecipeDataType = fetchData
+      const favorites: { chef_id: number }[] = data.lists ?? []
       const isMyFavorite =
         favorites.find((el: { chef_id: number }) => el.chef_id == chefId) !=
         undefined
