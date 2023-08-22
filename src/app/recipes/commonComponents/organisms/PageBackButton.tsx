@@ -5,10 +5,11 @@ import { IoArrowBack } from "react-icons/io5"
 
 type PageBackButtonProps = {
   children?: ReactElement
+  defaultBackPage?: string
 }
 
 const PageBackButton = (props: PageBackButtonProps) => {
-  const { children } = props
+  const { children, defaultBackPage } = props
   const router = useRouter()
 
   let buttonElement: ReactElement = (
@@ -20,9 +21,17 @@ const PageBackButton = (props: PageBackButtonProps) => {
     buttonElement = children
   }
 
+  const handleRouterBack = () => {
+    if (window.history.length > 0) {
+      router.back()
+    } else {
+      router.push(defaultBackPage ?? "/")
+    }
+  }
+
   return (
     <>
-      <button onClick={() => router.back()}>{buttonElement}</button>
+      <button onClick={handleRouterBack}>{buttonElement}</button>
     </>
   )
 }
