@@ -32,6 +32,9 @@ export const getRecipeData = async (
     const dummyData = {
       ...result.data,
       imageUrl: "/takada-images/new-recipes/recipe1.jpg",
+      chef: {
+        chefImageUrl: "/takada-images/chefs/chef2.jpg",
+      },
     }
     return dummyData
   } catch (error) {
