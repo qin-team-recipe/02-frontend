@@ -38,7 +38,7 @@ const ChefFollowButton = (props: ChefFollowButtonProps) => {
     data: fetchData,
     isLoading,
     error,
-  } = useFetchWithAuth(`/chefFollows?user_id=${loginUser.id}`)
+  } = useFetchWithAuth(`/chefFollows?user_id=${loginUser?.id}`)
   const {
     doPost: addFollowPost,
     isLoading: isLoadingAddFollow,
@@ -50,7 +50,7 @@ const ChefFollowButton = (props: ChefFollowButtonProps) => {
     `
   {
     "chef_id": ${chefId},
-    "user_id": ${loginUser.id}
+    "user_id": ${loginUser?.id}
   }`
   )
   const {
@@ -64,7 +64,7 @@ const ChefFollowButton = (props: ChefFollowButtonProps) => {
     `
   {
     "chef_id": ${chefId},
-    "user_id": ${loginUser.id}
+    "user_id": ${loginUser?.id}
   }`
   )
   useEffect(() => {
