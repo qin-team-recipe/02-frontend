@@ -26,7 +26,7 @@ const RecipeChefAvatorButton = async (props: RecipeChefAvatorButtonProps) => {
 
   return (
     <>
-      <AvatorButton src={src} name={name} onClick={handleChefClick} size={20} />
+      <AvatorButton src={src} name={name} onClick={handleChefClick} size={36} />
     </>
   )
 }
