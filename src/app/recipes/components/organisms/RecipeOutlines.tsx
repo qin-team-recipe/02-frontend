@@ -33,6 +33,7 @@ export const getRecipeData = async (
       ...result.data,
       imageUrl: "/takada-images/new-recipes/recipe1.jpg",
       chef: {
+        ...result.data.chef,
         chefImageUrl: "/takada-images/chefs/chef2.jpg",
       },
     }
