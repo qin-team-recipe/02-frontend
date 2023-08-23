@@ -39,7 +39,7 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
     isLoading: isLoadingFetch,
     error: errorFetch,
     isAuthError: isAuthErrorFetch,
-  } = useFetchWithAuth(`/recipeFavorites?user_id=${loginUser.id}`)
+  } = useFetchWithAuth(`/recipeFavorites?user_id=${loginUser?.id}`)
   const {
     doPost: addFavoritePost,
     isLoading: isLoadingAddFavorite,
@@ -50,7 +50,7 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
     "/recipeFavorites",
     `{
       "recipe_id": ${recipeId},
-      "user_id": ${loginUser.id}
+      "user_id": ${loginUser?.id}
     }`
   )
   const {
@@ -63,7 +63,7 @@ const RecipeFavoriteButton = (props: RecipeFavoriteButtonProps) => {
     "/recipeFavorites",
     `{
       "recipe_id": ${recipeId},
-      "user_id": ${loginUser.id}
+      "user_id": ${loginUser?.id}
     }`
   )
 
