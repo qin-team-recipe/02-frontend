@@ -9,7 +9,7 @@ type RecipeCardProps = {
   watchId: string
   title: string
   description: string
-  imageSrc: string
+  imageSrc?: string
   imageSize: number
   favoriteCount: number
 }
@@ -30,15 +30,13 @@ const RecipeCard = (props: RecipeCardProps) => {
     router.push(`/recipes/${watchId}`)
   }, [router, watchId])
 
-  if (!imageSrc) return <></>
-
   return (
     <button onClick={handleClick}>
       <div className="mt-3 flex flex-col items-center gap-1">
         {/* 画像 */}
         <div className="group relative">
           <Image
-            src={imageSrc}
+            src={imageSrc ? imageSrc : "/toppage/topRecipe1.jpg"}
             alt={`${title}のアイコン`}
             width={imageSize}
             height={imageSize}

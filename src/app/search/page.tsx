@@ -9,10 +9,10 @@ import Container from "@/app/components/Container"
 import FooterMenu from "../components/FooterMenu"
 import { fetchGetData } from "../utils/fetchMethod"
 import TopChefCard from "../components/TopChefCard"
-import ChefTabNewRecipes from "../chefs/components/organisms/ChefTabNewRecipes"
-import ChefTabRecipeSkeletons from "../chefs/components/organisms/ChefTabRecipeSkeletons"
+import ChefTabNewRecipes from "@/app/search/components/organisms/ChefTabNewRecipes"
+import ChefTabRecipeSkeletons from "@/app/search/components/organisms/ChefTabRecipeSkeletons"
 
-const Recipes = async ({
+const Search = async ({
   params,
   searchParams,
 }: {
@@ -38,7 +38,7 @@ const Recipes = async ({
       title: "レシピ",
       contents: (
         <Suspense fallback={<ChefTabRecipeSkeletons />}>
-          <ChefTabNewRecipes screenName={params.screenName} />
+          <ChefTabNewRecipes />
         </Suspense>
       ),
     },
@@ -66,4 +66,4 @@ const Recipes = async ({
     </>
   )
 }
-export default Recipes
+export default Search

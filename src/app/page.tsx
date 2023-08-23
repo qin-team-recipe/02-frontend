@@ -9,73 +9,29 @@ import { SubHeader } from "./components/SubHeader"
 import TopChefCard from "./components/TopChefCard"
 import TopChefPicCard from "./components/TopChefPicCard"
 import TopRecipeCard from "./components/TopRecipeCard"
-import { RecipeCardProps } from "./types"
 import { fetchGetData } from "./utils/fetchMethod"
 
-// シェフデータ及びレシピデータをフェッチしたものと仮定したダミーデータ
-// const chefDummyData: ChefProps[] = [
-//   {
-//     id: 1,
-//     imageUrl: "/toppage/topchef1.jpg",
-//     screen_name: "GjIhYDXec0",
-//     display_name: "チーム２シェフ",
-//     description:
-//       "私は素晴らしい料理の鉄人です私は素晴らしい料理の鉄人です私は素晴らしい料理の鉄人です私は素晴らしい料理の鉄人です私は素晴らしい料理の鉄人です私は素晴らしい料理の鉄人です",
-//   },
-// ]
-const recipesDummyData: RecipeCardProps[] = [
-  {
-    image: "/toppage/topRecipe1.jpg",
-    title:
-      "チーム２レシピの本文1111111111111111111111111111111の本文1111111111111111111111111111111の本文1111111111111111111111111111111",
-    text: "チーム２レシピの本文1111111111111111111111111111111111111111",
-    chef: "チーム２シェフ",
-    good: 100,
-    comment: 100,
-    createdAt: "2021-01-01 00:00:00",
-    updatedAt: "2021-01-01 00:00:00",
-  },
-  {
-    image: "/toppage/topRecipe1.jpg",
-    title: "チーム２レシピ",
-    text: "チーム２レシピの本文",
-    chef: "チーム２シェフ",
-    good: 100,
-    comment: 100,
-    createdAt: "2021-01-01 00:00:00",
-    updatedAt: "2021-01-01 00:00:00",
-  },
-  {
-    image: "/toppage/topRecipe1.jpg",
-    title: "チーム２レシピ",
-    text: "チーム２レシピの本文",
-    chef: "チーム２シェフ",
-    good: 100,
-    comment: 100,
-    createdAt: "2021-01-01 00:00:00",
-    updatedAt: "2021-01-01 00:00:00",
-  },
-  {
-    image: "/toppage/topRecipe1.jpg",
-    title: "チーム２レシピ",
-    text: "チーム２レシピの本文",
-    chef: "チーム２シェフ",
-    good: 100,
-    comment: 100,
-    createdAt: "2021-01-01 00:00:00",
-    updatedAt: "2021-01-01 00:00:00",
-  },
-]
-
-const getChefs = async () => {
+const getData = async (url: string) => {
   const response = await fetchGetData({
-    url: "/chefs",
+    url: url,
   })
   console.log("シェフデータ一覧結果=" + JSON.stringify(response))
-  return response.data.lists
+
+  // URLによる条件分岐
+  if (url.includes("/recommends/chefs")) {
+    return response.data
+  } else if (url.includes("/chefs") || url.includes("/recommends/recipes")) {
+    return response.data.lists
+  } else {
+    // 予期せぬURLが渡された場合のエラーハンドリング
+    throw new Error("Invalid URL specified")
+  }
 }
+
 const Home: NextPage = async () => {
-  const chefs = await getChefs()
+  const chefs = await getData("/chefs")
+  const recomendsChefs = await getData("/recommends/chefs")
+  const recomendsRecipes = await getData("/recommends/recipes")
 
   return (
     <>
@@ -85,14 +41,14 @@ const Home: NextPage = async () => {
         <div className="mb-2.5 mt-2.5">
           <SubHeader title="注目のシェフ" />
         </div>
-        <TopChefPicCard data={chefs} />
+        <TopChefPicCard data={recomendsChefs} />
         <div className="mb-2.5 mt-6">
           <SubHeader
             title="話題のレシピ"
             link={{ href: "/search?tab=recipe", text: "もっと見る" }}
           />
         </div>
-        <TopRecipeCard data={recipesDummyData} />
+        <TopRecipeCard data={recomendsRecipes} />
         <div className="mb-2.5 mt-6">
           <SubHeader
             title="シェフ"
