@@ -3,7 +3,7 @@ import { LinkType } from "@/app/recipes/commonComponents/organisms/LinkIcons"
 import Modal from "@/app/recipes/commonComponents/organisms/Modal"
 import PageBackButton from "@/app/recipes/commonComponents/organisms/PageBackButton"
 
-import { RecipeOutlineType } from "../../[id]/type"
+import { RecipeOutlineType } from "../../../recipes/[id]/type"
 import RecipeOutlineMenus from "./RecipeOutlineMenus"
 import RecipeOutlineSkeletons from "./RecipeOutlineSkeletons"
 import RecipeOutlineSubInfomations from "./RecipeOutlineSubInfomations"

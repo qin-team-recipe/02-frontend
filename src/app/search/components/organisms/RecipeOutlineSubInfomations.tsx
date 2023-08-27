@@ -9,7 +9,7 @@ import {
   getTokenFromLocalStorage,
 } from "@/app/utils/localStorage"
 
-import { RecipeOutlineType } from "../../[id]/type"
+import { RecipeOutlineType } from "../../../recipes/[id]/type"
 import MyRecipePublishStatusLabel from "./MyRecipePublishStatusLabel"
 import RecipeChefAvatorButton from "./RecipeChefAvatorButton"
 import RecipeEditButton from "./RecipeEditButton"
