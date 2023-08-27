@@ -9,7 +9,7 @@ import Link from "next/link"
 import { useState } from "react"
 
 import FooterMenu from "../components/FooterMenu"
-import { DeleteModal } from "./components/deleteModal"
+import { DeleteModal } from "./components/DeleteModal"
 
 const settings = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
