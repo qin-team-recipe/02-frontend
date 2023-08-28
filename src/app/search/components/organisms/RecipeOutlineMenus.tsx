@@ -1,4 +1,5 @@
 "use client"
+
 import LinkIcons, {
   LinkType,
 } from "@/app/recipes/commonComponents/organisms/LinkIcons"
@@ -7,7 +8,7 @@ import {
   getTokenFromLocalStorage,
 } from "@/app/utils/localStorage"
 
-import { RecipeOutlineType } from "../../[id]/type"
+import { RecipeOutlineType } from "../../../recipes/[id]/type"
 import RecipeEditMenu from "./RecipeEditMenu"
 
 type RecipeOutlineMenusProps = {

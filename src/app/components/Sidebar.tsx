@@ -6,7 +6,7 @@ import { navItems } from "../navItems"
 
 const Sidebar: FC = () => {
   return (
-    <div className="hidden md:block md:w-[180px] px-4 py-8">
+    <div className="hidden px-4 py-8 md:block md:w-[180px]">
       <ul>
         <Link href="/">
           <div
@@ -20,7 +20,7 @@ const Sidebar: FC = () => {
               height={24}
               className="align-top" // imageをtopに揃える
             />
-            <span className="text-sm text-gray-600 font-bold align-top">
+            <span className="align-top text-sm font-bold text-gray-600">
               Top Chefs
             </span>
           </div>
@@ -29,7 +29,7 @@ const Sidebar: FC = () => {
           <li key={item.name}>
             <Link href={item.href}>
               <div
-                className="flex items-center justify-center space-x-2 mt-6"
+                className="mt-6 flex items-center justify-center space-x-2"
                 style={{ width: "fit-content" }}
               >
                 <Image
@@ -39,7 +39,7 @@ const Sidebar: FC = () => {
                   height={24}
                   className="align-top"
                 />
-                <span className="text-sm text-gray-600 align-top">
+                <span className="align-top text-sm text-gray-600">
                   {item.name}
                 </span>
               </div>
