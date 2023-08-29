@@ -1,7 +1,7 @@
 import { IoCartOutline } from "react-icons/io5"
 
 //import { dummyRecipeIngredientList } from "../../[id]/mock"
-import { RecipeIngredientType } from "../../[id]/type"
+import { RecipeIngredientType } from "../../../recipes/[id]/type"
 import RecipeAddCartButton from "./RecipeAddCartButton"
 import { getRecipeData } from "./RecipeOutlines"
 import RecipeTabCard from "./RecipeTabCard"

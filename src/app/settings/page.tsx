@@ -6,7 +6,11 @@ import Link from "next/link"
 import { useState } from "react"
 
 import FooterMenu from "../components/FooterMenu"
+
 import { getTokenFromLocalStorage } from "../utils/localStorage"
+
+import { DeleteModal } from "./components/DeleteModal"
+
 
 const settings = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks

@@ -1,5 +1,5 @@
 //import { dummyRecipeProcessList } from "../../[id]/mock"
-import { RecipeCookingProcessType } from "../../[id]/type"
+import { RecipeCookingProcessType } from "../../../recipes/[id]/type"
 import { getRecipeData } from "./RecipeOutlines"
 import RecipeTabCard from "./RecipeTabCard"
 
