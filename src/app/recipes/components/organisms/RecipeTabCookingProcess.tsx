@@ -1,36 +1,13 @@
-import { RecipeCookingProcessType } from "../../[id]/type"
+"use client"
+import { RecipeCookingProcessType, RecipeOutlineType } from "../../[id]/type"
+import { canAccessRecipe } from "../../[id]/utils"
 import ClipBoradCopyButton from "../../commonComponents/organisms/ClipBoradCopyButton"
-import { getRecipeData } from "./RecipeOutlines"
 import RecipeTabCard from "./RecipeTabCard"
 
 type RecipeTabProcessProps = {
   watchId: string
-}
-
-/**
- * レシピ工程データ取得
- * @param watchId
- * @returns
- */
-const getRecipeProcessData = async (
-  id: string
-): Promise<RecipeCookingProcessType[] | undefined> => {
-  console.log("レシピ工程データ取得 id=" + id)
-
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/recipeSteps?recipe_id=${id}`,
-      {
-        next: { revalidate: 10 },
-      }
-    )
-    const result = await response.json()
-    console.log("レシピ工程データ取得結果 data=" + JSON.stringify(result))
-    return result.data
-  } catch (error) {
-    console.error(error)
-    return []
-  }
+  recipe?: RecipeOutlineType
+  process?: RecipeCookingProcessType[]
 }
 
 /**
@@ -39,12 +16,10 @@ const getRecipeProcessData = async (
  * @returns
  */
 const RecipeTabCookingProcess = async (props: RecipeTabProcessProps) => {
-  const { watchId } = props
-  const recipe = await getRecipeData(watchId)
-  if (!recipe) return <></>
-  const recipeId = String(recipe.id)
+  const { watchId, recipe, process } = props
 
-  const process = await getRecipeProcessData(recipeId)
+  const canAccess = recipe ? canAccessRecipe(recipe) : false
+  if (!recipe || !canAccess) return <></>
 
   if (!process || process.length == 0) {
     return (

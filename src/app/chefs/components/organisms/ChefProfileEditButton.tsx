@@ -4,7 +4,7 @@ import React from "react"
 import { useCallback } from "react"
 
 type ChefProfileEditButtonProps = {
-  screenName: string
+  screenName?: string
   className?: string
 }
 

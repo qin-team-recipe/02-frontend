@@ -1,4 +1,6 @@
-import { PageInfoType } from "@/app/chefs/[screenName]/type"
+import { ChefOutlineType, PageInfoType } from "@/app/chefs/[screenName]/type"
+
+import { LinkType } from "../commonComponents/organisms/LinkIcons"
 
 export type RecipeOutlineType = {
   id: number
@@ -10,23 +12,14 @@ export type RecipeOutlineType = {
   published_status: string
   favorites_count: number
   imageUrl?: string // TODO
-  chef?: {
-    id: number
-    screen_name: string
-    display_name: string
-    description: string
-    recipes_count: number
-    follows_count: number
-    is_following: boolean
-    chefImageUrl?: string
-    chef_links?: []
-  }
+  chef?: ChefOutlineType
   user?: {
     id: number
     screen_name: string
     display_name: string
     email: string
   }
+  links?: LinkType[]
 }
 
 export type RecipeCookingProcessType = {

@@ -48,7 +48,7 @@ const RecipeOutlineSubInfomations = (
           <MyRecipePublishStatusLabel />
         ) : (
           <RecipeChefAvatorButton
-            src={recipe.chef?.chefImageUrl}
+            src={recipe.chef?.imageUrl}
             name={recipe.chef?.display_name}
             screenName={recipe.chef?.screen_name}
           />
