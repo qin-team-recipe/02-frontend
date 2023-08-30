@@ -18,7 +18,7 @@ const FavoriteChefAvatarsCarousel = () => {
   const router = useRouter()
 
   const handleChefClick = useCallback(
-    (screenName: string) => {
+    (screenName?: string) => {
       if (screenName) {
         router.push(`/chefs/${screenName}`)
       }

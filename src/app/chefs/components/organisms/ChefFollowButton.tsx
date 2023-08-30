@@ -17,7 +17,7 @@ import { ChefRecipeDataType } from "../../[screenName]/type"
 
 type ChefFollowButtonProps = {
   className?: string
-  chefId: number
+  chefId?: number
 }
 
 /**
