@@ -49,7 +49,7 @@ export type RecipeCardProps = {
   watch_id: string
 }
 
-export type RecommendChefsData = {
+export type ChefsData = {
   chef_links: [
     {
       chef_id: number
@@ -65,14 +65,15 @@ export type RecommendChefsData = {
   is_following: boolean
   recipes_count: number
   screen_name: string
+  imageUrl?: string
 }
 
 export type RecommendChefs = {
-  data: RecommendChefsData[]
+  data: ChefsData[]
   message: string
 }
 
-export type RecommendRecipesData = {
+export type RecipesData = {
   chef: {
     chef_links: [
       {
@@ -97,18 +98,12 @@ export type RecommendRecipesData = {
   published_status: string
   servings: number
   title: string
-  user: {
-    display_name: string
-    email: string
-    id: number
-    screen_name: string
-  }
   watch_id: string
 }
 
 export type RecommendRecipes = {
   data: {
-    lists: RecommendRecipesData[]
+    lists: RecipesData[]
     page_info: {
       end_cursor: string
       has_next_page: boolean
