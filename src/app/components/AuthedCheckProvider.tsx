@@ -7,6 +7,7 @@ import { createContext, FC, ReactNode, useEffect, useState } from "react"
 import { PAGE_INFO } from "../pageInfo"
 import {
   getTokenFromLocalStorage,
+  // removeTokenFromLocalStorage,
   setPathGoAfterLoginToLocalStorage,
 } from "../utils/localStorage"
 
@@ -20,6 +21,8 @@ const NOT_AUTHED_PAGE_LIST = [
   "/logout",
   "/recipes",
   "/chefs",
+  "/settings",
+  "/search",
 ]
 const checkAuthPage = (pathname: string) => {
   if (pathname == "/") return pathname
@@ -105,6 +108,7 @@ const AuthedCheckProvider: FC<PropsType> = (props) => {
 
   // useEffect to handle redirection
   useEffect(() => {
+    // removeTokenFromLocalStorage()
     const checkUser = () => {
       // サインイン不要は対象外
       if (checkAuthPage(pathname)) {
