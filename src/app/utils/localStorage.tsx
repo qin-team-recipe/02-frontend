@@ -1,18 +1,41 @@
 "use client"
 
+const _localStorage = {
+  setItem: (key: string, value: string) => {
+    if (typeof window === "undefined") {
+      return
+    }
+    localStorage.setItem(key, value)
+  },
+  getItem: (key: string) => {
+    if (typeof window === "undefined") {
+      return null
+    }
+    return localStorage.getItem(key)
+  },
+  removeItem: (key: string) => {
+    if (typeof window === "undefined") {
+      return
+    }
+    localStorage.removeItem(key)
+  },
+}
+
+export { _localStorage as localStorage }
+
 /**
  * 認証トークン
  * @param token
  */
 export const setTokenToLocalStorage = (token: string) => {
-  localStorage.setItem("token", token)
+  _localStorage.setItem("token", token)
 }
 export const getTokenFromLocalStorage = () => {
-  return localStorage.getItem("token")
+  return _localStorage.getItem("token")
 }
 
 export const removeTokenFromLocalStorage = () => {
-  localStorage.removeItem("token")
+  _localStorage.removeItem("token")
 }
 
 /**
@@ -21,15 +44,15 @@ export const removeTokenFromLocalStorage = () => {
  */
 export const setLoginUserToLocalStorage = (user: Object) => {
   // デバッグ用にデシリアライズ
-  localStorage.setItem("user", JSON.stringify(user))
+  _localStorage.setItem("user", JSON.stringify(user))
 }
 export const getLoginUserFromLocalStorage = () => {
-  const userJSONChar = localStorage.getItem("user")
+  const userJSONChar = _localStorage.getItem("user")
   if (!userJSONChar) return
   return JSON.parse(userJSONChar)
 }
 export const removeLoginUserToLocalStorage = () => {
-  localStorage.removeItem("user")
+  _localStorage.removeItem("user")
 }
 
 /**
@@ -37,11 +60,11 @@ export const removeLoginUserToLocalStorage = () => {
  * @param path
  */
 export const setPathGoAfterLoginToLocalStorage = (path: string) => {
-  localStorage.setItem("pathGoAfterLogin", path)
+  _localStorage.setItem("pathGoAfterLogin", path)
 }
 export const getPathGoAfterLoginFromLocalStorage = () => {
-  return localStorage.getItem("pathGoAfterLogin")
+  return _localStorage.getItem("pathGoAfterLogin")
 }
 export const removePathGoAfterLoginFromLocalStorage = () => {
-  return localStorage.removeItem("pathGoAfterLogin")
+  return _localStorage.removeItem("pathGoAfterLogin")
 }
