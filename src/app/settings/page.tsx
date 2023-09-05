@@ -1,30 +1,88 @@
 "use client"
 
-
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
+import Modal from "@/app/recipes/commonComponents/organisms/Modal"
+
 import FooterMenu from "../components/FooterMenu"
+import ModalButton from "../recipes/commonComponents/molecules/ModalButton"
+import {
+  getTokenFromLocalStorage,
+  removeLoginUserToLocalStorage,
+  removePathGoAfterLoginFromLocalStorage,
+  removeTokenFromLocalStorage,
+} from "../utils/localStorage"
 
-import { getTokenFromLocalStorage } from "../utils/localStorage"
+const Settings = () => {
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
+  const [isLogoutComplete, setIsLogoutComplete] = useState(false)
+  const [isWidhdrawalModalOpen, setIsWidhdrawalModalOpen] = useState(false)
+  const [isWidhdrawalComplete, setIsWidhdrawalComplete] = useState(false)
+  const router = useRouter()
 
-import { DeleteModal } from "./components/DeleteModal"
-
-
-const settings = () => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
-  const handleModalOpen = () => {
-    setIsModalOpen(true)
+  const handleModalOpen = (type: string) => {
+    switch (type) {
+      case "logout":
+        setIsLogoutModalOpen(true)
+        break
+      case "withdrawal":
+        setIsWidhdrawalModalOpen(true)
+        break
+      default:
+        throw new Error("Invalid type")
+    }
   }
 
   const handleModalClose = () => {
-    setIsModalOpen(false)
+    setIsLogoutModalOpen(false)
+    setIsWidhdrawalModalOpen(false)
   }
+
   const goBack = () => {
     window.history.back()
+  }
+  const handleLogout = () => {
+    removeTokenFromLocalStorage()
+    removeLoginUserToLocalStorage()
+    removePathGoAfterLoginFromLocalStorage()
+    setIsLogoutModalOpen(false)
+    setIsLogoutComplete(true)
+  }
+
+  // 共通化はまだできていないので、一旦こちらでフェッチメソッドを作成
+  const fetchDeleteData = async ({ url }: any) => {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL
+    const options: any = {
+      method: "DELETE",
+      headers: { Authorization: token },
+    }
+
+    const response = await fetch(`${API_URL}${url}`, options)
+
+    if (!response.ok) {
+      console.error("Fetch failed:", response.statusText)
+      throw new Error("Fetch failed")
+    }
+    return await response.json()
+  }
+
+  const handleWidhdrawal = () => {
+    // ここでローカルストレージの後始末後に退会処理を行う
+    removeTokenFromLocalStorage()
+    removeLoginUserToLocalStorage()
+    removePathGoAfterLoginFromLocalStorage()
+    fetchDeleteData({
+      url: "/me",
+    })
+    setIsWidhdrawalModalOpen(false)
+    setIsWidhdrawalComplete(true)
+  }
+
+  const handleConfirmComplete = () => {
+    router.push("/")
   }
   const token = getTokenFromLocalStorage()
 
@@ -107,7 +165,12 @@ const settings = () => {
               <>
                 <div className=" pb-3 pt-5   font-bold">アカウントの操作</div>
                 <div className="relative">
-                  <Link href="/">
+                  <button
+                    onClick={() => {
+                      handleModalOpen("logout")
+                    }}
+                    className="w-full text-left"
+                  >
                     <div className="py-4 pt-3 text-[16px]">ログアウト</div>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                       <Image
@@ -118,13 +181,18 @@ const settings = () => {
                         className=""
                       />
                     </div>
-                  </Link>
+                  </button>
                 </div>
                 <div className=" pb-3 pt-5 font-bold">
                   取り消しができない操作
                 </div>
                 <div className="relative">
-                  <Link href="/">
+                  <button
+                    onClick={() => {
+                      handleModalOpen("withdrawal")
+                    }}
+                    className="w-full text-left"
+                  >
                     <div className="py-4 pt-3 text-[16px]">退会する</div>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                       <Image
@@ -135,7 +203,7 @@ const settings = () => {
                         className=""
                       />
                     </div>
-                  </Link>
+                  </button>
                 </div>
               </>
             )}
@@ -143,7 +211,59 @@ const settings = () => {
           <FooterMenu />
         </div>
       </div>
+      {/*  ログアウト用の処理 */}
+      <Modal
+        isOpen={isLogoutModalOpen || isLogoutComplete}
+        onClose={handleModalClose}
+      >
+        <div className="m-2 flex flex-col items-center justify-center">
+          {isLogoutModalOpen && (
+            <>
+              <div className="m-2 text-xl">ログアウトしますか？</div>
+              <div className="mt-2 flex flex-row">
+                <ModalButton title="はい" onClick={handleLogout} />
+                <div className="m-1"></div>
+                <ModalButton title="いいえ" onClick={handleModalClose} />
+              </div>
+            </>
+          )}
+          {isLogoutComplete && (
+            <>
+              <div className="m-2 text-xl">ログアウトが完了しました</div>
+              <div className="mt-2 flex flex-row">
+                <ModalButton title="OK" onClick={handleConfirmComplete} />
+              </div>
+            </>
+          )}
+        </div>
+      </Modal>
+      {/*  退会用の処理 */}
+      <Modal
+        isOpen={isWidhdrawalModalOpen || isWidhdrawalComplete}
+        onClose={handleModalClose}
+      >
+        <div className="m-2 flex flex-col items-center justify-center">
+          {isWidhdrawalModalOpen && (
+            <>
+              <div className="m-2 text-xl">本当に退会しますか？</div>
+              <div className="mt-2 flex flex-row">
+                <ModalButton title="はい" onClick={handleWidhdrawal} />
+                <div className="m-1"></div>
+                <ModalButton title="いいえ" onClick={handleModalClose} />
+              </div>
+            </>
+          )}
+          {isWidhdrawalComplete && (
+            <>
+              <div className="m-2 text-xl">退会が完了しました</div>
+              <div className="mt-2 flex flex-row">
+                <ModalButton title="OK" onClick={handleConfirmComplete} />
+              </div>
+            </>
+          )}
+        </div>
+      </Modal>
     </>
   )
 }
-export default settings
+export default Settings
