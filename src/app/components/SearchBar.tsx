@@ -8,6 +8,7 @@ import { HiX } from "react-icons/hi"
 import { IoArrowBack } from "react-icons/io5"
 import { useRecoilState } from "recoil"
 
+import { searchChefState, searchRecipeState } from "../store/searchListState"
 import { searchQueryState } from "../store/searchQueryState"
 import { fetchGetData } from "../utils/fetchMethod"
 
@@ -22,6 +23,11 @@ type SearchBarProps = {
 
 const SearchBar: FC<SearchBarProps> = ({ tabIndex }) => {
   const [query, setQuery] = useRecoilState(searchQueryState)
+  // 検索後のレシピ一覧
+  const [searchRecipeLists, setSearchRecipeLists] =
+    useRecoilState(searchRecipeState)
+  // 検索後のシェフ一覧
+  const [searchhefLists, setSearchChefLists] = useRecoilState(searchChefState)
 
   const [loading, setLoading] = useState<boolean>(false)
   const [results, setResults] = useState<SearchResult[]>([])
@@ -38,16 +44,54 @@ const SearchBar: FC<SearchBarProps> = ({ tabIndex }) => {
   useEffect(() => {
     const handleSearch = async () => {
       setLoading(true)
-      // tabIndexによって、どちらの検索を行うかを判定。トップページはレシピのみ検索
-      try {
+      // tabIndexが0ならレシピ検索、1ならシェフ検索。トップページはレシピのみ検索
+      // queryをクエリパラメータにする
+      // ここのエラーハンドリングがうまくいかないため、バックエンド側で修正を依頼中。その後、最終確認を行う。
+      if (tabIndex === 0 || pathname === "/") {
         const data = await fetchGetData({
-          url: "/chefs",
+          url: `/recipes?q=${query}`,
         })
-        setResults(data.data.lists)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setLoading(false)
+        try {
+          // setResults(data.data.lists)
+          setSearchRecipeLists(data.data.lists)
+          if (data.data.lists.length === 0) {
+            const chefData = await fetchGetData({
+              url: `/chefs`,
+            })
+            console.log(chefData.data.lists)
+            setSearchChefLists(chefData.data.lists)
+          }
+        } catch (err) {
+          const recipeData = await fetchGetData({
+            url: `/recommends/recipes`,
+          })
+          setResults(recipeData.data.lists)
+          // setSearchRecipeLists(recipeData.data.lists)
+        } finally {
+          setLoading(false)
+        }
+      } else if (tabIndex === 1) {
+        const data = await fetchGetData({
+          url: `/chefs?q=${query}`,
+        })
+        try {
+          setSearchChefLists(data.data.lists)
+          if (data.data.lists.length === 0) {
+            const chefData = await fetchGetData({
+              url: `/chefs`,
+            })
+            console.log(chefData.data.lists)
+            setSearchChefLists(chefData.data.lists)
+          }
+        } catch (err) {
+          console.log("error come in")
+          const chefData = await fetchGetData({
+            url: `/chefs`,
+          })
+          setSearchChefLists(chefData.data.lists)
+        } finally {
+          setLoading(false)
+        }
       }
     }
 
@@ -60,8 +104,12 @@ const SearchBar: FC<SearchBarProps> = ({ tabIndex }) => {
         router.push("/search")
       }, 3000)
     }
-  }, [debounced])
+  }, [debounced, query, tabIndex])
 
+  console.log(tabIndex)
+  console.log(results)
+  console.log(searchhefLists)
+  console.log(searchRecipeLists)
   const handleClearQuery = () => {
     setQuery("")
   }

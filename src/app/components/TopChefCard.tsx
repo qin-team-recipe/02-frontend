@@ -3,11 +3,15 @@ import "swiper/swiper.min.css"
 
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { FC } from "react"
+import { useRecoilValue } from "recoil"
 
-import { ChefProps } from "../types"
+import { searchChefState } from "@/app/store/searchListState"
 
-const Card: FC<ChefProps> = (props) => {
+import { ChefsData } from "../types"
+
+const Card: FC<ChefsData> = (props) => {
   const { imageUrl, display_name, screen_name, description, recipes_count } =
     props
 
@@ -45,17 +49,28 @@ const Card: FC<ChefProps> = (props) => {
 }
 
 type ChefComponentProps = {
-  data: ChefProps[]
+  data: ChefsData[]
 }
 
 const TopChefCard: FC<ChefComponentProps> = ({ data }) => {
+  const pathname = usePathname()
+  const searchChefLists = useRecoilValue(searchChefState)
+  console.log(searchChefLists)
+
   return (
+    // 検索ページで検索結果を保持している場合は、そのリストを表示する。
     <div className="">
-      {data.map((item, index) => (
-        <div key={index} className="mt-5">
-          <Card {...item} />
-        </div>
-      ))}
+      {pathname === "/search" && searchChefLists.length > 0
+        ? searchChefLists.map((item, index) => (
+            <div key={index} className="mt-5">
+              <Card {...item} />
+            </div>
+          ))
+        : data.map((item, index) => (
+            <div key={index} className="mt-5">
+              <Card {...item} />
+            </div>
+          ))}
     </div>
   )
 }
