@@ -7,6 +7,7 @@ import { createContext, FC, ReactNode, useEffect, useState } from "react"
 import { PAGE_INFO } from "../pageInfo"
 import {
   getTokenFromLocalStorage,
+  localStorage,
   // removeTokenFromLocalStorage,
   setPathGoAfterLoginToLocalStorage,
 } from "../utils/localStorage"

@@ -6,6 +6,7 @@ import Link from "next/link"
 import React, { useEffect, useState } from "react"
 
 import Burger from "@/app/components/atoms/Burger"
+import { localStorage } from "@/app/utils/localStorage"
 
 import Container from "../components/Container"
 import FooterMenu from "../components/FooterMenu"
