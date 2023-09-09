@@ -1,50 +1,60 @@
 "use client"
 import { IoCartOutline } from "react-icons/io5"
+import { useRecoilState } from "recoil"
 
-import { RecipeIngredientType, RecipeOutlineType } from "../../[id]/type"
-import { canAccessRecipe } from "../../[id]/utils"
+import useGetRecipeIngredients from "@/app/hooks/useGetRecipeIngredients"
+import { recipeState } from "@/app/store/recipeState"
+
+import { RecipeIngredientType } from "../../[id]/type"
 import ClipBoradCopyButton from "../../commonComponents/organisms/ClipBoradCopyButton"
 import RecipeAddCartButton from "./RecipeAddCartButton"
 import RecipeTabCard from "./RecipeTabCard"
-
-type RecipeTabIngredientsProps = {
-  watchId: string
-  recipe?: RecipeOutlineType
-  ingredients?: RecipeIngredientType[]
-}
+import RecipeTabIngredientSkeletons from "./RecipeTabIngredientSkeletons"
 
 /**
  * レシピタブ材料コンテンツ
  * @param props
  * @returns
  */
-const RecipeTabIngredients = async (props: RecipeTabIngredientsProps) => {
-  const { watchId, recipe, ingredients } = props
+const RecipeTabIngredients = async () => {
+  const [storedRecipe, _] = useRecoilState(recipeState)
+  const { data, isLoading, error } = useGetRecipeIngredients(
+    storedRecipe?.id ?? 0
+  )
 
-  const canAccess = recipe ? canAccessRecipe(recipe) : false
-  if (!recipe || !canAccess) return <></>
+  if (isLoading || !storedRecipe) {
+    return <RecipeTabIngredientSkeletons />
+  }
 
-  const recipeId = String(recipe.id)
-  const serving = recipe.servings
-
-  if (!ingredients || ingredients.length == 0) {
+  if (error) {
     return (
-      <>
-        <div className="w-full p-4">
-          <div className="flex flex-row justify-center">
-            <div className="m-10 text-xl">材料が登録されていません</div>
-          </div>
+      <div className="w-full p-4">
+        <div className="flex flex-row justify-center">
+          <div className="m-10 text-xl">材料の取得に失敗しました</div>
         </div>
-      </>
+      </div>
     )
   }
+
+  const ingredients: RecipeIngredientType[] = data ?? []
+  if (!ingredients || ingredients.length == 0) {
+    return (
+      <div className="w-full p-4">
+        <div className="flex flex-row justify-center">
+          <div className="m-10 text-xl">材料が登録されていません</div>
+        </div>
+      </div>
+    )
+  }
+
+  const serving = storedRecipe.servings
 
   // TODO 暫定 クリップボードコピー文字列
   const ingredientInfo = ingredients.map(
     (item) => `${item.name} ${item.description}`
   )
   const ingredientInfoInfoText = ingredientInfo.join("\r\n")
-  const copyContents = `【レシピ名】${recipe.title}\r\n【材料】(${serving}人前)\r\n${ingredientInfoInfoText}`
+  const copyContents = `【レシピ名】${storedRecipe.title}\r\n【材料】(${serving}人前)\r\n${ingredientInfoInfoText}`
 
   return (
     <>

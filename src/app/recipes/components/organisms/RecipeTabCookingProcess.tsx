@@ -1,26 +1,37 @@
 "use client"
-import { RecipeCookingProcessType, RecipeOutlineType } from "../../[id]/type"
-import { canAccessRecipe } from "../../[id]/utils"
+import { useRecoilState } from "recoil"
+
+import useGetRecipeSteps from "@/app/hooks/useGetRecipeSteps"
+import { recipeState } from "@/app/store/recipeState"
+
+import { RecipeCookingProcessType } from "../../[id]/type"
 import ClipBoradCopyButton from "../../commonComponents/organisms/ClipBoradCopyButton"
 import RecipeTabCard from "./RecipeTabCard"
-
-type RecipeTabProcessProps = {
-  watchId: string
-  recipe?: RecipeOutlineType
-  process?: RecipeCookingProcessType[]
-}
+import RecipeTabCookingProcessSkeletons from "./RecipeTabCookingProcessSkeletons"
 
 /**
  * レシピタブ工程コンテンツ
  * @param props
  * @returns
  */
-const RecipeTabCookingProcess = async (props: RecipeTabProcessProps) => {
-  const { watchId, recipe, process } = props
+const RecipeTabCookingProcess = async () => {
+  const [storedRecipe, _] = useRecoilState(recipeState)
+  const { data, isLoading, error } = useGetRecipeSteps(storedRecipe?.id ?? 0)
 
-  const canAccess = recipe ? canAccessRecipe(recipe) : false
-  if (!recipe || !canAccess) return <></>
+  if (isLoading || !storedRecipe) {
+    return <RecipeTabCookingProcessSkeletons />
+  }
+  if (error) {
+    return (
+      <div className="w-full p-4">
+        <div className="flex flex-row justify-center">
+          <div className="m-10 text-xl">作り方の取得に失敗しました</div>
+        </div>
+      </div>
+    )
+  }
 
+  const process: RecipeCookingProcessType[] = data ?? []
   if (!process || process.length == 0) {
     return (
       <>
@@ -38,7 +49,7 @@ const RecipeTabCookingProcess = async (props: RecipeTabProcessProps) => {
     (item) => `(${item.step_number}) ${item.title} ${item.description}`
   )
   const processInfoText = processInfo.join("\r\n")
-  const copyContents = `【レシピ名】${recipe.title}\r\n【作り方】\r\n${processInfoText}`
+  const copyContents = `【レシピ名】${storedRecipe.title}\r\n【作り方】\r\n${processInfoText}`
 
   return (
     <>

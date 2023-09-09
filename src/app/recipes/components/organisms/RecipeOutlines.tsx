@@ -1,6 +1,7 @@
 "use client"
+import useGetRecipe from "@/app/hooks/useGetRecipe"
+
 import { RecipeOutlineType } from "../../[id]/type"
-import { canAccessRecipe } from "../../[id]/utils"
 import ImageWithBlurType from "../../commonComponents/molecules/ImageWithBlur"
 import Modal from "../../commonComponents/organisms/Modal"
 import PageBackButton from "../../commonComponents/organisms/PageBackButton"
@@ -10,7 +11,6 @@ import RecipeOutlineSubInfomations from "./RecipeOutlineSubInfomations"
 
 type RecipeOutlinesProps = {
   watchId: string
-  recipe?: RecipeOutlineType
 }
 
 /**
@@ -18,12 +18,15 @@ type RecipeOutlinesProps = {
  * @returns
  */
 const RecipeOutlines = async (props: RecipeOutlinesProps) => {
-  const { watchId, recipe } = props
+  const { watchId } = props
+  const { data, isLoading, error } = useGetRecipe(watchId)
 
-  const canAccess = recipe ? canAccessRecipe(recipe) : false
+  if (isLoading) {
+    return <RecipeOutlineSkeletons />
+  }
 
   /* レシピが取得できなかった場合 */
-  if (!recipe || !canAccess) {
+  if (!data || error) {
     return (
       <>
         <RecipeOutlineSkeletons />
@@ -46,6 +49,7 @@ const RecipeOutlines = async (props: RecipeOutlinesProps) => {
       </>
     )
   }
+  const recipe: RecipeOutlineType = data
 
   return (
     <>
