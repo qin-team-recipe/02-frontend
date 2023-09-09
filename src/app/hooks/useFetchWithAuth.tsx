@@ -14,12 +14,15 @@ const useFetchWithAuth = (urlPath: string, config?: any) => {
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
+      let authConfig = { ...config }
       const token = getTokenFromLocalStorage()
-      const authConfig = {
-        ...config,
-        headers: {
-          Authorization: token,
-        },
+      if (token) {
+        authConfig = {
+          ...authConfig,
+          headers: {
+            Authorization: token,
+          },
+        }
       }
       try {
         const url = `${process.env.NEXT_PUBLIC_API_URL}${urlPath}`
