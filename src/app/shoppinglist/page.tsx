@@ -1,20 +1,28 @@
 "use client"
 
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 const Home = () => {
   const [inputValues, setInputValues] = useState<string[]>([""])
   const [showModal, setShowModal] = useState(false)
   const [showModal2, setShowModal2] = useState(false)
+  const [showModal3, setShowModal3] = useState(false)
   const [textAreaHeights, setTextAreaHeights] = useState<number[]>([])
   const [deleteIndex, setDeleteIndex] = useState<number | null>(null)
   const [checkStates, setCheckStates] = useState<boolean[]>(
     inputValues.map(() => false)
   )
+  const router = useRouter()
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    //URLは仮置き
+    router.push("/")
+  }
 
   useEffect(() => {
-    // テキストエリアの高さを設定
+    // フォーム内のテキストエリアの高さを設定
     const newHeights = inputValues.map((value) => {
       const lines = Math.ceil(value.length / 20) // 20文字ごとに改行
       const minHeight = 42 // 初期高さ
@@ -202,10 +210,10 @@ const Home = () => {
       </div>
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="rounded-lg bg-white py-2 pl-2 pr-16">
+          <div className="bg-white py-2 pl-2 pr-16">
             {deleteIndex !== null && (
               <>
-                <h1 className="mb-2">
+                <h1 className="mb-2 flex justify-between">
                   <button
                     onClick={() => {
                       moveUp(deleteIndex)
@@ -235,7 +243,7 @@ const Home = () => {
       )}
       {showModal2 && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="rounded-lg bg-white py-2 pl-2 pr-16">
+          <div className="bg-white py-2 pl-2 pr-16">
             <div className="mt-4 flex justify-start">
               <button onClick={deleteCheckedItems}>
                 完了したアイテムだけ削除する
@@ -246,6 +254,39 @@ const Home = () => {
                 すべてのアイテムを削除する
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {showModal3 && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+          <div className="bg-white py-2 pl-2 pr-16">
+            {deleteIndex !== null && (
+              <>
+                <div className="mt-4 flex justify-start">
+                  <button onClick={handleClick}>レシピ詳細をみる</button>
+                </div>
+                <div className="mt-4 flex justify-start">
+                  <button
+                    onClick={() => {
+                      moveDown(deleteIndex)
+                      closeModal()
+                    }}
+                  >
+                    下に移動する
+                  </button>
+                </div>
+                <div className="mt-4 flex justify-start">
+                  <button onClick={deleteCheckedItems}>
+                    完了したアイテムだけ削除する
+                  </button>
+                </div>
+                <div className="mt-4 flex justify-start">
+                  <button onClick={deleteAllItems}>
+                    レシピを買い物リストから削除する
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
