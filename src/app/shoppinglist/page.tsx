@@ -56,14 +56,14 @@ const Home = () => {
     if (index > 0) {
       const updatedValues = [...inputValues]
       const temp = updatedValues[index]
-      updatedValues[index] = updatedValues[index - 1]
-      updatedValues[index - 1] = temp
+      updatedValues[index] = updatedValues[index + 1]
+      updatedValues[index + 1] = temp
       setInputValues(updatedValues)
 
       const updatedCheckStates = [...checkStates]
       const tempCheck = updatedCheckStates[index]
       updatedCheckStates[index] = updatedCheckStates[index - 1]
-      updatedCheckStates[index - 1] = tempCheck
+      updatedCheckStates[index + 1] = tempCheck
       setCheckStates(updatedCheckStates)
     }
   }
