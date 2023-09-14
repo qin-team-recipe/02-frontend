@@ -6,8 +6,11 @@ import { useEffect, useState } from "react"
 
 const Home = () => {
   const [inputValues, setInputValues] = useState<string[]>([""])
+  //じぶんメモの右端にセットしてあるボタン押下にて発火するモーダル
   const [showModal, setShowModal] = useState(false)
+  //じぶんメモ上部のボタン押下にて発火するモーダル
   const [showModal2, setShowModal2] = useState(false)
+  //2つ目以降のメモで使用するモーダル
   const [showModal3, setShowModal3] = useState(false)
   const [textAreaHeights, setTextAreaHeights] = useState<number[]>([])
   const [deleteIndex, setDeleteIndex] = useState<number | null>(null)
