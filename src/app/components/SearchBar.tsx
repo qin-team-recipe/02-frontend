@@ -1,6 +1,6 @@
 "use client"
 
-import { useDebouncedValue } from "@mantine/hooks"
+// import { useDebouncedValue } from "@mantine/hooks"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 import { FC, useEffect, useState } from "react"
@@ -31,46 +31,64 @@ const SearchBar: FC<SearchBarProps> = ({ tabIndex }) => {
 
   const [loading, setLoading] = useState<boolean>(false)
   const [results, setResults] = useState<SearchResult[]>([])
-  const [debounced] = useDebouncedValue(query, 3000, { leading: true })
+  // const [debounced] = useDebouncedValue(query, 3000, { leading: true })
+  const [debounced, setDebounced] = useState(false)
+
   const router = useRouter()
   const pathname = usePathname()
-  console.log("query=" + query)
+
   const buttonElement = (
     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 bg-opacity-20 text-2xl hover:bg-gray-200">
       <IoArrowBack />
     </div>
   )
+  // 検索ワードを入力すると、debouncedをtrueにする
+  const handleInput = (e: any) => {
+    pathname === "/" && setDebounced(true)
+    setQuery(e.target.value)
+  }
 
   useEffect(() => {
     const handleSearch = async () => {
       setLoading(true)
       // tabIndexが0ならレシピ検索、1ならシェフ検索。トップページはレシピのみ検索
       // queryをクエリパラメータにする
-      // ここのエラーハンドリングがうまくいかないため、バックエンド側で修正を依頼中。その後、最終確認を行う。
+      if (query === "" && tabIndex === 0) {
+        // クエリが空の場合の処理
+        const recommendData = await fetchGetData({
+          url: `/recommends/recipes`,
+        })
+        setSearchRecipeLists(recommendData.data.lists)
+        setLoading(false)
+        return
+      }
       if (tabIndex === 0 || pathname === "/") {
+        setSearchRecipeLists([])
         const data = await fetchGetData({
           url: `/recipes?q=${query}`,
         })
         try {
-          // setResults(data.data.lists)
           setSearchRecipeLists(data.data.lists)
-          if (data.data.lists.length === 0) {
-            const chefData = await fetchGetData({
-              url: `/chefs`,
+
+          // data.data.lists.length === 0はundefinedの場合も含む
+          if (data.data.lists.length === 0 || data.data.lists === undefined) {
+            const recipeData = await fetchGetData({
+              url: `/recommends/recipes`,
             })
-            console.log(chefData.data.lists)
-            setSearchChefLists(chefData.data.lists)
+            console.log(recipeData.data.lists)
+            setSearchRecipeLists(recipeData.data.lists)
           }
         } catch (err) {
           const recipeData = await fetchGetData({
             url: `/recommends/recipes`,
           })
-          setResults(recipeData.data.lists)
-          // setSearchRecipeLists(recipeData.data.lists)
+          setSearchRecipeLists(recipeData.data.lists)
         } finally {
           setLoading(false)
         }
+        console.log(searchRecipeLists)
       } else if (tabIndex === 1) {
+        setSearchChefLists([])
         const data = await fetchGetData({
           url: `/chefs?q=${query}`,
         })
@@ -94,22 +112,30 @@ const SearchBar: FC<SearchBarProps> = ({ tabIndex }) => {
         }
       }
     }
+    handleSearch()
 
-    if (debounced) {
-      handleSearch()
-    }
     // トップページからの遷移時に検索ページに遷移する時間調整
-    if (debounced && pathname === "/") {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (debounced && pathname === "/" && query !== "") {
+        //検索後、searchページに遷移する
         router.push("/search")
-      }, 3000)
-    }
+        setDebounced(false)
+      }
+    }, 2000)
   }, [debounced, query, tabIndex])
 
-  console.log(tabIndex)
-  console.log(results)
-  console.log(searchhefLists)
-  console.log(searchRecipeLists)
+  useEffect(() => {
+    if (pathname === "/") {
+      setQuery("")
+    }
+  }, [])
+
+  // useEffect(() => {
+  //   if (query !== "") {
+  //     setDebounced(false)
+  //   }
+  // }, [query, pathname])
+
   const handleClearQuery = () => {
     setQuery("")
   }
@@ -118,7 +144,6 @@ const SearchBar: FC<SearchBarProps> = ({ tabIndex }) => {
     setQuery("")
     router.push("/")
   }
-
   return (
     <div className="relative py-2">
       <div className=" flex">
@@ -140,7 +165,7 @@ const SearchBar: FC<SearchBarProps> = ({ tabIndex }) => {
               className="ml-2 w-10/12 bg-transparent placeholder-gray-500 outline-none"
               placeholder={tabIndex === 0 ? "レシピを検索" : "シェフを検索"}
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => handleInput(e)}
             />
           )}
           {pathname !== "/search" && (
@@ -148,7 +173,7 @@ const SearchBar: FC<SearchBarProps> = ({ tabIndex }) => {
               className="ml-2 bg-transparent placeholder-gray-500 outline-none"
               placeholder="シェフやレシピを検索"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => handleInput(e)}
             />
           )}
           {query && loading === false && (
