@@ -219,9 +219,12 @@ const Home = () => {
                 <h1 className="mb-2 flex justify-between">
                   <button
                     onClick={() => {
-                      moveUp(deleteIndex)
-                      closeModal()
+                      if (deleteIndex > 0) {
+                        moveUp(deleteIndex)
+                        closeModal()
+                      }
                     }}
+                    disabled={deleteIndex === 0}
                   >
                     上に移動する
                   </button>
@@ -229,9 +232,12 @@ const Home = () => {
                 <h1>
                   <button
                     onClick={() => {
-                      moveDown(deleteIndex)
-                      closeModal()
+                      if (deleteIndex < inputValues.length - 1) {
+                        moveDown(deleteIndex)
+                        closeModal()
+                      }
                     }}
+                    disabled={deleteIndex === inputValues.length - 1}
                   >
                     下に移動する
                   </button>
@@ -271,9 +277,12 @@ const Home = () => {
                 <div className="mt-4 flex justify-start">
                   <button
                     onClick={() => {
-                      moveDown(deleteIndex)
-                      closeModal()
+                      if (deleteIndex < inputValues.length - 1) {
+                        moveDown(deleteIndex)
+                        closeModal()
+                      }
                     }}
+                    disabled={deleteIndex === inputValues.length - 1}
                   >
                     下に移動する
                   </button>
