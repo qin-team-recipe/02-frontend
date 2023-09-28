@@ -49,7 +49,7 @@ export const AddImages = () => {
         <div className="flex">
           {image ? (
             <div className="relative ml-2">
-              <img src={image} alt="新しい画像" className="max-w-32 max-h-32" />
+              <img src={image} alt="新しい画像" className="w-30 h-30 ml-4" />
               <button
                 onClick={openModal}
                 className="absolute right-0 top-0 -mr-2 -mt-2 h-5 w-5 items-center justify-center rounded-full border-none bg-red-500 text-center text-[12px] text-red-300"
@@ -58,7 +58,24 @@ export const AddImages = () => {
               </button>
             </div>
           ) : (
-            <div></div>
+            <div className="mx-4 h-[100px] rounded-md border-2 px-[30px] py-[20px]">
+              <label
+                className="item-center text-center"
+                htmlFor="image-upload-input"
+              >
+                <div
+                  className="mb-[14px] text-[12px] text-[#6F6E77]"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  画像を設定
+                </div>
+              </label>
+              <label className="item-center text-center">
+                <div className="ml-4 mr-1 mt-[9px] h-4 w-4 cursor-pointer">
+                  +
+                </div>
+              </label>
+            </div>
           )}
         </div>
       </div>
@@ -74,14 +91,6 @@ export const AddImages = () => {
                 style={{ display: "none" }}
                 id="image-upload-input"
               />
-              <label htmlFor="image-upload-input">+</label>
-            </>
-          )}
-        </div>
-        <div className="mt-[8px] h-[19px] w-[112px] text-[16px]">
-          {!image && (
-            <>
-              <label htmlFor="image-upload-input">画像を追加する</label>
             </>
           )}
         </div>

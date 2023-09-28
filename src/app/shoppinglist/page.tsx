@@ -139,13 +139,13 @@ const Home = () => {
           買い物リスト
         </div>
         <div className="border-b-2">
-          <h1 className="my-5 flex h-[20px] justify-between">
-            <h2 className="pl-2 text-[16px] font-bold">じぶんメモ</h2>
-            <h2 className="flex">
-              <h3 className="text-[13px]">
+          <div className="my-5 flex h-[20px] justify-between">
+            <div className="pl-2 text-[16px] font-bold">じぶんメモ</div>
+            <div className="flex">
+              <div className="text-[13px]">
                 <button onClick={addInputForm}>+</button>
-              </h3>
-              <h3 className="px-4">
+              </div>
+              <div className="px-4">
                 <button onClick={() => openModal2()}>
                   <Image
                     src="/shoppinglist/Vector.png"
@@ -155,9 +155,9 @@ const Home = () => {
                     height={16}
                   />
                 </button>
-              </h3>
-            </h2>
-          </h1>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="mb-4">
           {inputValues.map((value, index) => (
@@ -219,9 +219,12 @@ const Home = () => {
                 <h1 className="mb-2 flex justify-between">
                   <button
                     onClick={() => {
-                      moveUp(deleteIndex)
-                      closeModal()
+                      if (deleteIndex > 0) {
+                        moveUp(deleteIndex)
+                        closeModal()
+                      }
                     }}
+                    disabled={deleteIndex === 0}
                   >
                     上に移動する
                   </button>
@@ -229,9 +232,12 @@ const Home = () => {
                 <h1>
                   <button
                     onClick={() => {
-                      moveDown(deleteIndex)
-                      closeModal()
+                      if (deleteIndex < inputValues.length - 1) {
+                        moveDown(deleteIndex)
+                        closeModal()
+                      }
                     }}
+                    disabled={deleteIndex === inputValues.length - 1}
                   >
                     下に移動する
                   </button>
@@ -271,9 +277,12 @@ const Home = () => {
                 <div className="mt-4 flex justify-start">
                   <button
                     onClick={() => {
-                      moveDown(deleteIndex)
-                      closeModal()
+                      if (deleteIndex < inputValues.length - 1) {
+                        moveDown(deleteIndex)
+                        closeModal()
+                      }
                     }}
+                    disabled={deleteIndex === inputValues.length - 1}
                   >
                     下に移動する
                   </button>
