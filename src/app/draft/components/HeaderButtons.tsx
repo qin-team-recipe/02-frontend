@@ -1,18 +1,20 @@
 "use client"
 
 import Link from "next/link"
-import { ChangeEvent, useState } from "react"
+import { useState } from "react"
+import { useFormContext } from "react-hook-form"
+
+import { DraftSchema } from "../draftSchema"
 
 export const HeaderButtons = () => {
-  const [inputValue, setValue] = useState("")
+  const {
+    register,
+    getValues,
+    watch,
+    formState: { errors },
+  } = useFormContext<DraftSchema>()
+  const title = watch("title")
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value)
-  }
-
-  const handleClearInput = () => {
-    setValue("") // inputの入力値を空にする
-  }
   const [showModal, setShowModal] = useState(false)
 
   const handleDeleteClick = () => {
@@ -25,7 +27,6 @@ export const HeaderButtons = () => {
   }
 
   const handleDeleteConfirmClick = () => {
-    handleClearInput()
     setShowModal(false) // モーダルを非表示にする
   }
 
@@ -54,7 +55,7 @@ export const HeaderButtons = () => {
       )}
       <div className="border-b-2 px-[16px] py-[12px]">
         <div className="flex h-[48px] justify-between">
-          {inputValue ? (
+          {title ? (
             <div
               className="my-5 h-[24px] w-[24px] cursor-pointer"
               onClick={handleDeleteClick}
@@ -65,7 +66,7 @@ export const HeaderButtons = () => {
             <div></div>
           )}
           <div className="flex justify-end">
-            {!inputValue ? (
+            {!title ? (
               <div className="my-5 mr-[16px] w-[100px] items-center text-center text-[16px] font-bold hover:text-red-500">
                 <Link href="../draft/addDraft">下書き一覧</Link>
               </div>
@@ -79,20 +80,20 @@ export const HeaderButtons = () => {
       </div>
       <div className="pt-[20px]">
         <div className="h-[67px]">
-          <div className="h-[19px]">
+          <div className="mb-1 h-[19px]">
             <div className="px-[16px] font-bold">レシピ名</div>
           </div>
           <div className="h-[44px]">
             <div>
-              <form>
-                <input
-                  className="w-full border-x-2 border-y-2 pb-[12px] pl-[19.54px] pt-[13px]"
-                  type="text"
-                  value={inputValue}
-                  onChange={handleChange}
-                  placeholder="例：肉じゃが"
-                />
-              </form>
+              <input
+                {...register("title")}
+                className="w-full border-y-2 pb-[12px] pl-[19.54px] pt-[13px]"
+                type="text"
+                placeholder="例：肉じゃが"
+              />
+              {errors.title ? (
+                <div className="text-red-500">{errors.title.message}</div>
+              ) : null}
             </div>
           </div>
         </div>
