@@ -1,7 +1,9 @@
 "use client"
+
 import { useState } from "react"
 
 import { Counter } from "./Counter"
+import { Menu } from "./Menu"
 
 export const AddMaterial = () => {
   const moveUp = (index: number) => {
@@ -71,25 +73,9 @@ export const AddMaterial = () => {
             onChange={(e) => handleChange(0, e.target.value)}
           />
           {inputValues[0] && (
-            <button
-              onClick={() => openModal(0)}
-              className="absolute right-0 top-0 mr-2 mt-1 border-none bg-transparent text-red-500"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="h-4 w-4"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
+            <div className="absolute bottom-0 right-0 top-0 mr-2 mt-1 flex items-center gap-2">
+              <Menu onDelete={() => openModal(0)} />
+            </div>
           )}
         </div>
         {inputValues.slice(1).map((value, index) => (
@@ -100,64 +86,12 @@ export const AddMaterial = () => {
               className="h-full w-full px-2 pr-10"
             />
             {value && (
-              <div className="absolute right-0 top-0 mr-2 mt-1 space-x-2">
-                <button
-                  onClick={() => moveUp(index + 1)}
-                  className="border-none bg-transparent text-green-500"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    className="h-4 w-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 10l7-7m0 0l7 7m-7-7v18"
-                    />
-                  </svg>
-                </button>
-                <button
-                  onClick={() => moveDown(index + 1)}
-                  className="border-none bg-transparent text-blue-500"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    className="h-4 w-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                    />
-                  </svg>
-                </button>
-                <button
-                  onClick={() => openModal(index + 1)}
-                  className="border-none bg-transparent text-red-500"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    className="h-4 w-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
+              <div className="absolute bottom-0 right-0 top-0 mr-2 mt-1 flex items-center gap-2">
+                <Menu
+                  onUp={() => moveUp(index + 1)}
+                  onDown={() => moveDown(index + 1)}
+                  onDelete={() => openModal(index + 1)}
+                />
               </div>
             )}
           </div>

@@ -1,19 +1,27 @@
 "use client"
 
 import React, { useState } from "react"
+import { useFormContext } from "react-hook-form"
+
+import { DraftSchema } from "../draftSchema"
 
 export const Counter = () => {
+  const { setValue } = useFormContext<DraftSchema>()
   const [count, setCount] = useState(2)
 
   const increment = () => {
     if (count < 6) {
-      setCount(count + 1)
+      const newCount = count + 1
+      setCount(newCount)
+      setValue("servings", newCount)
     }
   }
 
   const decrement = () => {
     if (count > 1) {
-      setCount(count - 1)
+      const newCount = count - 1
+      setCount(newCount)
+      setValue("servings", newCount)
     }
   }
 
@@ -24,16 +32,16 @@ export const Counter = () => {
           材料/{count}人前
         </div>
         <button
-          className={`item-center flex h-5 w-5 justify-center text-[16px] ${
-            count === 1 ? "text-gray-400" : "bg-red-200 text-red-500"
+          className={`flex h-5 w-5 items-center justify-center text-[16px] ${
+            count === 1 ? "text-gray-400" : "bg-red-100 text-red-500"
           }`}
           onClick={decrement}
         >
           -
         </button>
         <button
-          className={`item-center ml-2 flex h-5 w-5 justify-center text-[16px] ${
-            count === 6 ? "text-gray-400" : "bg-red-200 text-red-500"
+          className={`ml-2 flex h-5 w-5 items-center justify-center text-[16px] ${
+            count === 6 ? "text-gray-400" : "bg-red-100 text-red-500"
           }`}
           onClick={increment}
         >
